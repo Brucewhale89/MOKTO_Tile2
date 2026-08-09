@@ -199,18 +199,7 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
   <img class="leaf-base" src="./-12-mslz6suy-143g.png" style="position: absolute; inset: 0; object-fit: cover; object-position: center; aspect-ratio: 1824 / 2304; margin-left: 3px; margin-right: 3px; width: 100%; height: 1755px" alt="123123123" width="1824" height="2304">
 </div>
 
-<div class="leaf-decor">
-  <img class="leaf-layer" data-leaf="1" src="./7-mslradeg-kooh.png" style="position: static; inset: 0; object-fit: cover; object-position: center; z-index: 2012; transform-origin: 72% 28%; margin-left: -930px; margin-right: -930px; opacity: 1; transform: translate(-5px, -4px) rotate(83deg) scale(0.99, 1.01); margin-top: -621px; margin-bottom: -621px; width: 1370px; height: 1503px; display: none">
-  <img class="leaf-layer" data-leaf="2" src="uploads/111-1c3f6e7b.png" style="position: fixed; inset: 0; object-fit: cover; object-position: center; z-index: 2000; transform-origin: 100% 62%; margin-left: 596px; margin-right: 596px; margin-top: 256px; margin-bottom: 256px; top: -38px; left: 135px; height: 1300px; width: 1300px">
-  
-  <img class="leaf-layer" data-leaf="4" src="uploads/1-e61564dd.png" style="position: fixed; inset: 0; object-fit: cover; object-position: center; z-index: 2000; transform-origin: 64% 21%; margin-left: -411px; margin-right: -411px; margin-top: 533px; margin-bottom: 533px; display: none">
-  <span style="position: fixed; inset: 0; display: block; transform: scaleX(-1); z-index: 2000; pointer-events: none; margin-left: 199px; margin-right: 199px">
-    
-    
-    
-    <img class="leaf-layer" data-leaf="7" src="uploads/1-e61564dd.png" style="position: absolute; inset: 0; object-fit: cover; object-position: center; transform-origin: 64% 21%; width: 1299px; height: 1458px; margin-top: 268px; margin-bottom: 268px; margin-left: -470px; margin-right: -470px; left: 1885px; top: 480px">
-  <img class="leaf-layer" data-leaf="8" data-rot="-60" src="uploads/111-1c3f6e7b.png" style="position: absolute; inset: 0; object-fit: cover; object-position: center; transform-origin: 100% 62%; box-shadow: 0px 4px 12px 0px #300F0F26; padding-left: 0px; height: 1277px; width: 1200px; padding-top: 178px; top: -22px; left: -128px; margin-left: 1124px; margin-right: 1124px; margin-top: -156px; margin-bottom: -156px; padding-bottom: 0px"></span>
-</div>
+<div class="leaf-decor"></div>
 
 <header>
   <a href="Home.dc.html" class="logo"><span>MOK</span>TO<em style="font-family: 'Public Sans', sans-serif; font-style: normal; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; color: rgba(255,255,255,0.55); margin-left: 9px; align-self: center">TILE SUPPLY</em></a>
@@ -343,7 +332,7 @@ class Component extends DCLogic {
       const tick = () => {
         t += 0.016;
         st.forEach((s, i) => {
-          const breeze = Math.sin(t * s.w + i * 1.7) * 0.15;
+          const breeze = 0;
           s.v += (-s.a * s.k) + breeze * 0.03;
           s.v *= s.d;                                  // 관성으로 잦아드는 감쇠
           s.a += s.v;
