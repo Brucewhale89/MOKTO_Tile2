@@ -10,22 +10,22 @@
 <helmet>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>관리자 — SSOL TILE</title>
+  <title>관리자 — MOKTO</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <style>
-:root { --deep-green:#1a3a30; --terra:#b5651d; --cream:#f2ede4; --text:#1a1a1a; --muted:#6b6b6b; --border:#e0dcd0; }
+:root { --deep-green:#2b1a12; --box-green:#1a3a30; --terra:#c9610d; --terra-light:#e5822a; --tan:#dbab55; --cream:#f2ede4; --text:#2b1a12; --muted:#8a7466; --border:#e0dcd0; }
 body { margin:0; background:var(--cream); color:var(--text); font-family:'Public Sans',sans-serif; line-height:1.6; }
 a { color: var(--terra); text-decoration: none; }
-a:hover { color: #cc8542; }
+a:hover { color: var(--terra-light); }
 input, select, button { font-family: inherit; }
   </style>
 </helmet>
 
-<header style="background:var(--deep-green);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200">
+<header style="background:#1e120c;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200">
   <div style="display:flex;align-items:baseline;gap:14px">
-    <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff"><span style="color:#cc8542">SSOL</span> TILE</a>
+    <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff"><span style="color:var(--terra-light)">MOK</span>TO</a>
     <span style="color:rgba(255,255,255,0.5);font-size:12px;font-weight:700;letter-spacing:0.12em">ADMIN</span>
   </div>
   <nav style="display:flex;gap:20px;align-items:center">
@@ -55,7 +55,7 @@ input, select, button { font-family: inherit; }
     </div>
     <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px">
       <div style="font-size:12px;color:var(--muted);font-weight:600">추정 매출</div>
-      <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.02em;color:var(--deep-green)">{{ kpiRevenue }}</div>
+      <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.02em;color:var(--terra)">{{ kpiRevenue }}</div>
       <div style="font-size:11px;color:var(--muted)">원 (VAT 포함)</div>
     </div>
     <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px">
@@ -103,7 +103,7 @@ input, select, button { font-family: inherit; }
               <span>{{ s.label }}</span><span style="color:var(--muted)">{{ s.count }}</span>
             </div>
             <div style="height:6px;border-radius:3px;background:rgba(26,58,48,0.08);margin-top:3px">
-              <div style="height:6px;border-radius:3px;background:var(--deep-green);width:{{ s.width }}"></div>
+              <div style="height:6px;border-radius:3px;background:var(--box-green);width:{{ s.width }}"></div>
             </div>
           </div>
         </sc-for>
@@ -205,7 +205,7 @@ input, select, button { font-family: inherit; }
       <input type="number" value="{{ bulkStock }}" onInput="{{ onBulkStock }}" placeholder="재고 (박스)" style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;width:118px">
       <input type="number" value="{{ bulkPrice }}" onInput="{{ onBulkPrice }}" placeholder="가격 (원)" style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;width:118px">
       <button onClick="{{ onApplySelected }}" style="padding:7px 14px;background:var(--terra);color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap">선택 {{ selectedCount }}개 적용</button>
-      <button onClick="{{ onApplyAll }}" style="padding:7px 14px;background:var(--deep-green);color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap">현재 목록 전체 적용</button>
+      <button onClick="{{ onApplyAll }}" style="padding:7px 14px;background:var(--box-green);color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap">현재 목록 전체 적용</button>
       <span style="font-size:12px;color:var(--muted)">{{ bulkMsg }}</span>
     </div>
 
@@ -276,7 +276,7 @@ input, select, button { font-family: inherit; }
           </div>
           <div style="display:flex;align-items:center;gap:10px;margin-top:16px">
             <button onClick="{{ r.onResetOne }}" style="padding:8px 16px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:7px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap">원본으로 초기화</button>
-            <button onClick="{{ r.onEdit }}" style="padding:8px 16px;background:var(--deep-green);color:#fff;border:none;border-radius:7px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap">닫기</button>
+            <button onClick="{{ r.onEdit }}" style="padding:8px 16px;background:var(--box-green);color:#fff;border:none;border-radius:7px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap">닫기</button>
             <span style="font-size:12px;color:var(--muted)">{{ r.overrideNote }}</span>
           </div>
         </div>
@@ -316,6 +316,16 @@ class Component extends DCLogic {
   };
 
   componentDidMount() {
+    // 관리자 표시명 마이그레이션
+    try {
+      const AEMAIL = 'admin@ssoltile.com', ANAME = '강수민';
+      let us = JSON.parse(localStorage.getItem('ssol_users') || '[]');
+      let changed = false;
+      us.forEach(u => { if (u.email === AEMAIL && u.name !== ANAME) { u.name = ANAME; changed = true; } });
+      if (changed) localStorage.setItem('ssol_users', JSON.stringify(us));
+      const ss = JSON.parse(localStorage.getItem('ssol_session') || 'null');
+      if (ss && ss.email === AEMAIL && ss.name !== ANAME) localStorage.setItem('ssol_session', JSON.stringify({ ...ss, name: ANAME }));
+    } catch (e) {}
     const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || d); } catch (e) { return JSON.parse(d); } };
     this.setState({
       hidden: read(HIDDEN_KEY, '[]'), custom: read(CUSTOM_KEY, '[]'),

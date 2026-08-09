@@ -55,7 +55,7 @@ input { font-family: inherit; }
 <script type="text/x-dc" data-dc-script>
 const USERS_KEY = 'ssol_users';
 const SESSION_KEY = 'ssol_session';
-const ADMIN = { email: 'admin@ssoltile.com', pw: 'admin1234', name: '관리자', role: 'admin' };
+const ADMIN = { email: 'admin@ssoltile.com', pw: 'admin1234', name: '강수민', role: 'admin' };
 
 class Component extends DCLogic {
   state = { email: '', pw: '', error: '' };
@@ -63,8 +63,12 @@ class Component extends DCLogic {
   componentDidMount() {
     let users = [];
     try { users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch (e) {}
-    if (!users.some(u => u.email === ADMIN.email)) {
+    const existing = users.find(u => u.email === ADMIN.email);
+    if (!existing) {
       users = [ADMIN, ...users];
+      try { localStorage.setItem(USERS_KEY, JSON.stringify(users)); } catch (e) {}
+    } else if (existing.name !== ADMIN.name) {
+      existing.name = ADMIN.name;
       try { localStorage.setItem(USERS_KEY, JSON.stringify(users)); } catch (e) {}
     }
   }
@@ -76,7 +80,7 @@ class Component extends DCLogic {
     const u = users.find(x => x.email === email.trim().toLowerCase());
     if (!u || u.pw !== pw) { this.setState({ error: '아이디 또는 비밀번호가 올바르지 않습니다.' }); return; }
     if (u.role !== 'admin' && u.approved === false) { this.setState({ error: '승인 대기중인 계정입니다.' }); return; }
-    try { localStorage.setItem(SESSION_KEY, JSON.stringify({ email: u.email, name: u.name, role: u.role })); } catch (e) {}
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify({ email: u.email, name: u.name, company: u.company || '', phone: u.phone || '', role: u.role })); } catch (e) {}
     window.location.href = u.role === 'admin' ? 'Admin.dc.html' : 'Home.dc.html';
   }
 

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <title>장바구니 — MOKTO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+:root { --deep-green:#2b1a12; --box-green:#1a3a30; --terra:#c9610d; --terra-light:#e5822a; --tan:#dbab55; --bg:#3a2a22; --text:#f0e9e0; --muted:#a89a8c; --border:rgba(255,255,255,0.14); }
+body { margin:0; background:var(--bg); color:var(--text); font-family:'Public Sans',sans-serif; line-height:1.6; }
+a { color: var(--terra-light); text-decoration: none; }
+a:hover { color: var(--tan); }
+  </style>
+</helmet>
+
+<header style="background:#1e120c;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.1)">
+  <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff;display:flex;align-items:baseline"><span style="color:var(--terra-light)">MOK</span>TO<em style="font-family:'Public Sans',sans-serif;font-style:normal;font-weight:600;font-size:11px;letter-spacing:0.14em;color:rgba(255,255,255,0.55);margin-left:9px;align-self:center">TILE SUPPLY</em></a>
+  <nav style="display:flex;align-items:center;gap:22px">
+    <a href="Home.dc.html" style="color:rgba(255,255,255,0.78);font-size:13px;font-weight:600">상품 목록</a>
+    <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+      <a href="Login.dc.html" style="color:rgba(255,255,255,0.78);font-size:13px;font-weight:600">로그인</a>
+    </sc-if>
+    <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+      <a href="Cart.dc.html" onClick="{{ onLogout }}" style="color:rgba(255,255,255,0.78);font-size:13px;font-weight:600">로그아웃</a>
+    </sc-if>
+    <a href="#" style="color:rgba(255,255,255,0.78);font-size:13px;font-weight:600">마이페이지</a>
+    <a href="#" style="color:rgba(255,255,255,0.78);font-size:13px;font-weight:600">문의</a>
+  </nav>
+</header>
+
+<main style="max-width:1100px;margin:0 auto;padding:36px 32px 80px">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:26px">
+    <h1 style="font-family:'Archivo',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.02em;margin:0">장바구니</h1>
+    <span style="font-size:14px;color:var(--muted);font-weight:600">{{ itemCountLabel }}</span>
+  </div>
+
+  <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:80px 24px;text-align:center;background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px">
+      <p style="font-size:15px;color:var(--muted);margin:0 0 18px">장바구니가 비어 있습니다.</p>
+      <a href="Home.dc.html" style="display:inline-block;padding:12px 26px;background:var(--terra);color:#fff;border-radius:8px;font-size:14px;font-weight:700">상품 보러 가기</a>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+    <div style="background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:74px 1.6fr 1fr 116px 130px 40px;gap:14px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:0.02em">
+        <span></span>
+        <span>모델명</span>
+        <span>규격 · 재질</span>
+        <span style="text-align:center">수량 (박스)</span>
+        <span style="text-align:right">금액</span>
+        <span></span>
+      </div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+        <div style="display:grid;grid-template-columns:74px 1.6fr 1fr 116px 130px 40px;gap:14px;align-items:center;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.07)">
+          <a href="{{ r.link }}" style="display:block;width:74px;height:74px;border-radius:8px;overflow:hidden;background:rgba(0,0,0,0.25)">
+            <img src="{{ r.img }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
+          </a>
+          <div style="min-width:0">
+            <a href="{{ r.link }}" style="font-size:14.5px;font-weight:700;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.publicName }}</a>
+            <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.nickname }}</div>
+          </div>
+          <div style="font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.spec }}</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px">
+            <button onClick="{{ r.onDec }}" style="width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:rgba(0,0,0,0.2);color:var(--text);font-size:15px;font-weight:700;cursor:pointer;line-height:1">−</button>
+            <span style="min-width:26px;text-align:center;font-size:14px;font-weight:700">{{ r.qty }}</span>
+            <button onClick="{{ r.onInc }}" style="width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:rgba(0,0,0,0.2);color:var(--text);font-size:15px;font-weight:700;cursor:pointer;line-height:1">+</button>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:14.5px;font-weight:700">{{ r.lineTotal }}</div>
+            <div style="font-size:11.5px;color:var(--muted)">{{ r.unitPrice }} / 박스</div>
+          </div>
+          <button onClick="{{ r.onRemove }}" title="삭제" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:14px;cursor:pointer;line-height:1">×</button>
+        </div>
+      </sc-for>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 18px;background:rgba(0,0,0,0.2)">
+        <button onClick="{{ onClear }}" style="padding:9px 16px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer">전체 비우기</button>
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <span style="font-size:13.5px;color:var(--muted);font-weight:600">총 {{ totalBoxes }}박스 · 합계</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.02em;color:var(--tan)">{{ grandTotal }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:22px">
+      <a href="Home.dc.html" style="padding:13px 24px;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:14px;font-weight:700">계속 쇼핑하기</a>
+      <button style="padding:13px 32px;background:var(--terra);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">주문하기</button>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);text-align:right;margin:12px 0 0">금액은 VAT 별도이며, 최소 주문 수량은 제품당 5박스입니다.</p>
+  </sc-if>
+</main>
+
+<footer style="background:#1e120c;border-top:1px solid rgba(255,255,255,0.1);padding:32px;text-align:center;color:rgba(255,255,255,0.7);font-size:12.5px">
+  MOKTO 목토 · B2B 전용 온라인 자재 공급
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { cart: [], products: [], session: null, loaded: false };
+
+  componentDidMount() {
+    // 관리자 표시명 마이그레이션
+    try {
+      const AEMAIL = 'admin@ssoltile.com', ANAME = '강수민';
+      let us = JSON.parse(localStorage.getItem('ssol_users') || '[]');
+      let changed = false;
+      us.forEach(u => { if (u.email === AEMAIL && u.name !== ANAME) { u.name = ANAME; changed = true; } });
+      if (changed) localStorage.setItem('ssol_users', JSON.stringify(us));
+      const ss = JSON.parse(localStorage.getItem('ssol_session') || 'null');
+      if (ss && ss.email === AEMAIL && ss.name !== ANAME) localStorage.setItem('ssol_session', JSON.stringify({ ...ss, name: ANAME }));
+    } catch (e) {}
+    let cart = [], session = null;
+    try { cart = JSON.parse(localStorage.getItem('mokto_cart') || '[]'); } catch (e) {}
+    try { session = JSON.parse(localStorage.getItem('ssol_session') || 'null'); } catch (e) {}
+    this.setState({ cart, session });
+
+    const script = document.createElement('script');
+    script.src = 'uploads/data.js';
+    script.onload = () => {
+      if (typeof PRODUCTS !== 'undefined') {
+        let custom = [], meta = {};
+        try { custom = JSON.parse(localStorage.getItem('ssol_admin_custom') || '[]'); } catch (e) {}
+        try { meta = JSON.parse(localStorage.getItem('ssol_admin_meta') || '{}'); } catch (e) {}
+        const products = [...custom, ...PRODUCTS].map(p => ({ ...p, ...(meta[p.id] || {}) }));
+        this.setState({ products, loaded: true });
+      }
+    };
+    document.head.appendChild(script);
+  }
+
+  save(cart) {
+    try { localStorage.setItem('mokto_cart', JSON.stringify(cart)); } catch (e) {}
+    this.setState({ cart });
+  }
+
+  renderVals() {
+    const s = this.state.session;
+    const won = n => n.toLocaleString('ko-KR') + '원';
+    const byId = {};
+    this.state.products.forEach(p => { byId[p.id] = p; });
+
+    const rows = this.state.cart.map(item => {
+      const p = byId[item.id];
+      if (!p) return null;
+      const price = p.price || 0;
+      const paren = (p.name || '').match(/\(([^)]+)\)/);
+      return {
+        id: item.id,
+        qty: String(item.qty),
+        publicName: p.publicName || '—',
+        nickname: paren ? paren[1].trim() : '',
+        spec: [p.size, p.material, p.finish].filter(Boolean).join(' · '),
+        img: p.img,
+        link: 'Product Detail.dc.html?id=' + encodeURIComponent(p.id),
+        unitPrice: won(price),
+        lineTotal: won(price * item.qty),
+        onInc: () => this.save(this.state.cart.map(i => i.id === item.id ? { ...i, qty: i.qty + 1 } : i)),
+        onDec: () => this.save(this.state.cart.map(i => i.id === item.id ? { ...i, qty: Math.max(1, i.qty - 1) } : i)),
+        onRemove: () => this.save(this.state.cart.filter(i => i.id !== item.id)),
+      };
+    }).filter(Boolean);
+
+    const totalBoxes = rows.reduce((n, r) => n + Number(r.qty), 0);
+    const grand = this.state.cart.reduce((sum, i) => {
+      const p = byId[i.id];
+      return sum + (p ? (p.price || 0) * i.qty : 0);
+    }, 0);
+
+    return {
+      loggedIn: !!s, loggedOut: !s,
+      onLogout: () => { try { localStorage.removeItem('ssol_session'); } catch (e) {} },
+      rows,
+      hasItems: rows.length > 0,
+      isEmpty: this.state.loaded && rows.length === 0,
+      itemCountLabel: rows.length > 0 ? rows.length + '개 품목' : '',
+      totalBoxes: String(totalBoxes),
+      grandTotal: won(grand),
+      onClear: () => this.save([]),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -10,24 +10,28 @@
 <helmet>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ product.name }} — SSOL TILE</title>
+  <title>{{ product.name }} — MOKTO</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
   <style>
 :root {
-  --deep-green: #1a3a30;
-  --terra: #b5651d;
-  --cream: #f2ede4;
-  --text: #1a1a1a;
-  --muted: #6b6b6b;
-  --border: #e0dcd0;
+  --deep-green: #2b1a12;
+  --box-green: #1a3a30;
+  --mid-green: #4a2c1c;
+  --terra: #c9610d;
+  --terra-light: #e5822a;
+  --tan: #dbab55;
+  --cream: #3a2a22;
+  --text: #f0e9e0;
+  --muted: #a89a8c;
+  --border: rgba(255,255,255,0.14);
 }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--cream); color: var(--text); font-family: 'Public Sans', sans-serif; line-height: 1.6; }
 
 header {
-  background: var(--deep-green); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 32px;
+  background: #1e120c; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 32px;
   display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; z-index: 100;
 }
@@ -58,65 +62,72 @@ main { max-width: 1200px; margin: 0 auto; padding: 48px 32px; }
 .title-group p { font-size: 15px; color: var(--muted); margin: 0; }
 
 .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.badge { display: inline-block; background: rgba(26,58,48,0.1); color: var(--deep-green); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 4px; }
+.badge { display: inline-block; background: rgba(255,255,255,0.1); color: var(--tan); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 4px; }
 
 .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 20px 0; margin-bottom: 24px; }
 .info-grid-item-label { font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
 .info-grid-item-value { font-size: 15px; font-weight: 700; }
 
 .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; align-items: stretch; }
-.calc-box, .order-box, .contact-box { background: rgba(181,101,29,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; }
+.calc-box, .order-box, .contact-box { background: rgba(255,255,255,0.045); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; }
 .contact-box { gap: 10px; }
-.contact-btn { width: 100%; padding: 12px 16px; background: var(--deep-green); color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; transition: background 0.2s; }
-.contact-btn:hover { background: #0f2818; }
+.contact-btn { width: 100%; padding: 12px 16px; background: var(--box-green); color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; transition: background 0.2s; }
+.contact-btn:hover { background: #4a2c1c; }
 .contact-btn.kakao { background: #ffe812; color: #000; }
 .contact-btn.kakao:hover { background: #ffd700; }
-.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(181,101,29,0.15); border: 1px solid var(--border); font-size: 18px; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-.icon-btn:hover { background: rgba(181,101,29,0.3); transform: scale(1.05); }
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(201,97,13,0.14); border: 1px solid var(--border); font-size: 18px; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+.icon-btn:hover { background: rgba(201,97,13,0.28); transform: scale(1.05); }
 .icon-btn.kakao { background: #ffe812; border-color: #ffd700; }
 .icon-btn.kakao:hover { background: #ffd700; }
-.icon-btn.phone { background: rgba(26,58,48,0.1); }
-.icon-btn.phone:hover { background: rgba(26,58,48,0.2); }
-.icon-btn.telegram { background: rgba(26,58,48,0.1); }
-.icon-btn.telegram:hover { background: rgba(26,58,48,0.2); }
+.icon-btn.phone { background: rgba(43,26,18,0.09); }
+.icon-btn.phone:hover { background: rgba(43,26,18,0.18); }
+.icon-btn.telegram { background: rgba(43,26,18,0.09); }
+.icon-btn.telegram:hover { background: rgba(43,26,18,0.18); }
 .contact-link { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap; transition: all 0.2s; }
 .contact-link .icon { font-size: 16px; }
 .contact-link .label { color: var(--text); }
+.contact-link.phone .label, .contact-link.telegram .label { color: var(--text) !important; }
 .contact-link.kakao { background: #ffe812; }
 .contact-link.kakao:hover { background: #ffd700; }
-.contact-link.phone { background: rgba(26,58,48,0.1); }
-.contact-link.phone:hover { background: rgba(26,58,48,0.15); }
+.contact-link.phone { background: rgba(43,26,18,0.09); }
+.contact-link.phone:hover { background: rgba(43,26,18,0.14); }
 .contact-link.phone .label { color: var(--deep-green); }
-.contact-link.telegram { background: rgba(26,58,48,0.1); }
-.contact-link.telegram:hover { background: rgba(26,58,48,0.15); }
+.contact-link.telegram { background: rgba(43,26,18,0.09); }
+.contact-link.telegram:hover { background: rgba(43,26,18,0.14); }
 .contact-link.telegram .label { color: var(--deep-green); }
+.cart-icon { position: relative; display: inline-flex; align-items: center; color: rgba(255,255,255,0.8); }
+.cart-icon:hover { color: #fff; }
+.cart-count { position: absolute; top: -7px; right: -9px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 100px; background: var(--terra); color: #fff; font-size: 10.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
 .calc-title { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 16px; margin-bottom: 14px; }
 .order-title { font-weight: 800; font-size: 16px; margin-bottom: 14px; }
-.cart-btn { padding: 10px 16px; background: rgba(181,101,29,0.2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.cart-btn:hover { background: rgba(181,101,29,0.35); }
+.cart-btn { padding: 10px 16px; background: #2f5c4c; color: #eef5f1; border: 1px solid #3d7261; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.cart-btn:hover { background: #3d7261; border-color: #4d8a76; }
 .cart-btn.order-now { background: var(--terra); color: #fff; border-color: var(--terra); }
-.cart-btn.order-now:hover { background: #cc8542; border-color: #cc8542; }
+.cart-btn.order-now:hover { background: var(--terra-light); border-color: #cc8542; }
 .order-title { font-weight: 700; font-size: 15px; margin-bottom: 14px; }
 .calc-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
 .calc-row label { font-size: 14px; font-weight: 600; color: var(--muted); }
 .calc-loss-label { min-width: auto !important; margin-left: 8px; }
-.calc-input { flex: 0 0 90px; min-width: 0; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; box-sizing: border-box; }
+.calc-input { flex: 0 0 90px; min-width: 0; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; background: rgba(0,0,0,0.25); color: var(--text); box-sizing: border-box; }
 .calc-input-sm { flex: 0 0 65px; box-sizing: border-box; }
-.calc-result { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-top: 10px; }
+.calc-result { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-top: 10px; }
 .calc-result-row { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; }
-.calc-result-row.total { font-weight: 800; font-size: 16px; color: var(--deep-green); border-top: 1px solid var(--border); margin-top: 6px; padding-top: 10px; }
+.calc-result-row.total { font-weight: 800; font-size: 16px; color: var(--tan); border-top: 1px solid var(--border); margin-top: 6px; padding-top: 10px; }
 .qty-box { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 .qty-box label { font-size: 14px; font-weight: 600; color: var(--muted); min-width: 100px; }
 .qty-input { width: 120px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
 .qty-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
 .cta-btn { margin-top: auto; }
+.cart-icon { position: relative; display: inline-flex; align-items: center; color: rgba(255,255,255,0.8); }
+.cart-icon:hover { color: #fff; }
+.cart-count { position: absolute; top: -7px; right: -9px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 100px; background: var(--terra); color: #fff; font-size: 10.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
 .calc-title { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 15px; margin-bottom: 14px; }
 
 .cta-btn {
   width: 100%; padding: 14px 20px; background: var(--terra); color: #fff; border: none;
   border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer;
 }
-.cta-btn:hover { background: #cc8542; }
+.cta-btn:hover { background: var(--terra-light); }
 
 .install-photos { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
 .install-photo-frame { overflow: hidden; border-radius: 12px; border: 1px solid var(--border); }
@@ -128,11 +139,11 @@ main { max-width: 1200px; margin: 0 auto; padding: 48px 32px; }
 .desc-section { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); }
 .desc-title { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 20px; margin-bottom: 20px; }
 .desc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-.desc-item { padding: 16px; background: rgba(26,58,48,0.04); border-radius: 8px; }
+.desc-item { padding: 16px; background: rgba(255,255,255,0.05); border-radius: 8px; }
 .desc-item-label { font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
 .desc-item-value { font-size: 14px; line-height: 1.5; }
 
-footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0.1); padding: 32px; text-align: center; color: rgba(255,255,255,0.7); font-size: 12.5px; margin-top: 60px; }
+footer { background: #1e120c; border-top: 1px solid rgba(255,255,255,0.1); padding: 32px; text-align: center; color: rgba(255,255,255,0.7); font-size: 12.5px; margin-top: 60px; }
 
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
@@ -142,10 +153,27 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
 </helmet>
 
 <header>
-  <a href="Home.dc.html" class="logo"><span>SSOL</span> TILE</a>
+  <a href="Home.dc.html" class="logo"><span>MOK</span>TO<em style="font-family: 'Public Sans', sans-serif; font-style: normal; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; color: rgba(255,255,255,0.55); margin-left: 9px; align-self: center">TILE SUPPLY</em></a>
   <nav>
     <a href="Home.dc.html">상품 목록</a>
+    <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+      <a href="Login.dc.html">로그인</a>
+    </sc-if>
+    <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+      <a href="Admin.dc.html" style="color: var(--terra-light)">관리자</a>
+    </sc-if>
+    <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+      <a href="Product Detail.dc.html" onClick="{{ onLogout }}">로그아웃</a>
+    </sc-if>
+    <a href="#">마이페이지</a>
+    <a href="#">회사 소개</a>
     <a href="#">문의</a>
+    <a href="Cart.dc.html" class="cart-icon" title="장바구니">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+      <sc-if value="{{ hasCart }}" hint-placeholder-val="{{ false }}">
+        <span class="cart-count">{{ cartCount }}</span>
+      </sc-if>
+    </a>
   </nav>
 </header>
 
@@ -236,7 +264,7 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
           </div>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-          <button class="cart-btn" onclick="alert('장바구니에 추가되었습니다.')">🛒 장바구니</button>
+          <button class="cart-btn" onClick="{{ onAddCart }}">🛒 장바구니</button>
           <button class="cart-btn order-now" onclick="alert('바로 주문 페이지로 이동합니다.')">⚡ 바로 주문</button>
         </div>
         <button class="cta-btn" onclick="alert('견적 문의 페이지로 이동합니다.')">견적 문의하기</button>
@@ -261,14 +289,29 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
 </main>
 
 <footer>
-  SSOL Tile · B2B 전용 온라인 자재 공급
+  MOKTO 목토 · B2B 전용 온라인 자재 공급
 </footer>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { products: [], product: null, activeImg: null, calcArea: '', calcLoss: '10' };
+  state = { products: [], product: null, activeImg: null, calcArea: '', calcLoss: '10', cart: [], session: null };
 
   componentDidMount() {
+    // 관리자 표시명 마이그레이션
+    try {
+      const AEMAIL = 'admin@ssoltile.com', ANAME = '강수민';
+      let us = JSON.parse(localStorage.getItem('ssol_users') || '[]');
+      let changed = false;
+      us.forEach(u => { if (u.email === AEMAIL && u.name !== ANAME) { u.name = ANAME; changed = true; } });
+      if (changed) localStorage.setItem('ssol_users', JSON.stringify(us));
+      const ss = JSON.parse(localStorage.getItem('ssol_session') || 'null');
+      if (ss && ss.email === AEMAIL && ss.name !== ANAME) localStorage.setItem('ssol_session', JSON.stringify({ ...ss, name: ANAME }));
+    } catch (e) {}
+    let cart = [], session = null;
+    try { cart = JSON.parse(localStorage.getItem('mokto_cart') || '[]'); } catch (e) {}
+    try { session = JSON.parse(localStorage.getItem('ssol_session') || 'null'); } catch (e) {}
+    this.setState({ cart, session });
+
     const script = document.createElement('script');
     script.src = 'uploads/data.js';
     script.onload = () => {
@@ -286,7 +329,7 @@ class Component extends DCLogic {
 
         this.setState({ products: PRODUCTS, product, activeImg: product ? product.img : null });
         if (product) {
-          document.title = `${product.name} — SSOL TILE`;
+          document.title = `${product.name} — MOKTO`;
         }
       }
     };
@@ -295,8 +338,15 @@ class Component extends DCLogic {
 
   renderVals() {
     const product = this.state.product;
+      const s = this.state.session;
+      const cartCount = this.state.cart.length;
+      const navBase = {
+        loggedIn: !!s, loggedOut: !s, isAdmin: !!(s && s.role === 'admin'),
+        cartCount: String(cartCount), hasCart: cartCount > 0,
+        onLogout: () => { try { localStorage.removeItem('ssol_session'); } catch (e) {} },
+      };
     if (!product) {
-      return { product: null, displayImg: null, hasGallery: false, galleryThumbs: [], installedImg: null, hasInstalledImg: false };
+      return { ...navBase, product: null, displayImg: null, hasGallery: false, galleryThumbs: [], installedImg: null, hasInstalledImg: false };
     }
     
     // 공개 모델명(SSOT-…)을 노출, 괄호 시리즈명은 부제로 사용
@@ -323,7 +373,19 @@ class Component extends DCLogic {
     const coverage = product.coverageM2PerBox || 1;
     const boxes = areaNum > 0 ? Math.ceil(totalArea / coverage) : 0;
 
+    const onAddCart = () => {
+      const id = product.id;
+      const cart = this.state.cart.slice();
+      const found = cart.find(i => i.id === id);
+      if (found) found.qty += 1;
+      else cart.push({ id, qty: 1 });
+      try { localStorage.setItem('mokto_cart', JSON.stringify(cart)); } catch (e) {}
+      this.setState({ cart });
+    };
+
     return {
+      ...navBase,
+      onAddCart,
       product: { ...product, origin },
       productNameOnly,
       productModel,

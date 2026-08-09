@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <title>게시판 — MOKTO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+:root { --terra:#c9610d; --terra-light:#e5822a; --tan:#dbab55; --bg:#3a2a22; --text:#f0e9e0; --muted:#a89a8c; --border:rgba(255,255,255,0.14); }
+body { margin:0; background:var(--bg); color:var(--text); font-family:'Public Sans',sans-serif; line-height:1.6; }
+a { color: var(--terra-light); text-decoration: none; }
+a:hover { color: var(--tan); }
+input, textarea { padding:11px 12px; border:1px solid var(--border); border-radius:7px; font-size:14px; background:rgba(0,0,0,0.22); color:var(--text); font-family:inherit; box-sizing:border-box; width:100%; }
+input:focus, textarea:focus { outline:2px solid var(--terra); outline-offset:1px; }
+textarea { resize:vertical; min-height:110px; line-height:1.6; }
+  </style>
+</helmet>
+
+<header style="background:#1e120c;padding:20px 32px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.1)">
+  <div style="display:flex;align-items:center;min-width:0;overflow:hidden">
+    <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff;display:flex;align-items:baseline"><span style="color:var(--terra-light)">MOK</span>TO<em style="font-family:'Public Sans',sans-serif;font-style:normal;font-weight:600;font-size:11px;letter-spacing:0.14em;color:rgba(255,255,255,0.55);margin-left:9px;align-self:center">TILE SUPPLY</em></a>
+    <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.62);white-space:nowrap;margin-left:16px;min-width:0;overflow:hidden;text-overflow:ellipsis">{{ greeting }}</span>
+  </div>
+  <nav style="display:flex;gap:28px;justify-content:center">
+    <a href="Home.dc.html" style="color:rgba(255,255,255,0.7);font-size:14px;font-weight:600">전체 제품</a>
+    <a href="#" style="color:rgba(255,255,255,0.7);font-size:14px;font-weight:600">회사 소개</a>
+    <a href="Board.dc.html" style="color:#fff;font-size:14px;font-weight:700">게시판</a>
+  </nav>
+  <div style="display:flex;align-items:center;justify-content:flex-end">
+    <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+      <a href="Admin.dc.html" style="font-size:13px;font-weight:600;color:var(--terra-light);white-space:nowrap">관리자 페이지</a>
+    </sc-if>
+    <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+      <a href="Login.dc.html" style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.72);margin-left:16px">로그인</a>
+    </sc-if>
+    <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+      <a href="Board.dc.html" onClick="{{ onLogout }}" style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.72);margin-left:16px">로그아웃</a>
+    </sc-if>
+    <a href="MyPage.dc.html" title="마이페이지" style="display:inline-flex;align-items:center;color:rgba(255,255,255,0.8);margin-left:14px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+    </a>
+    <a href="Cart.dc.html" title="장바구니" style="display:inline-flex;align-items:center;color:rgba(255,255,255,0.8);margin-left:14px">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+    </a>
+  </div>
+</header>
+
+<main style="max-width:900px;margin:0 auto;padding:40px 32px 80px">
+  <h1 style="font-family:'Archivo',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.02em;margin:0 0 6px">문의 게시판</h1>
+  <p style="font-size:13.5px;color:var(--muted);margin:0 0 26px">모든 글은 비밀글로 등록되며, 작성자와 관리자만 볼 수 있습니다.</p>
+
+  <sc-if value="{{ canWrite }}" hint-placeholder-val="{{ true }}">
+    <div style="background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;padding:22px 22px;margin-bottom:26px;display:flex;flex-direction:column;gap:12px">
+      <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;color:var(--tan)">문의 작성</div>
+      <div style="display:flex;gap:10px">
+        <select value="{{ category }}" onChange="{{ onCategory }}" style="flex:0 0 190px;padding:11px 12px;border:1px solid var(--border);border-radius:7px;font-size:14px;background:rgba(0,0,0,0.22);color:var(--text);font-family:inherit">
+          <sc-for list="{{ categories }}" as="c" hint-placeholder-count="6">
+            <option value="{{ c }}" style="background:#2b1a12;color:#f0e9e0">{{ c }}</option>
+          </sc-for>
+        </select>
+        <input value="{{ title }}" onInput="{{ onTitle }}" placeholder="제목">
+      </div>
+      <textarea value="{{ body }}" onInput="{{ onBody }}" placeholder="문의 내용을 입력하세요"></textarea>
+      <div style="display:flex;align-items:center;gap:12px">
+        <button onClick="{{ onSubmit }}" style="padding:11px 24px;background:var(--terra);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">등록</button>
+        <span style="font-size:12.5px;color:var(--muted)">🔒 비밀글로 등록됩니다</span>
+        <span style="font-size:12.5px;color:var(--tan);font-weight:600">{{ msg }}</span>
+        <label style="margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);font-weight:600;cursor:pointer">
+          <input type="checkbox" checked="{{ notifyKakao }}" onChange="{{ onKakao }}" style="width:15px;height:15px;accent-color:var(--terra);padding:0;margin:0">
+          카톡으로 답변받기
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);font-weight:600;cursor:pointer">
+          <input type="checkbox" checked="{{ notifyTelegram }}" onChange="{{ onTelegram }}" style="width:15px;height:15px;accent-color:var(--terra);padding:0;margin:0">
+          텔레그램으로 답변받기
+        </label>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ needLogin }}" hint-placeholder-val="{{ false }}">
+    <div style="background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:26px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <span style="font-size:14px;color:var(--muted)">문의를 작성하려면 로그인이 필요합니다.</span>
+      <a href="Login.dc.html" style="padding:10px 22px;background:var(--terra);color:#fff;border-radius:8px;font-size:13.5px;font-weight:700">로그인</a>
+    </div>
+  </sc-if>
+
+  <div style="background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+    <div style="display:grid;grid-template-columns:56px 1fr 150px 110px 90px;gap:14px;padding:13px 20px;border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--muted)">
+      <span style="text-align:center">번호</span>
+      <span>제목</span>
+      <span>작성자</span>
+      <span style="text-align:center">작성일</span>
+      <span style="text-align:center">상태</span>
+    </div>
+
+    <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+      <div style="border-bottom:1px solid rgba(255,255,255,0.07)">
+        <div onClick="{{ p.onToggle }}" style="display:grid;grid-template-columns:56px 1fr 150px 110px 90px;gap:14px;align-items:center;padding:14px 20px;cursor:pointer">
+          <span style="text-align:center;font-size:13px;color:var(--muted)">{{ p.no }}</span>
+          <span style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.titleLabel }}</span>
+          <span style="font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.author }}</span>
+          <span style="font-size:12.5px;color:var(--muted);text-align:center">{{ p.date }}</span>
+          <span style="text-align:center;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:100px;background: {{ p.statusBg }}; color: {{ p.statusColor }}">{{ p.status }}</span>
+        </div>
+
+        <sc-if value="{{ p.open }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:4px 20px 20px">
+            <div style="background:rgba(0,0,0,0.22);border-radius:10px;padding:18px 20px;font-size:14px;white-space:pre-wrap">{{ p.body }}</div>
+
+            <sc-if value="{{ p.hasReply }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:12px;background:rgba(201,97,13,0.12);border-left:3px solid var(--terra);border-radius:0 10px 10px 0;padding:16px 20px">
+                <div style="font-size:12px;font-weight:800;color:var(--terra-light);margin-bottom:6px">관리자 답변</div>
+                <div style="font-size:14px;white-space:pre-wrap">{{ p.reply }}</div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ p.canReply }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+                <textarea value="{{ p.draft }}" onInput="{{ p.onDraft }}" placeholder="답변을 입력하세요" style="min-height:80px"></textarea>
+                <div>
+                  <button onClick="{{ p.onReply }}" style="padding:9px 20px;background:var(--terra);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer">답변 등록</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ p.locked }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:0 20px 16px;font-size:12.5px;color:var(--muted)">🔒 비밀글입니다. 작성자와 관리자만 볼 수 있습니다.</div>
+        </sc-if>
+      </div>
+    </sc-for>
+
+    <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:56px 20px;text-align:center;font-size:14px;color:var(--muted)">등록된 문의가 없습니다.</div>
+    </sc-if>
+  </div>
+</main>
+
+<footer style="background:#1e120c;border-top:1px solid rgba(255,255,255,0.1);padding:32px;text-align:center;color:rgba(255,255,255,0.7);font-size:12.5px">
+  MOKTO 목토 · B2B 전용 온라인 자재 공급
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const POSTS_KEY = 'mokto_board_v2';
+const CATEGORIES = ['견적 문의', '재고 문의', '주문 취소', '배송일 변경', '반품 · 교환', '세금계산서', '시공 상담', 'A/S 요청', '기타'];
+
+class Component extends DCLogic {
+  state = { session: null, posts: [], title: '', body: '', msg: '', openId: null, drafts: {}, category: '견적 문의', notifyKakao: false, notifyTelegram: false };
+
+  componentDidMount() {
+    try {
+      const AEMAIL = 'admin@ssoltile.com', ANAME = '강수민';
+      let us = JSON.parse(localStorage.getItem('ssol_users') || '[]');
+      let changed = false;
+      us.forEach(u => { if (u.email === AEMAIL && u.name !== ANAME) { u.name = ANAME; changed = true; } });
+      if (changed) localStorage.setItem('ssol_users', JSON.stringify(us));
+      const ss = JSON.parse(localStorage.getItem('ssol_session') || 'null');
+      if (ss && ss.email === AEMAIL && ss.name !== ANAME) localStorage.setItem('ssol_session', JSON.stringify({ ...ss, name: ANAME }));
+    } catch (e) {}
+    // 세션에 상호 보강
+    try {
+      const ss2 = JSON.parse(localStorage.getItem('ssol_session') || 'null');
+      if (ss2 && !ss2.company) {
+        let us2 = JSON.parse(localStorage.getItem('ssol_users') || '[]');
+        const rec = us2.find(x => x.email === ss2.email);
+        let prof = {};
+        try { prof = JSON.parse(localStorage.getItem('mokto_profile') || '{}'); } catch (e) {}
+        const co = (rec && rec.company) || prof.company || '';
+        if (co) localStorage.setItem('ssol_session', JSON.stringify({ ...ss2, company: co }));
+      }
+    } catch (e) {}
+
+    let session = null, posts = [];
+    try { session = JSON.parse(localStorage.getItem('ssol_session') || 'null'); } catch (e) {}
+    try { posts = JSON.parse(localStorage.getItem(POSTS_KEY) || 'null'); } catch (e) {}
+    if (!posts) {
+      posts = [
+        { id: 'p3', title: '[재고 문의] 600×600 무광 재고 문의', body: '다크그레이 600각 무광 40박스 재고 있을까요? 다음 주 화요일 현장 납품 예정입니다.', author: '대성인테리어', email: 'daesung@example.com', date: '2026.08.06', reply: '' },
+        { id: 'p2', title: '[기타] 배송비 정책 문의', body: '경기 남부 지역 15박스 이하 주문 시 배송비가 어떻게 되나요?', author: '한빛종합건설', email: 'hanbit@example.com', date: '2026.07.29', reply: '20박스 미만은 착불로 진행되며, 20박스 이상 주문 시 무료 배송입니다.' },
+        { id: 'p1', title: '[세금계산서] 세금계산서 발행 요청', body: '지난달 주문 건 세금계산서 발행 부탁드립니다.', author: '우성타일', email: 'woosung@example.com', date: '2026.07.11', reply: '요청하신 건 발행 완료되어 등록된 메일로 전송했습니다.' },
+      ];
+      try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch (e) {}
+    }
+    this.setState({ session, posts });
+  }
+
+  save(posts) {
+    try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch (e) {}
+    this.setState({ posts });
+  }
+
+  renderVals() {
+    const s = this.state.session;
+    const isAdmin = !!(s && s.role === 'admin');
+
+    const posts = this.state.posts.map((p, idx) => {
+      const mine = !!(s && s.email === p.email);
+      const visible = isAdmin || mine;
+      const open = visible && this.state.openId === p.id;
+      const answered = !!p.reply;
+      return {
+        id: p.id,
+        no: String(this.state.posts.length - idx),
+        titleLabel: visible ? p.title : '🔒 비밀글입니다',
+        author: p.author,
+        date: p.date,
+        status: answered ? '답변 완료' : '답변 대기',
+        statusBg: answered ? 'rgba(219,171,85,0.18)' : 'rgba(255,255,255,0.1)',
+        statusColor: answered ? '#dbab55' : '#a89a8c',
+        open,
+        locked: !visible,
+        body: p.body,
+        reply: p.reply,
+        hasReply: answered,
+        canReply: open && isAdmin,
+        draft: this.state.drafts[p.id] ?? p.reply,
+        onToggle: () => visible && this.setState({ openId: open ? null : p.id }),
+        onDraft: (e) => this.setState({ drafts: { ...this.state.drafts, [p.id]: e.target.value } }),
+        onReply: () => this.save(this.state.posts.map(x => x.id === p.id ? { ...x, reply: this.state.drafts[p.id] ?? x.reply } : x)),
+      };
+    });
+
+    return {
+      loggedIn: !!s, loggedOut: !s, isAdmin,
+      canWrite: !!s, needLogin: !s,
+      greeting: s ? (isAdmin ? `안녕하세요 ${s.name} 님 (관리자)` : `안녕하세요 ${s.company || s.name} 님`) : '',
+      onLogout: () => { try { localStorage.removeItem('ssol_session'); } catch (e) {} },
+      posts,
+      isEmpty: posts.length === 0,
+      title: this.state.title,
+      body: this.state.body,
+      msg: this.state.msg,
+      categories: CATEGORIES,
+      category: this.state.category,
+      notifyKakao: this.state.notifyKakao,
+      notifyTelegram: this.state.notifyTelegram,
+      onCategory: (e) => this.setState({ category: e.target.value }),
+      onKakao: (e) => this.setState({ notifyKakao: e.target.checked }),
+      onTelegram: (e) => this.setState({ notifyTelegram: e.target.checked }),
+      onTitle: (e) => this.setState({ title: e.target.value, msg: '' }),
+      onBody: (e) => this.setState({ body: e.target.value, msg: '' }),
+      onSubmit: () => {
+        if (!this.state.title.trim() || !this.state.body.trim()) { this.setState({ msg: '제목과 내용을 모두 입력해 주세요.' }); return; }
+        const d = new Date();
+        const date = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+        const post = {
+          id: 'p' + Date.now(),
+          title: `[${this.state.category}] ${this.state.title.trim()}`,
+          body: this.state.body.trim(),
+          author: s.company || s.name, email: s.email, date, reply: '',
+          notify: [this.state.notifyKakao && '카카오톡', this.state.notifyTelegram && '텔레그램'].filter(Boolean).join(' · '),
+        };
+        this.save([post, ...this.state.posts]);
+        this.setState({ title: '', body: '', msg: '등록되었습니다.', notifyKakao: false, notifyTelegram: false });
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

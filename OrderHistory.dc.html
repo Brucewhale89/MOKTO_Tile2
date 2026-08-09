@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <title>주문 내역 — MOKTO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+:root { --terra:#c9610d; --terra-light:#e5822a; --tan:#dbab55; --bg:#3a2a22; --text:#f0e9e0; --muted:#a89a8c; --border:rgba(255,255,255,0.14); }
+body { margin:0; background:var(--bg); color:var(--text); font-family:'Public Sans',sans-serif; line-height:1.6; }
+a { color: var(--terra-light); text-decoration: none; }
+a:hover { color: var(--tan); }
+  </style>
+</helmet>
+
+<header style="background:#1e120c;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.1)">
+  <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff;display:flex;align-items:baseline"><span style="color:var(--terra-light)">MOK</span>TO<em style="font-family:'Public Sans',sans-serif;font-style:normal;font-weight:600;font-size:11px;letter-spacing:0.14em;color:rgba(255,255,255,0.55);margin-left:9px;align-self:center">TILE SUPPLY</em></a>
+  <nav style="display:flex;align-items:center;gap:22px">
+    <a href="Home.dc.html" style="color:rgba(255,255,255,0.78);font-size:13px;font-weight:600">상품 목록</a>
+    <a href="MyPage.dc.html" style="color:rgba(255,255,255,0.78);font-size:13px;font-weight:600">마이페이지</a>
+    <a href="Cart.dc.html" style="color:rgba(255,255,255,0.8);display:inline-flex;align-items:center">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+    </a>
+  </nav>
+</header>
+
+<main style="max-width:1000px;margin:0 auto;padding:36px 32px 80px">
+  <a href="MyPage.dc.html" style="font-size:13px;font-weight:600;color:var(--muted)">← 마이페이지</a>
+  <h1 style="font-family:'Archivo',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.02em;margin:16px 0 26px">주문 내역</h1>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <sc-for list="{{ orders }}" as="o" hint-placeholder-count="3">
+      <div style="background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border)">
+          <div style="display:flex;align-items:baseline;gap:14px">
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px">{{ o.date }}</span>
+            <span style="font-size:12.5px;color:var(--muted);font-weight:600">주문번호 {{ o.no }}</span>
+          </div>
+          <span style="font-size:12px;font-weight:800;padding:5px 12px;border-radius:100px;background: {{ o.statusBg }}; color: {{ o.statusColor }}">{{ o.status }}</span>
+        </div>
+        <div style="padding:6px 20px">
+          <sc-for list="{{ o.items }}" as="it" hint-placeholder-count="2">
+            <div style="display:grid;grid-template-columns:62px 1fr 130px 130px;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
+              <a href="{{ it.link }}" style="display:block;width:62px;height:62px;border-radius:8px;overflow:hidden;background:rgba(0,0,0,0.25)">
+                <img src="{{ it.img }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
+              </a>
+              <div style="min-width:0">
+                <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.publicName }}</div>
+                <div style="font-size:12px;color:var(--muted)">{{ it.spec }}</div>
+              </div>
+              <div style="font-size:13px;color:var(--muted);text-align:center">{{ it.qty }}박스</div>
+              <div style="font-size:14px;font-weight:700;text-align:right">{{ it.amount }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(0,0,0,0.2)">
+          <span style="font-size:12.5px;color:var(--muted);font-weight:600">{{ o.summary }}</span>
+          <div style="display:flex;align-items:baseline;gap:12px">
+            <span style="font-size:13px;color:var(--muted);font-weight:600">합계</span>
+            <span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:20px;color:var(--tan)">{{ o.total }}</span>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</main>
+
+<footer style="background:#1e120c;border-top:1px solid rgba(255,255,255,0.1);padding:32px;text-align:center;color:rgba(255,255,255,0.7);font-size:12.5px">
+  MOKTO 목토 · B2B 전용 온라인 자재 공급
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+// 주문 샘플 — 상품은 실제 데이터에서 인덱스로 선택
+const SAMPLE = [
+  { no: '20260805-0142', date: '2026.08.05', status: '배송 완료',
+    items: [{ i: 0, qty: 24 }, { i: 4, qty: 10 }] },
+  { no: '20260722-0098', date: '2026.07.22', status: '출고 준비',
+    items: [{ i: 12, qty: 16 }] },
+  { no: '20260610-0031', date: '2026.06.10', status: '배송 완료',
+    items: [{ i: 7, qty: 40 }, { i: 19, qty: 12 }, { i: 25, qty: 8 }] },
+];
+
+const STATUS = {
+  '배송 완료': { bg: 'rgba(219,171,85,0.18)', color: '#dbab55' },
+  '출고 준비': { bg: 'rgba(201,97,13,0.22)', color: '#e5822a' },
+};
+
+class Component extends DCLogic {
+  state = { products: [] };
+
+  componentDidMount() {
+    const script = document.createElement('script');
+    script.src = 'uploads/data.js';
+    script.onload = () => {
+      if (typeof PRODUCTS !== 'undefined') {
+        let custom = [], meta = {};
+        try { custom = JSON.parse(localStorage.getItem('ssol_admin_custom') || '[]'); } catch (e) {}
+        try { meta = JSON.parse(localStorage.getItem('ssol_admin_meta') || '{}'); } catch (e) {}
+        this.setState({ products: [...custom, ...PRODUCTS].map(p => ({ ...p, ...(meta[p.id] || {}) })) });
+      }
+    };
+    document.head.appendChild(script);
+  }
+
+  renderVals() {
+    const won = n => n.toLocaleString('ko-KR') + '원';
+    const list = this.state.products;
+    if (!list.length) return { orders: [] };
+
+    const orders = SAMPLE.map(o => {
+      const items = o.items.map(it => {
+        const p = list[it.i % list.length];
+        const price = p.price || 0;
+        return {
+          publicName: p.publicName || '—',
+          spec: [p.size, p.material, p.finish].filter(Boolean).join(' · '),
+          img: p.img,
+          link: 'Product Detail.dc.html?id=' + encodeURIComponent(p.id),
+          qty: String(it.qty),
+          amount: won(price * it.qty),
+          _sum: price * it.qty,
+        };
+      });
+      const total = items.reduce((n, i) => n + i._sum, 0);
+      const boxes = o.items.reduce((n, i) => n + i.qty, 0);
+      const st = STATUS[o.status] || STATUS['배송 완료'];
+      return {
+        ...o, items,
+        total: won(total),
+        summary: `${items.length}개 품목 · 총 ${boxes}박스`,
+        statusBg: st.bg, statusColor: st.color,
+      };
+    });
+
+    return { orders };
+  }
+}
+</script>
+</body>
+</html>
