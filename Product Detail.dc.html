@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ product.name }} — SSOL TILE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+:root {
+  --deep-green: #1a3a30;
+  --terra: #b5651d;
+  --cream: #f2ede4;
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --border: #e0dcd0;
+}
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--cream); color: var(--text); font-family: 'Public Sans', sans-serif; line-height: 1.6; }
+
+header {
+  background: var(--deep-green); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 24px; letter-spacing: -0.02em; color: #fff; text-decoration: none; }
+.logo span { color: #cc8542; }
+nav { display: flex; gap: 28px; }
+nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 600; }
+nav a:hover { color: #cc8542; }
+
+main { max-width: 1200px; margin: 0 auto; padding: 48px 32px; }
+
+.back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; margin-bottom: 32px; }
+.back-btn:hover { color: var(--text); }
+
+.layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: stretch; }
+
+.img-section { display: flex; flex-direction: column; gap: 14px; }
+.product-img-wrap { width: 100%; max-height: 580px; display: flex; justify-content: center; }
+.product-img { max-width: 100%; max-height: 580px; object-fit: cover; border-radius: 16px; border: 1px solid var(--border); }
+.img-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 10px; }
+.img-thumb { width: 100%; aspect-ratio: 1/1; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; object-fit: cover; opacity: 0.6; transition: opacity 0.15s, border-color 0.15s; }
+.img-thumb:hover, .img-thumb.active { opacity: 1; border-color: var(--terra); }
+
+.info-section { display: flex; flex-direction: column; gap: 28px; height: 100%; }
+
+.title-group h1 { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 32px; margin: 0 0 8px; letter-spacing: -0.02em; line-height: 1.2; }
+.title-group .model-name { display: block; font-size: 16px; font-weight: 600; color: var(--muted); margin-top: 12px; }
+.title-group p { font-size: 15px; color: var(--muted); margin: 0; }
+
+.badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.badge { display: inline-block; background: rgba(26,58,48,0.1); color: var(--deep-green); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 4px; }
+
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 20px 0; margin-bottom: 24px; }
+.info-grid-item-label { font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+.info-grid-item-value { font-size: 15px; font-weight: 700; }
+
+.bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; align-items: stretch; }
+.calc-box, .order-box, .contact-box { background: rgba(181,101,29,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; }
+.contact-box { gap: 10px; }
+.contact-btn { width: 100%; padding: 12px 16px; background: var(--deep-green); color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; transition: background 0.2s; }
+.contact-btn:hover { background: #0f2818; }
+.contact-btn.kakao { background: #ffe812; color: #000; }
+.contact-btn.kakao:hover { background: #ffd700; }
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(181,101,29,0.15); border: 1px solid var(--border); font-size: 18px; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+.icon-btn:hover { background: rgba(181,101,29,0.3); transform: scale(1.05); }
+.icon-btn.kakao { background: #ffe812; border-color: #ffd700; }
+.icon-btn.kakao:hover { background: #ffd700; }
+.icon-btn.phone { background: rgba(26,58,48,0.1); }
+.icon-btn.phone:hover { background: rgba(26,58,48,0.2); }
+.icon-btn.telegram { background: rgba(26,58,48,0.1); }
+.icon-btn.telegram:hover { background: rgba(26,58,48,0.2); }
+.contact-link { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap; transition: all 0.2s; }
+.contact-link .icon { font-size: 16px; }
+.contact-link .label { color: var(--text); }
+.contact-link.kakao { background: #ffe812; }
+.contact-link.kakao:hover { background: #ffd700; }
+.contact-link.phone { background: rgba(26,58,48,0.1); }
+.contact-link.phone:hover { background: rgba(26,58,48,0.15); }
+.contact-link.phone .label { color: var(--deep-green); }
+.contact-link.telegram { background: rgba(26,58,48,0.1); }
+.contact-link.telegram:hover { background: rgba(26,58,48,0.15); }
+.contact-link.telegram .label { color: var(--deep-green); }
+.calc-title { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 16px; margin-bottom: 14px; }
+.order-title { font-weight: 800; font-size: 16px; margin-bottom: 14px; }
+.cart-btn { padding: 10px 16px; background: rgba(181,101,29,0.2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.cart-btn:hover { background: rgba(181,101,29,0.35); }
+.cart-btn.order-now { background: var(--terra); color: #fff; border-color: var(--terra); }
+.cart-btn.order-now:hover { background: #cc8542; border-color: #cc8542; }
+.order-title { font-weight: 700; font-size: 15px; margin-bottom: 14px; }
+.calc-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.calc-row label { font-size: 14px; font-weight: 600; color: var(--muted); }
+.calc-loss-label { min-width: auto !important; margin-left: 8px; }
+.calc-input { flex: 0 0 90px; min-width: 0; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; box-sizing: border-box; }
+.calc-input-sm { flex: 0 0 65px; box-sizing: border-box; }
+.calc-result { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-top: 10px; }
+.calc-result-row { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; }
+.calc-result-row.total { font-weight: 800; font-size: 16px; color: var(--deep-green); border-top: 1px solid var(--border); margin-top: 6px; padding-top: 10px; }
+.qty-box { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.qty-box label { font-size: 14px; font-weight: 600; color: var(--muted); min-width: 100px; }
+.qty-input { width: 120px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
+.qty-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.cta-btn { margin-top: auto; }
+.calc-title { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 15px; margin-bottom: 14px; }
+
+.cta-btn {
+  width: 100%; padding: 14px 20px; background: var(--terra); color: #fff; border: none;
+  border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer;
+}
+.cta-btn:hover { background: #cc8542; }
+
+.install-photos { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
+.install-photo-frame { overflow: hidden; border-radius: 12px; border: 1px solid var(--border); }
+.install-photo { width: 100%; display: block; transform: scale(1.035); }
+.install-full { max-width: 1200px; margin: 40px auto 0; padding: 0 32px; }
+.install-full .install-photos { margin-top: 0; gap: 16px; }
+.install-full .install-photo-frame { border-radius: 12px; border: 1px solid var(--border); }
+
+.desc-section { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); }
+.desc-title { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 20px; margin-bottom: 20px; }
+.desc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.desc-item { padding: 16px; background: rgba(26,58,48,0.04); border-radius: 8px; }
+.desc-item-label { font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+.desc-item-value { font-size: 14px; line-height: 1.5; }
+
+footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0.1); padding: 32px; text-align: center; color: rgba(255,255,255,0.7); font-size: 12.5px; margin-top: 60px; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .desc-grid { grid-template-columns: 1fr; }
+}
+  </style>
+</helmet>
+
+<header>
+  <a href="Home.dc.html" class="logo"><span>SSOL</span> TILE</a>
+  <nav>
+    <a href="Home.dc.html">상품 목록</a>
+    <a href="#">문의</a>
+  </nav>
+</header>
+
+<main>
+  <a href="Home.dc.html" class="back-btn">← 상품 목록으로</a>
+
+  <sc-if value="{{ product }}" hint-placeholder-val="{{ false }}">
+    <div class="layout">
+      <div class="img-section">
+        <sc-if value="{{ product }}" hint-placeholder-val="{{ false }}">
+          <div class="product-img-wrap">
+            <img class="product-img" src="{{ displayImg }}" alt="{{ product.name }}" style="aspect-ratio: {{ imgRatio }}">
+          </div>
+        </sc-if>
+        <sc-if value="{{ hasGallery }}" hint-placeholder-val="{{ false }}">
+          <div class="img-thumbs">
+            <sc-for list="{{ galleryThumbs }}" as="t" hint-placeholder-count="4">
+              <img class="img-thumb {{ t.activeClass }}" src="{{ t.src }}" alt="" onMouseEnter="{{ t.onHover }}" onClick="{{ t.onHover }}">
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <div class="info-section">
+        <div class="title-group">
+          <h1>{{ productNameOnly }}</h1>
+        </div>
+
+        <div class="info-grid">
+          <div>
+            <div class="info-grid-item-label">규격</div>
+            <div class="info-grid-item-value">{{ product.size }}</div>
+          </div>
+          <div>
+            <div class="info-grid-item-label">재질</div>
+            <div class="info-grid-item-value">{{ product.material }}</div>
+          </div>
+          <div>
+            <div class="info-grid-item-label">색상</div>
+            <div class="info-grid-item-value">{{ product.color }}</div>
+          </div>
+          <div>
+            <div class="info-grid-item-label">포장 단위</div>
+            <div class="info-grid-item-value">{{ product.pcsPerBox }}장 / 박스 = {{ product.coverageM2PerBox }}㎡</div>
+          </div>
+          <div>
+            <div class="info-grid-item-label">마감</div>
+            <div class="info-grid-item-value">{{ product.finish }}</div>
+          </div>
+          <div>
+            <div class="info-grid-item-label">원산지</div>
+            <div class="info-grid-item-value">{{ product.origin }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-grid">
+      <div class="calc-box">
+        <div class="calc-title">타일 계산기</div>
+        <div class="calc-row">
+          <label for="calcArea">시공 면적 (㎡)</label>
+          <input type="number" id="calcArea" class="calc-input" placeholder="직접입력" value="{{ calcArea }}" onChange="{{ onCalcAreaChange }}" min="0" step="0.1">
+          <label for="calcLoss" class="calc-loss-label">로스분 (%)</label>
+          <input type="number" id="calcLoss" class="calc-input calc-input-sm" placeholder="직접입력" value="{{ calcLoss }}" onChange="{{ onCalcLossChange }}" min="0" step="1">
+        </div>
+        <div class="calc-result">
+          <div class="calc-result-row"><span>로스 포함 면적</span><span>{{ calcTotalAreaLabel }}㎡</span></div>
+          <div class="calc-result-row total"><span>필요 수량</span><span>{{ calcBoxesLabel }}박스</span></div>
+        </div>
+      </div>
+
+      <div class="order-box">
+        <div class="order-title">주문 정보</div>
+        <div style="margin-bottom: 10px; display: flex; gap: 20px;">
+          <div style="flex: 1;">
+            <div style="font-size: 13px; margin-bottom: 8px;">
+              <strong>{{ productNameOnly }}</strong>
+              <div style="color: var(--muted); font-weight: 500; font-size: 12px; margin-top: 4px;">{{ product.size }} · {{ product.finish }} · {{ product.color }}</div>
+            </div>
+          </div>
+          <div style="min-width: 160px;">
+            <div class="qty-hint" style="margin-bottom: 4px;">최소 주문: 5박스</div>
+            <div class="qty-box" style="margin-bottom: 0; margin-top: 2px;">
+              <label for="qty">주문 수량 (박스)</label>
+              <input type="number" id="qty" class="qty-input" value="5" min="5" step="1">
+            </div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+          <button class="cart-btn" onclick="alert('장바구니에 추가되었습니다.')">🛒 장바구니</button>
+          <button class="cart-btn order-now" onclick="alert('바로 주문 페이지로 이동합니다.')">⚡ 바로 주문</button>
+        </div>
+        <button class="cta-btn" onclick="alert('견적 문의 페이지로 이동합니다.')">견적 문의하기</button>
+      </div>
+    </div>
+
+    <div class="install-full">
+      <sc-if value="{{ hasInstalledImg }}" hint-placeholder-val="{{ false }}">
+        <div class="install-photos">
+          <div class="install-photo-frame"><img class="install-photo" src="{{ installedImg }}" alt="{{ product.name }} 시공사진"></div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ !product }}" hint-placeholder-val="{{ false }}">
+    <div style="padding: 80px 40px; text-align: center; color: var(--muted);">
+      <p style="font-size: 16px; margin: 0;">상품을 찾을 수 없습니다.</p>
+      <a href="Home.dc.html" style="color: var(--terra); text-decoration: none; font-weight: 600;">상품 목록으로 돌아가기</a>
+    </div>
+  </sc-if>
+</main>
+
+<footer>
+  SSOL Tile · B2B 전용 온라인 자재 공급
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { products: [], product: null, activeImg: null, calcArea: '', calcLoss: '10' };
+
+  componentDidMount() {
+    const script = document.createElement('script');
+    script.src = 'uploads/data.js';
+    script.onload = () => {
+      if (typeof PRODUCTS !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('id');
+        let custom = [], meta = {};
+        try { custom = JSON.parse(localStorage.getItem('ssol_admin_custom') || '[]'); } catch (e) {}
+        try { meta = JSON.parse(localStorage.getItem('ssol_admin_meta') || '{}'); } catch (e) {}
+        let product = [...custom, ...PRODUCTS].find(p => p.id === productId);
+        if (product) {
+          const m = meta[product.id] || {};
+          product = { ...product, ...m };
+        }
+
+        this.setState({ products: PRODUCTS, product, activeImg: product ? product.img : null });
+        if (product) {
+          document.title = `${product.name} — SSOL TILE`;
+        }
+      }
+    };
+    document.head.appendChild(script);
+  }
+
+  renderVals() {
+    const product = this.state.product;
+    if (!product) {
+      return { product: null, displayImg: null, hasGallery: false, galleryThumbs: [], installedImg: null, hasInstalledImg: false };
+    }
+    
+    // 공개 모델명(SSOT-…)을 노출, 괄호 시리즈명은 부제로 사용
+    const productNameOnly = product.publicName || product.name;
+    const parenMatch = product.name.match(/\(([^)]+)\)/);
+    const productModel = parenMatch ? parenMatch[1].trim() : '';
+    const dims = (product.size.match(/(\d+)\s*X\s*(\d+)/i) || [null, 1, 1]);
+    const imgRatio = `${dims[1]} / ${dims[2]}`;
+    
+    // 원산지 "미기재" → "중국산"으로 변경
+    const origin = (product.origin === '미기재' || !product.origin) ? '중국산' : product.origin;
+    
+    const gallery = product.gallery || [product.img];
+    const displayImg = this.state.activeImg || product.img;
+    const galleryThumbs = gallery.map(src => ({
+      src,
+      activeClass: src === displayImg ? 'active' : '',
+      onHover: () => this.setState({ activeImg: src }),
+    }));
+
+    const areaNum = parseFloat(this.state.calcArea) || 0;
+    const lossNum = parseFloat(this.state.calcLoss) || 0;
+    const totalArea = areaNum * (1 + lossNum / 100);
+    const coverage = product.coverageM2PerBox || 1;
+    const boxes = areaNum > 0 ? Math.ceil(totalArea / coverage) : 0;
+
+    return {
+      product: { ...product, origin },
+      productNameOnly,
+      productModel,
+      imgRatio,
+      displayImg,
+      hasGallery: gallery.length > 1,
+      galleryThumbs,
+      installedImg: product.siteInstalledImg || null,
+      hasInstalledImg: !!product.siteInstalledImg,
+      calcArea: this.state.calcArea,
+      calcLoss: this.state.calcLoss,
+      calcTotalAreaLabel: totalArea > 0 ? totalArea.toFixed(2) : '0',
+      calcBoxesLabel: String(boxes),
+      onCalcAreaChange: (e) => this.setState({ calcArea: e.target.value }),
+      onCalcLossChange: (e) => this.setState({ calcLoss: e.target.value }),
+    };
+  }
+}
+</script>
+</body>
+</html>

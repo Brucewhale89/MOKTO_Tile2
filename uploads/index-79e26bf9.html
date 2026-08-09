@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSOL Tile — 600×600 포세린 타일</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="data.js"></script>
+<style>
+  :root{
+    --primary:#00B8FF;
+    --dark:#212121;
+    --bg:#FFFFFF;
+    --text:#212121;
+    --card-bg:#FFFFFF;
+    --border:#E2E2E2;
+    --muted:#6B6B6B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Public Sans',sans-serif;
+    line-height:1.5;
+  }
+  header{
+    background:var(--card-bg);
+    border-bottom:1px solid var(--border);
+    padding:20px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .logo{
+    font-family:'Archivo',sans-serif;
+    font-weight:900;
+    font-size:22px;
+    letter-spacing:-0.02em;
+    color:var(--text);
+  }
+  .logo span{color:var(--primary);}
+  nav a{
+    color:var(--muted);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    margin-left:28px;
+  }
+  nav a.active{color:var(--primary);}
+
+  .hero{
+    position:relative;
+    background:#000;
+    color:#fff;
+    height:420px;
+    overflow:hidden;
+  }
+  .hero-slide{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:saturate(0.55) brightness(0.6) contrast(1.05);
+    opacity:0;
+    /* heroFade는 슬라이드 개수(N)에 따라 구간(%) 폭이 달라져 JS가 <style>로 주입함 */
+    animation-name:heroFade, heroDrift;
+    animation-iteration-count:infinite, infinite;
+    animation-timing-function:ease-in-out, ease-in-out;
+  }
+  @keyframes heroDrift{
+    0%{transform:scale(1.08) translate(-2%,-1%);}
+    50%{transform:scale(1.08) translate(2%,1%);}
+    100%{transform:scale(1.08) translate(-2%,-1%);}
+  }
+  .hero-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(10,10,10,0.5);
+  }
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    max-width:1200px;
+    margin:0 auto;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:0 32px;
+  }
+  .hero-logo{
+    font-family:'Archivo',sans-serif;
+    font-weight:900;
+    font-size:clamp(40px,6vw,64px);
+    letter-spacing:0.06em;
+  }
+  .hero-logo span{color:var(--primary);}
+  .hero-eyebrow{
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    opacity:0.85;
+    margin-bottom:14px;
+  }
+  .hero p{
+    margin-top:14px;
+    font-size:15px;
+    opacity:0.85;
+    max-width:520px;
+  }
+  .hero-meta{
+    margin-top:22px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .hero-meta div{
+    font-size:13px;
+    font-weight:600;
+    background:rgba(255,255,255,0.14);
+    padding:8px 14px;
+    border-radius:6px;
+  }
+
+  main{max-width:1200px;margin:0 auto;padding:40px 32px 80px;}
+
+  .toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .toolbar h2{
+    font-family:'Archivo',sans-serif;
+    font-weight:800;
+    font-size:20px;
+  }
+  .toolbar .count{color:var(--muted);font-size:14px;}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:20px;
+  }
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    transition:box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .card:hover{
+    box-shadow:0 8px 24px rgba(20,22,31,0.10);
+    transform:translateY(-2px);
+  }
+  .card-img{
+    aspect-ratio:1/1;
+    width:100%;
+    display:block;
+    object-fit:cover;
+    background:var(--bg);
+  }
+  .card-body{padding:14px 16px 16px;}
+  .card-name{
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:-0.01em;
+  }
+  .card-spec{
+    color:var(--muted);
+    font-size:12.5px;
+    margin-top:4px;
+  }
+  .card-footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:12px;
+  }
+  .card-price{
+    font-size:13px;
+    color:var(--muted);
+    font-weight:600;
+  }
+  .card-btn{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--primary);
+    text-decoration:none;
+  }
+  .card-link{
+    color:inherit;
+    text-decoration:none;
+    display:block;
+  }
+
+  footer{
+    border-top:1px solid var(--border);
+    padding:28px 32px;
+    text-align:center;
+    color:var(--muted);
+    font-size:12.5px;
+  }
+
+  .badge-b2b{
+    display:inline-block;
+    background:var(--text);
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:4px;
+    margin-bottom:8px;
+    letter-spacing:0.02em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span>SSOL</span> TILE</div>
+  <nav>
+    <a href="#" class="active">600×600 포세린</a>
+    <a href="#">전체 제품</a>
+    <a href="#">회사 소개</a>
+    <a href="#">문의</a>
+  </nav>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">B2B 전용 · 최소 5박스부터</div>
+    <div class="hero-logo"><span>SSOL</span> TILE</div>
+    <p>견적 없이 바로 온라인으로 주문하세요. 배송비는 착불이며, 계좌이체로 결제 후 관리자 확인을 거쳐 출고됩니다.</p>
+    <div class="hero-meta">
+      <div>최소 주문 5박스</div>
+      <div>계좌이체 결제</div>
+      <div>배송비 착불</div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="toolbar">
+    <h2>600 X 600 포세린 타일</h2>
+    <span class="count" id="product-count"></span>
+  </div>
+
+  <div class="grid" id="product-grid"></div>
+</main>
+
+<footer>
+  SSOL Tile · B2B 전용 온라인 자재 공급 · 이 카탈로그는 임시 데모 화면입니다.
+</footer>
+
+<script>
+  // ponytail: 히어로 배경 캐러셀 — 설치 사진 있는 상품 중 N장을 뽑아 디졸브+드리프트로 순환.
+  // 슬롯 폭(%)이 장수(N)에 따라 달라져 @keyframes를 고정 CSS로 못 쓰고 여기서 문자열로 만듦.
+  (function initHero(){
+    const pool = PRODUCTS.filter(p => p.installedImg);
+    const shuffled = pool.slice().sort(() => Math.random() - 0.5);
+    const slides = shuffled.slice(0, Math.min(6, shuffled.length));
+    if (slides.length < 2) return; // 디졸브할 게 없으면 그대로 정적 배경
+
+    const hero = document.getElementById('hero');
+    const perSlide = 5; // 초 단위, 한 장이 화면에 머무는 시간
+    const cycle = slides.length * perSlide;
+    const slot = 100 / slides.length;
+
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes heroFade{
+        0%{opacity:0;}
+        ${(slot * 0.15).toFixed(2)}%{opacity:1;}
+        ${(slot * 0.85).toFixed(2)}%{opacity:1;}
+        ${slot.toFixed(2)}%{opacity:0;}
+        100%{opacity:0;}
+      }
+    `;
+    document.head.appendChild(style);
+
+    slides.forEach((p, i) => {
+      const img = document.createElement('img');
+      img.className = 'hero-slide';
+      img.src = p.installedImg;
+      img.alt = '';
+      img.style.animationDuration = `${cycle}s, ${22 + i}s`; // 드리프트 주기를 살짝 어긋나게
+      img.style.animationDelay = `${-i * perSlide}s, 0s`;
+      hero.insertBefore(img, hero.firstChild);
+    });
+  })();
+
+  const grid = document.getElementById('product-grid');
+  document.getElementById('product-count').textContent = `전체 ${PRODUCTS.length}종`;
+  grid.innerHTML = PRODUCTS.map(p => `
+    <a class="card-link" href="product.html?id=${p.id}">
+      <div class="card">
+        <img class="card-img" src="${p.img}" alt="${p.name}" loading="lazy">
+        <div class="card-body">
+          <div class="badge-b2b">${p.size}</div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-spec">${p.material} · 박스당 ${p.coverageM2PerBox}㎡${p.pcsPerBox ? ` (${p.pcsPerBox}pcs)` : ''}</div>
+          <div class="card-footer">
+            <span class="card-price">최소 ${MIN_ORDER_BOXES}박스</span>
+            <span class="card-btn">상세보기 →</span>
+          </div>
+        </div>
+      </div>
+    </a>
+  `).join('');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>주문 관리 — SSOL TILE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+:root { --deep-green:#1a3a30; --terra:#b5651d; --cream:#f2ede4; --text:#1a1a1a; --muted:#6b6b6b; --border:#e0dcd0; }
+body { margin:0; background:var(--cream); color:var(--text); font-family:'Public Sans',sans-serif; line-height:1.6; }
+a { color: var(--terra); text-decoration: none; }
+a:hover { color: #cc8542; }
+input, select, button { font-family: inherit; }
+  </style>
+</helmet>
+
+<header style="background:var(--deep-green);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200">
+  <div style="display:flex;align-items:baseline;gap:14px">
+    <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff"><span style="color:#cc8542">SSOL</span> TILE</a>
+    <span style="color:rgba(255,255,255,0.5);font-size:12px;font-weight:700;letter-spacing:0.12em">ADMIN</span>
+  </div>
+  <nav style="display:flex;gap:20px;align-items:center">
+    <a href="Admin.dc.html" style="color:rgba(255,255,255,0.75);font-size:13px;font-weight:600">제품 관리</a>
+    <a href="Orders.dc.html" style="color:#cc8542;font-size:13px;font-weight:700">주문 관리</a>
+    <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600">{{ sessionLabel }}</span>
+    <a href="Login.dc.html" onClick="{{ onLogout }}" style="color:rgba(255,255,255,0.55);font-size:13px;font-weight:600">로그아웃</a>
+  </nav>
+</header>
+
+<sc-if value="{{ notAdmin }}" hint-placeholder-val="{{ false }}">
+  <div style="max-width:420px;margin:120px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:12px;padding:40px 32px">
+    <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:20px;margin-bottom:8px">접근 권한이 없습니다</div>
+    <p style="font-size:14px;color:var(--muted);margin:0 0 22px">관리자 계정으로 로그인해야 이용할 수 있습니다.</p>
+    <a href="Login.dc.html" style="display:inline-block;padding:12px 26px;background:var(--terra);color:#fff;border-radius:8px;font-size:14px;font-weight:700">로그인하기</a>
+  </div>
+</sc-if>
+
+<main style="max-width:1320px;margin:0 auto;padding:32px;display:{{ mainDisplay }}">
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px">
+      <div style="font-size:12px;color:var(--muted);font-weight:600">기간 내 주문</div>
+      <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px">{{ kpiCount }}</div>
+      <div style="font-size:11px;color:var(--muted)">건</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px">
+      <div style="font-size:12px;color:var(--muted);font-weight:600">주문 금액</div>
+      <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:var(--deep-green)">{{ kpiAmount }}</div>
+      <div style="font-size:11px;color:var(--muted)">원 (VAT 포함)</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px">
+      <div style="font-size:12px;color:var(--muted);font-weight:600">미처리 (신규·확인)</div>
+      <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;color:var(--terra)">{{ kpiPending }}</div>
+      <div style="font-size:11px;color:var(--muted)">건</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px">
+      <div style="font-size:12px;color:var(--muted);font-weight:600">총 수량</div>
+      <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px">{{ kpiBoxes }}</div>
+      <div style="font-size:11px;color:var(--muted)">박스</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px">
+      <div style="font-size:12px;color:var(--muted);font-weight:600">알림 발송</div>
+      <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px">{{ kpiNotified }}</div>
+      <div style="font-size:11px;color:var(--muted)">건 / 미발송 {{ kpiNotSent }}건</div>
+    </div>
+  </div>
+
+  <section style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:24px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px">
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;margin:0">주문 알림 자동 발송</h2>
+      <span style="font-size:12px;color:var(--muted)">초안 — 실제 발송은 카카오 비즈메시지 / 텔레그램 봇 연동 후 동작합니다</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+      <div style="border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <span style="font-size:13.5px;font-weight:700">카카오 알림톡</span>
+          <button onClick="{{ onToggleKakao }}" style="width:44px;height:24px;border-radius:12px;border:none;cursor:pointer;padding:0;position:relative;background:{{ kakaoTrack }}">
+            <span style="position:absolute;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.25);left:{{ kakaoKnob }}"></span>
+          </button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <label style="display:flex;flex-direction:column;gap:5px;font-size:11.5px;font-weight:600;color:var(--muted)">발신 프로필 (채널 ID)
+            <input value="{{ kakaoChannel }}" onInput="{{ onKakaoChannel }}" placeholder="@ssoltile" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:5px;font-size:11.5px;font-weight:600;color:var(--muted)">템플릿 코드
+            <input value="{{ kakaoTemplate }}" onInput="{{ onKakaoTemplate }}" placeholder="ORDER_NEW_01" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px">
+          </label>
+        </div>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <span style="font-size:13.5px;font-weight:700">텔레그램</span>
+          <button onClick="{{ onToggleTelegram }}" style="width:44px;height:24px;border-radius:12px;border:none;cursor:pointer;padding:0;position:relative;background:{{ tgTrack }}">
+            <span style="position:absolute;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.25);left:{{ tgKnob }}"></span>
+          </button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <label style="display:flex;flex-direction:column;gap:5px;font-size:11.5px;font-weight:600;color:var(--muted)">봇 토큰
+            <input value="{{ tgToken }}" onInput="{{ onTgToken }}" placeholder="123456:ABC-DEF…" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:5px;font-size:11.5px;font-weight:600;color:var(--muted)">수신 채팅 ID
+            <input value="{{ tgChat }}" onInput="{{ onTgChat }}" placeholder="-1001234567890" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <span style="font-size:12.5px;font-weight:700">발송 시점</span>
+      <sc-for list="{{ events }}" as="e" hint-placeholder-count="3">
+        <button onClick="{{ e.onToggle }}" style="display:flex;align-items:center;gap:7px;border:1px solid {{ e.border }};background:{{ e.bg }};color:{{ e.fg }};border-radius:20px;padding:6px 13px;font-size:12.5px;font-weight:600;cursor:pointer">
+          <span>{{ e.label }}</span><span style="font-size:10.5px;font-weight:800;opacity:0.8">{{ e.state }}</span>
+        </button>
+      </sc-for>
+      <button onClick="{{ onTestSend }}" style="margin-left:auto;padding:8px 16px;background:var(--terra);color:#fff;border:none;border-radius:7px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap">테스트 발송</button>
+    </div>
+
+    <div style="margin-top:14px">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px">발송 로그</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <sc-for list="{{ logs }}" as="l" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:150px 92px 1fr;gap:12px;font-size:12.5px;padding:7px 12px;background:rgba(26,58,48,0.04);border-radius:7px">
+            <span style="color:var(--muted)">{{ l.time }}</span>
+            <span style="font-weight:700;color:{{ l.channelColor }}">{{ l.channel }}</span>
+            <span>{{ l.message }}</span>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noLogs }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:12.5px;color:var(--muted);padding:10px 2px">발송 기록이 없습니다.</div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#fff;border:1px solid var(--border);border-radius:12px;overflow-x:auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 24px;border-bottom:1px solid var(--border);flex-wrap:wrap">
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;margin:0">주문 목록 <span style="color:var(--muted);font-weight:600;font-size:13px">{{ listCount }}</span></h2>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <sc-for list="{{ quickRanges }}" as="q" hint-placeholder-count="4">
+          <button onClick="{{ q.onClick }}" style="border:1px solid {{ q.border }};background:{{ q.bg }};color:{{ q.fg }};border-radius:16px;padding:5px 13px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap">{{ q.label }}</button>
+        </sc-for>
+        <input type="date" value="{{ from }}" onChange="{{ onFrom }}" style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:12.5px">
+        <span style="font-size:12px;color:var(--muted)">~</span>
+        <input type="date" value="{{ to }}" onChange="{{ onTo }}" style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:12.5px">
+        <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="거래처 · 주문번호" style="padding:7px 11px;border:1px solid var(--border);border-radius:6px;font-size:12.5px;width:180px">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;padding:12px 24px;border-bottom:1px solid var(--border);background:rgba(181,101,29,0.05)">
+      <sc-for list="{{ statusFilters }}" as="s" hint-placeholder-count="5">
+        <button onClick="{{ s.onClick }}" style="border:1px solid {{ s.border }};background:{{ s.bg }};color:{{ s.fg }};border-radius:16px;padding:5px 14px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap">{{ s.label }} {{ s.count }}</button>
+      </sc-for>
+    </div>
+
+    <div style="display:grid;grid-template-columns:124px 132px 150px 220px 78px 104px 96px 96px;gap:10px;padding:11px 24px;background:rgba(26,58,48,0.04);font-size:11.5px;font-weight:700;color:var(--muted);align-items:center;min-width:1060px">
+      <span>주문번호</span><span>주문일시</span><span>거래처</span><span>제품</span><span>수량</span><span>금액</span><span>상태</span><span>알림</span>
+    </div>
+
+    <sc-for list="{{ orders }}" as="o" hint-placeholder-count="10">
+      <div style="display:grid;grid-template-columns:124px 132px 150px 220px 78px 104px 96px 96px;gap:10px;padding:11px 24px;align-items:center;border-bottom:1px solid var(--border);min-width:1060px">
+        <span style="font-size:12.5px;font-weight:700">{{ o.no }}</span>
+        <span style="font-size:12.5px;color:var(--muted)">{{ o.date }}</span>
+        <div style="min-width:0">
+          <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.company }}</div>
+          <div style="font-size:11px;color:var(--muted)">{{ o.phone }}</div>
+        </div>
+        <div style="min-width:0">
+          <div style="font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.product }}</div>
+          <div style="font-size:11px;color:var(--muted)">{{ o.spec }}</div>
+        </div>
+        <span style="font-size:12.5px">{{ o.boxes }}</span>
+        <span style="font-size:12.5px;font-weight:700">{{ o.amount }}</span>
+        <select value="{{ o.status }}" onChange="{{ o.onStatus }}" style="padding:5px 7px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:#fff">
+          <sc-for list="{{ o.statusOptions }}" as="s" hint-placeholder-count="4">
+            <option value="{{ s.value }}" selected="{{ s.selected }}">{{ s.label }}</option>
+          </sc-for>
+        </select>
+        <button onClick="{{ o.onNotify }}" style="border:1px solid {{ o.notifyBorder }};background:{{ o.notifyBg }};color:{{ o.notifyFg }};border-radius:6px;padding:5px 0;font-size:11.5px;font-weight:700;cursor:pointer">{{ o.notifyLabel }}</button>
+      </div>
+    </sc-for>
+
+    <sc-if value="{{ noOrders }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:48px 24px;text-align:center;color:var(--muted);font-size:14px">해당 기간에 주문이 없습니다.</div>
+    </sc-if>
+  </section>
+
+  <p style="font-size:12px;color:var(--muted);margin-top:18px">초안 화면입니다. 주문 데이터는 데모용으로 생성되며, 알림 발송은 로그만 기록합니다.</p>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const SESSION_KEY = 'ssol_session';
+const ORDERS_KEY = 'ssol_orders';
+const NOTIFY_KEY = 'ssol_notify_config';
+const LOG_KEY = 'ssol_notify_log';
+
+const STATUSES = ['신규', '확인', '출고', '완료', '취소'];
+const COMPANIES = [
+  ['대한인테리어', '010-2841-1102'], ['우진종합건설', '010-5512-8830'], ['하나타일시공', '010-3390-4471'],
+  ['그린홈리모델링', '010-7781-2255'], ['성일건재', '02-521-7788'], ['미래인테리어', '010-4402-6619'],
+  ['정우설비', '031-882-1140'], ['블루하우스', '010-9921-3382'],
+];
+
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+class Component extends DCLogic {
+  state = {
+    session: null, orders: [], query: '', status: '전체',
+    from: '', to: '', activeRange: '30일',
+    config: { kakao: true, telegram: false, channel: '@ssoltile', template: 'ORDER_NEW_01', token: '', chat: '', events: ['신규 주문', '출고 처리'] },
+    logs: [],
+  };
+
+  componentDidMount() {
+    const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || d); } catch (e) { return JSON.parse(d); } };
+    const session = read(SESSION_KEY, 'null');
+    const config = read(NOTIFY_KEY, 'null') || this.state.config;
+    const logs = read(LOG_KEY, '[]');
+    let orders = read(ORDERS_KEY, 'null');
+
+    const today = new Date();
+    const from = new Date(today); from.setDate(from.getDate() - 29);
+    this.setState({ session, config, logs, from: ymd(from), to: ymd(today) });
+
+    if (orders) { this.setState({ orders }); return; }
+    const s = document.createElement('script');
+    s.src = 'uploads/data.js';
+    s.onload = () => {
+      if (typeof PRODUCTS === 'undefined') return;
+      const seeded = this.seed(PRODUCTS);
+      this.setState({ orders: seeded });
+      try { localStorage.setItem(ORDERS_KEY, JSON.stringify(seeded)); } catch (e) {}
+    };
+    document.head.appendChild(s);
+  }
+
+  seed(products) {
+    const out = [];
+    let h = 20260208;
+    const rnd = () => { h = (h * 1103515245 + 12345) >>> 0; return h / 4294967296; };
+    for (let i = 0; i < 48; i++) {
+      const p = products[Math.floor(rnd() * products.length)];
+      const [company, phone] = COMPANIES[Math.floor(rnd() * COMPANIES.length)];
+      const d = new Date();
+      d.setDate(d.getDate() - Math.floor(rnd() * 45));
+      d.setHours(9 + Math.floor(rnd() * 9), Math.floor(rnd() * 60), 0, 0);
+      const boxes = 5 + Math.floor(rnd() * 60);
+      const status = STATUSES[Math.min(4, Math.floor(rnd() * 4.4))];
+      out.push({
+        no: 'SO-' + ymd(d).replace(/-/g, '').slice(2) + '-' + pad(i + 1),
+        at: d.toISOString(), company, phone,
+        product: p.publicName || p.name, spec: `${p.size} · ${p.finish}`,
+        boxes, price: p.price || 0, amount: boxes * (p.price || 0),
+        status, notified: status !== '신규',
+      });
+    }
+    return out.sort((a, b) => new Date(b.at) - new Date(a.at));
+  }
+
+  persist(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  setConfig(patch) {
+    const config = { ...this.state.config, ...patch };
+    this.setState({ config });
+    this.persist(NOTIFY_KEY, config);
+  }
+
+  addLog(channel, message) {
+    const now = new Date();
+    const logs = [{ time: `${ymd(now)} ${pad(now.getHours())}:${pad(now.getMinutes())}`, channel, message }, ...this.state.logs].slice(0, 12);
+    this.setState({ logs });
+    this.persist(LOG_KEY, logs);
+  }
+
+  updateOrder(no, patch) {
+    const orders = this.state.orders.map(o => o.no === no ? { ...o, ...patch } : o);
+    this.setState({ orders });
+    this.persist(ORDERS_KEY, orders);
+  }
+
+  notify(order) {
+    const { kakao, telegram } = this.state.config;
+    if (!kakao && !telegram) { this.addLog('오류', '발송 채널이 모두 꺼져 있습니다.'); return; }
+    const channel = kakao && telegram ? '카카오+텔레그램' : kakao ? '카카오' : '텔레그램';
+    this.addLog(channel, `${order.no} · ${order.company} · ${order.product} ${order.boxes}박스 발송`);
+    this.updateOrder(order.no, { notified: true });
+  }
+
+  quickRange(label) {
+    const to = new Date();
+    const from = new Date();
+    if (label === '오늘') from.setHours(0, 0, 0, 0);
+    else if (label === '7일') from.setDate(from.getDate() - 6);
+    else if (label === '30일') from.setDate(from.getDate() - 29);
+    else if (label === '전체') from.setFullYear(from.getFullYear() - 5);
+    this.setState({ from: ymd(from), to: ymd(to), activeRange: label });
+  }
+
+  renderVals() {
+    const { session, orders, query, status, from, to, config, logs, activeRange } = this.state;
+    const isAdmin = !!session && session.role === 'admin';
+    const won = n => Number(n || 0).toLocaleString('ko-KR');
+    const chip = (on) => ({
+      bg: on ? '#1a3a30' : '#fff', fg: on ? '#fff' : '#6b6b6b',
+      border: on ? '#1a3a30' : '#e0dcd0',
+    });
+
+    const q = query.trim().toLowerCase();
+    const inRange = o => {
+      const d = o.at.slice(0, 10);
+      return (!from || d >= from) && (!to || d <= to);
+    };
+    const filtered = orders.filter(o => inRange(o)
+      && (status === '전체' || o.status === status)
+      && (!q || o.company.toLowerCase().includes(q) || o.no.toLowerCase().includes(q)));
+
+    const ranged = orders.filter(inRange);
+    const pending = ranged.filter(o => o.status === '신규' || o.status === '확인').length;
+
+    const statusFilters = ['전체', ...STATUSES].map(s => ({
+      label: s, count: s === '전체' ? ranged.length : ranged.filter(o => o.status === s).length,
+      onClick: () => this.setState({ status: s }), ...chip(s === status),
+    }));
+
+    const quickRanges = ['오늘', '7일', '30일', '전체'].map(l => ({
+      label: l, onClick: () => this.quickRange(l), ...chip(l === activeRange),
+    }));
+
+    const rows = filtered.map(o => {
+      const d = new Date(o.at);
+      return {
+        no: o.no, date: `${ymd(d).slice(2)} ${pad(d.getHours())}:${pad(d.getMinutes())}`,
+        company: o.company, phone: o.phone, product: o.product, spec: o.spec,
+        boxes: won(o.boxes) + '박스', amount: won(o.amount) + '원',
+        status: o.status,
+        statusOptions: STATUSES.map(s => ({ value: s, label: s, selected: s === o.status })),
+        onStatus: e => this.updateOrder(o.no, { status: e.target.value }),
+        notifyLabel: o.notified ? '발송됨' : '발송',
+        notifyBg: o.notified ? 'transparent' : '#b5651d',
+        notifyFg: o.notified ? '#6b6b6b' : '#fff',
+        notifyBorder: o.notified ? '#e0dcd0' : '#b5651d',
+        onNotify: () => this.notify(o),
+      };
+    });
+
+    const events = ['신규 주문', '주문 확인', '출고 처리'].map(label => {
+      const on = config.events.includes(label);
+      return {
+        label, state: on ? 'ON' : 'OFF',
+        bg: on ? 'rgba(26,58,48,0.08)' : '#fff',
+        fg: on ? '#1a3a30' : '#9a9a92',
+        border: on ? 'rgba(26,58,48,0.25)' : '#e0dcd0',
+        onToggle: () => this.setConfig({ events: on ? config.events.filter(e => e !== label) : [...config.events, label] }),
+      };
+    });
+
+    return {
+      isAdmin, notAdmin: !isAdmin, mainDisplay: isAdmin ? 'block' : 'none',
+      sessionLabel: session ? `${session.name} 님` : '로그인 필요',
+      onLogout: () => { try { localStorage.removeItem(SESSION_KEY); } catch (e) {} },
+      kpiCount: won(ranged.length), kpiAmount: won(ranged.reduce((s, o) => s + o.amount, 0)),
+      kpiPending: won(pending), kpiBoxes: won(ranged.reduce((s, o) => s + o.boxes, 0)),
+      kpiNotified: won(ranged.filter(o => o.notified).length),
+      kpiNotSent: won(ranged.filter(o => !o.notified).length),
+      orders: rows, noOrders: rows.length === 0, listCount: filtered.length + '건',
+      statusFilters, quickRanges,
+      from, to, query,
+      onFrom: e => this.setState({ from: e.target.value, activeRange: '' }),
+      onTo: e => this.setState({ to: e.target.value, activeRange: '' }),
+      onQuery: e => this.setState({ query: e.target.value }),
+      kakaoTrack: config.kakao ? '#1a3a30' : '#cfcabd', kakaoKnob: config.kakao ? '23px' : '3px',
+      tgTrack: config.telegram ? '#1a3a30' : '#cfcabd', tgKnob: config.telegram ? '23px' : '3px',
+      onToggleKakao: () => this.setConfig({ kakao: !config.kakao }),
+      onToggleTelegram: () => this.setConfig({ telegram: !config.telegram }),
+      kakaoChannel: config.channel, kakaoTemplate: config.template, tgToken: config.token, tgChat: config.chat,
+      onKakaoChannel: e => this.setConfig({ channel: e.target.value }),
+      onKakaoTemplate: e => this.setConfig({ template: e.target.value }),
+      onTgToken: e => this.setConfig({ token: e.target.value }),
+      onTgChat: e => this.setConfig({ chat: e.target.value }),
+      events,
+      onTestSend: () => this.addLog(config.kakao && config.telegram ? '카카오+텔레그램' : config.kakao ? '카카오' : config.telegram ? '텔레그램' : '오류', '테스트 메시지 발송'),
+      logs, noLogs: logs.length === 0,
+    };
+  }
+}
+</script>
+</body>
+</html>

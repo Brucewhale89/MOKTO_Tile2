@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MOKTO 목토 — 600×600 포세린 타일 B2B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+:root {
+  --deep-green: #2b1a12;
+  --mid-green: #4a2c1c;
+  --terra: #c9610d;
+  --terra-light: #e5822a;
+  --tan: #dbab55;
+  --cream: #f2ede4;
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --border: #e0dcd0;
+}
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--deep-green); color: var(--text); font-family: 'Public Sans', sans-serif; line-height: 1.6; }
+main { max-width: 1200px; margin: 0 auto; padding: 48px 32px 80px; position: relative; }
+header {
+  background: var(--deep-green); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 24px; letter-spacing: -0.02em; color: #fff; text-decoration: none; line-height: 1; display: flex; align-items: center; }
+.logo span { color: var(--terra-light); }
+nav { display: flex; gap: 28px; }
+nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+nav a:hover { color: var(--terra-light); }
+.quote-btn {
+  font-family: 'Public Sans', sans-serif; font-size: 13.5px; font-weight: 700; cursor: pointer;
+  background: var(--terra); color: #fff; border: none; padding: 10px 20px; border-radius: 100px;
+  transition: background 0.2s;
+}
+.quote-btn:hover { background: var(--terra-light); }
+
+.hero {
+  position: relative; background: var(--deep-green); color: #fff; min-height: 460px; overflow: hidden;
+  max-width: 1210px; margin: 0 auto;
+  box-shadow: 0 30px 70px rgba(10,6,3,0.55), 0 10px 24px rgba(10,6,3,0.4);
+}
+.hero-slide {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1;
+  object-fit: cover; object-position: center;
+  opacity: 0;
+  animation-name: heroFade; animation-iteration-count: infinite;
+}
+@keyframes heroDrift {
+  0% { transform: scale(1.0) translate(-1%, -1%); }
+  25% { transform: scale(1.05) translate(1%, 0%); }
+  50% { transform: scale(1.1) translate(0.5%, 1%); }
+  75% { transform: scale(1.03) translate(-0.5%, -0.5%); }
+  100% { transform: scale(1.0) translate(-1%, -1%); }
+}
+@keyframes heroZoom {
+  0% { transform: scale(1.0); }
+  40% { transform: scale(1.08); }
+  100% { transform: scale(1.0); }
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.1) 60%, rgba(181,101,29,0.3) 100%);
+}
+.hero-inner {
+  position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; min-height: 460px;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  text-align: left; padding: 60px 40px;
+}
+.hero-eyebrow {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--tan); margin-bottom: 16px;
+}
+.hero-logo { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: clamp(36px, 5vw, 56px); letter-spacing: -0.02em; line-height: 1.15; max-width: 640px; }
+.hero-logo span { color: var(--terra-light); }
+.hero p { margin-top: 18px; font-size: 16px; opacity: 0.9; max-width: 480px; }
+.hero-meta { margin-top: 28px; display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-meta div {
+  font-size: 13px; font-weight: 700; background: var(--terra); color: #fff;
+  padding: 10px 18px; border-radius: 100px; text-shadow: none;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+
+.toolbar { margin: 0 auto 18px; max-width: 860px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.cat-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 28px; }
+.leaf-decor { position: fixed; inset: 0; pointer-events: none; z-index: 900; overflow: hidden; }
+.leaf-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.leaf-decor img {
+  position: absolute; filter: drop-shadow(0 18px 26px rgba(4,14,10,0.55));
+}
+@media (max-width: 1100px) { .leaf-decor, .leaf-bg { display: none; } }
+.cat-item {
+  position: relative; padding: 11px 26px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;
+}
+.cat-item:hover { background: rgba(255,255,255,0.09); color: #fff; }
+.cat-item.active { background: #fff; color: var(--deep-green); border-color: #fff; }
+.cat-soon { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 100px; }
+.cat-item.active .cat-soon { color: rgba(26,58,48,0.5); background: rgba(26,58,48,0.08); }
+.sort-select {
+  font-family: 'Public Sans', sans-serif; font-size: 13px; font-weight: 600; color: #fff;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
+  padding: 8px 14px; cursor: pointer;
+}
+.sort-select option { background: var(--deep-green); color: #fff; }
+.toolbar h2 { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 30px; letter-spacing: -0.03em; color: #fff; display: flex; align-items: baseline; gap: 10px; }
+.toolbar .count { font-size: 21px; font-weight: 600; color: rgba(255,255,255,0.55); }
+.filters { display: flex; flex-direction: column; gap: 8px; margin: 0 auto 24px; max-width: 860px; }
+.filter-row { display: flex; align-items: center; justify-content: flex-start; gap: 7px; flex-wrap: wrap; }
+.filter-chip {
+  font-family: 'Public Sans', sans-serif; font-size: 11.5px; font-weight: 600; cursor: pointer;
+  padding: 5px 12px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.65); transition: all 0.2s;
+  white-space: nowrap; flex-shrink: 0;
+}
+.filter-chip:hover { background: rgba(255,255,255,0.14); color: #fff; }
+.filter-chip.active { background: var(--terra); border-color: var(--terra); color: #fff; }
+.empty-state { padding: 60px 0; text-align: center; color: rgba(255,255,255,0.6); font-size: 15px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 28px; padding: 16px; margin: 0 -16px; }
+.card {
+  position: relative; border-radius: 20px; aspect-ratio: 1/1; overflow: hidden;
+  box-shadow: 22px 26px 48px rgba(6,18,13,0.65), 8px 8px 16px rgba(6,18,13,0.45);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.card::after {
+  content: ""; position: absolute; inset: 0; border-radius: 20px; pointer-events: none; z-index: 3;
+  box-shadow: inset 2px 2px 1px rgba(255,255,255,0.35), inset -3px -4px 8px rgba(10,26,20,0.4);
+  background: linear-gradient(105deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.12) 12%, rgba(255,255,255,0.03) 32%, rgba(0,0,0,0) 58%, rgba(10,26,20,0.22) 100%);
+}
+.card:hover { transform: translateY(-4px) scale(1.08); box-shadow: 26px 34px 60px rgba(6,18,13,0.7), 8px 8px 16px rgba(6,18,13,0.45); }
+.card-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 20px; filter: brightness(0.88) contrast(1.1); }
+.card-gloss {
+  position: absolute; inset: 0; border-radius: 20px; pointer-events: none; z-index: 2;
+  background-image: url('uploads/123123-551eaf40.png'); background-size: cover; background-position: center;
+  mix-blend-mode: screen; opacity: 0.75;
+}
+.card-scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.6) 100%);
+}
+.card-body { position: absolute; left: 0; right: 0; bottom: 0; padding: 16px; color: #fff; z-index: 3; }
+.card-name { font-weight: 700; font-size: 14px; letter-spacing: -0.01em; margin-bottom: 4px; }
+.card-spec { font-size: 11.5px; opacity: 0.85; margin-bottom: 10px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+.card-footer { display: flex; align-items: center; justify-content: space-between; }
+.card-sales { font-size: 11px; opacity: 0.7; font-weight: 600; }
+.rank-badge {
+  position: absolute; top: 20px; left: 14px; z-index: 3;
+  display: flex; align-items: flex-start; justify-content: center;
+  flex-direction: row; gap: 4px; line-height: 1; text-align: center;
+  color: rgba(0,0,0,0.65);
+  text-shadow: 0.5px 0.5px 1.5px rgba(255,255,255,0.5), -0.5px -0.5px 1.5px rgba(0,0,0,0.85);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.rank-badge > div:first-child { font-size: 17px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+.rank-badge > div:last-child { font-size: 20px; font-weight: 700; margin-top: -1.5px; }
+
+.card-btn {
+  font-size: 11.5px; font-weight: 700; color: #fff; background: rgba(181,101,29,0.6);
+  padding: 5px 12px; border-radius: 100px; text-decoration: none; backdrop-filter: blur(6px);
+}
+.card-link { color: inherit; text-decoration: none; display: block; }
+.badge-b2b {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  background: rgba(26,58,48,0.85); backdrop-filter: blur(4px); color: var(--tan);
+  border: 1px solid rgba(255,255,255,0.2); font-size: 11px;
+  font-weight: 800; padding: 5px 12px; border-radius: 10px; letter-spacing: 0.02em;
+}
+
+footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0.1); padding: 32px; text-align: center; color: rgba(255,255,255,0.7); font-size: 12.5px; }
+
+@media (max-width: 768px) {
+  header { flex-wrap: wrap; gap: 12px; }
+  nav { flex-direction: row; flex-wrap: wrap; gap: 12px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-inner { padding: 40px 24px; }
+}
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+}
+  </style>
+</helmet>
+
+<div class="leaf-bg">
+  <img class="leaf-base" src="./-12-mslz6suy-143g.png" style="position: absolute; inset: 0; object-fit: cover; object-position: center; aspect-ratio: 1824 / 2304; margin-left: 3px; margin-right: 3px; width: 100%; height: 1755px" alt="123123123" width="1824" height="2304">
+</div>
+
+<div class="leaf-decor">
+  <img class="leaf-layer" data-leaf="1" src="./7-mslradeg-kooh.png" style="position: static; inset: 0; object-fit: cover; object-position: center; z-index: 2012; transform-origin: 72% 28%; margin-left: -930px; margin-right: -930px; opacity: 1; transform: translate(-5px, -4px) rotate(83deg) scale(0.99, 1.01); margin-top: -621px; margin-bottom: -621px; width: 1370px; height: 1503px; display: none">
+  <img class="leaf-layer" data-leaf="2" src="uploads/111-1c3f6e7b.png" style="position: fixed; inset: 0; object-fit: cover; object-position: center; z-index: 2000; transform-origin: 100% 62%; margin-left: 596px; margin-right: 596px; margin-top: 256px; margin-bottom: 256px; top: -38px; left: 135px; height: 1300px; width: 1300px">
+  
+  <img class="leaf-layer" data-leaf="4" src="uploads/1-e61564dd.png" style="position: fixed; inset: 0; object-fit: cover; object-position: center; z-index: 2000; transform-origin: 64% 21%; margin-left: -411px; margin-right: -411px; margin-top: 533px; margin-bottom: 533px; display: none">
+  <span style="position: fixed; inset: 0; display: block; transform: scaleX(-1); z-index: 2000; pointer-events: none; margin-left: 199px; margin-right: 199px">
+    
+    
+    
+    <img class="leaf-layer" data-leaf="7" src="uploads/1-e61564dd.png" style="position: absolute; inset: 0; object-fit: cover; object-position: center; transform-origin: 64% 21%; width: 1299px; height: 1458px; margin-top: 268px; margin-bottom: 268px; margin-left: -470px; margin-right: -470px; left: 1885px; top: 480px">
+  <img class="leaf-layer" data-leaf="8" data-rot="-60" src="uploads/111-1c3f6e7b.png" style="position: absolute; inset: 0; object-fit: cover; object-position: center; transform-origin: 100% 62%; box-shadow: 0px 4px 12px 0px #300F0F26; padding-left: 0px; height: 1277px; width: 1200px; padding-top: 178px; top: -22px; left: -128px; margin-left: 1124px; margin-right: 1124px; margin-top: -156px; margin-bottom: -156px; padding-bottom: 0px"></span>
+</div>
+
+<header>
+  <a href="Home.dc.html" class="logo"><span>MOK</span>TO<em style="font-family: 'Public Sans', sans-serif; font-style: normal; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; color: rgba(255,255,255,0.55); margin-left: 9px; align-self: center">TILE SUPPLY</em></a>
+  <nav>
+    <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+      <a href="Login.dc.html">로그인</a>
+    </sc-if>
+    <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+      <a href="Admin.dc.html" style="color: #cc8542">관리자</a>
+    </sc-if>
+    <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+      <a href="Home.dc.html" onClick="{{ onLogout }}">로그아웃 ({{ userName }})</a>
+    </sc-if>
+    <a href="#">마이페이지</a>
+    <a href="#">회사 소개</a>
+    <a href="#">문의</a>
+  </nav>
+  <button class="quote-btn" style="text-align: center; text-transform: none; line-height: 1.1; font-weight: 800; font-style: normal; text-decoration-line: none">견적 문의</button>
+</header>
+
+<section class="hero" id="hero" style="position: relative; background: var(--deep-green); color: #fff; min-height: 460px; overflow: hidden; max-width: 1210px; margin: 0 auto;">
+  <div class="hero-overlay" style="display: none"></div>
+  <div class="hero-inner" style="position: relative; z-index: 20; width: 1169px; height: 459px">
+    <div class="hero-eyebrow" style="font-size: 17px; color: #ffd9a8">나무와 흙의 결 · 시공업자를 위한 B2B 타일 공급</div>
+    <div class="hero-logo"><span>MOK</span>TO</div>
+    <p>견적 없이 바로 온라인으로 주문하세요<br>재고를 상시 보유해 즉시 출고가 가능합니다</p>
+    <div class="hero-meta">
+      <div>✓ 즉시 배송</div>
+      <div>✓ 정품 보증</div>
+      <div>✓ 기술 상담</div>
+    </div>
+  </div>
+</section>
+
+<main>  <div class="cat-row">
+    <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+      <div class="cat-item {{ cat.activeClass }}" onClick="{{ cat.onClick }}">
+        <span class="cat-label">{{ cat.label }}</span>
+        <sc-if value="{{ cat.soon }}" hint-placeholder-val="{{ false }}">
+          <span class="cat-soon">준비중</span>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+  <div class="toolbar">
+    <h2>{{ sizeTitle }} <span class="count">{{ productCount }}</span></h2>
+    <select class="sort-select" onChange="{{ onSortChange }}">
+      <option value="default">최신순</option>
+      <option value="popular">인기순</option>
+    </select>
+  </div>
+
+  <div class="filters">
+    <div class="filter-row">
+      <sc-for list="{{ sizeFilters }}" as="f" hint-placeholder-count="3">
+        <button class="filter-chip {{ f.activeClass }}" onClick="{{ f.onClick }}">{{ f.label }}</button>
+      </sc-for>
+    </div>
+    <div class="filter-row">
+      <sc-for list="{{ materialFilters }}" as="f" hint-placeholder-count="3">
+        <button class="filter-chip {{ f.activeClass }}" onClick="{{ f.onClick }}">{{ f.label }}</button>
+      </sc-for>
+    </div>
+    <div class="filter-row">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+        <button class="filter-chip {{ f.activeClass }}" onClick="{{ f.onClick }}">{{ f.label }}</button>
+      </sc-for>
+    </div>
+    <div class="filter-row">
+      <sc-for list="{{ finishFilters }}" as="f" hint-placeholder-count="3">
+        <button class="filter-chip {{ f.activeClass }}" onClick="{{ f.onClick }}">{{ f.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{ hasNoResults }}" hint-placeholder-val="{{ false }}">
+    <div class="empty-state">현재 이 조건에 맞는 타일이 없습니다.</div>
+  </sc-if>
+
+  <div class="grid" id="product-grid" style="opacity: 1">
+    <sc-for list="{{ filteredProducts }}" as="p" hint-placeholder-count="6">
+      <a class="card-link" href="Product Detail.dc.html?id={{ p.id }}">
+        <div class="card">
+          <img class="card-img" src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="object-fit: cover">
+          <sc-if value="{{ p.isGlossy }}" hint-placeholder-val="{{ false }}">
+            <div class="card-gloss"></div>
+          </sc-if>
+          <div class="card-scrim"></div>
+          <sc-if value="{{ p.rankBadge }}" hint-placeholder-val="{{ false }}">
+            <div class="rank-badge {{ p.rankClass }}" style="color: {{ p.badgeColor }}; font-family: Helvetica"><div>Best</div><div>{{ p.rankBadge }}</div></div>
+          </sc-if>
+          <div class="card-body" style="opacity: 1">
+            <div class="card-name" style="color: #FFFFFF; text-shadow: 2px 2px 1px #0000006E">{{ p.publicName }}</div>
+            <div class="card-spec" style="box-shadow: 0px 4px 12px 0px #00000000; text-shadow: 2px 2px 6px #000000">{{ p.size }} {{ p.material }} {{ p.finish }}</div>
+            <div class="card-footer">
+              <span class="card-sales" style="text-shadow: 2px 2px 6px #000000">판매수: {{ p.salesBoxes }}박스</span>
+              <span class="card-btn">{{ p.priceLabel }}</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</main>
+
+<footer>
+  MOKTO 목토 · B2B 전용 온라인 자재 공급
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { products: [], heroSlides: [], session: null, activeColor: '전체', activeFinish: '전체', activeSize: '전체', activeMaterial: '전체', sortBy: 'default' };
+
+  componentDidMount() {
+    let session = null;
+    try { session = JSON.parse(localStorage.getItem('ssol_session') || 'null'); } catch (e) {}
+    this.setState({ session });
+    
+    // 나뭇잎 스프링 물리 — 스크롤 속도가 바람, 멈추면 관성으로 잦아듦
+    const leaves = Array.from(document.querySelectorAll('.leaf-layer'));
+    if (leaves.length) {
+      const st = leaves.map((el, i) => ({
+        el, base: parseFloat(el.dataset.rot || 0), a: 0, v: 0,
+        k: 0.003 + i * 0.0004,     // 복원력 (느린 주기)
+        d: 0.99 - i * 0.001,       // 감쇠 (느리게 오래 흔들림)
+        w: 0.5 + (i % 3) * 0.18,   // 잔바람 주기
+        m: 0.35 + (i % 4) * 0.12   // 잎 크기별 민감도
+      }));
+      let t = 0;
+      const tick = () => {
+        t += 0.016;
+        st.forEach((s, i) => {
+          const breeze = Math.sin(t * s.w + i * 1.7) * 0.05;
+          s.v += (-s.a * s.k) + breeze * 0.03;
+          s.v *= s.d;                                  // 관성으로 잦아드는 감쇠
+          s.a += s.v;
+          if (s.a > 3) s.a = 3; else if (s.a < -3) s.a = -3;
+          s.el.style.transform = `rotate(${(s.base + s.a).toFixed(3)}deg)`;
+        });
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+    
+    const script = document.createElement('script');
+    script.src = 'uploads/data.js';
+    script.onload = () => {
+      if (typeof PRODUCTS !== 'undefined') {
+        let hidden = [], custom = [], meta = {};
+        try { hidden = JSON.parse(localStorage.getItem('ssol_admin_hidden') || '[]'); } catch (e) {}
+        try { custom = JSON.parse(localStorage.getItem('ssol_admin_custom') || '[]'); } catch (e) {}
+        try { meta = JSON.parse(localStorage.getItem('ssol_admin_meta') || '{}'); } catch (e) {}
+        let products = [...custom, ...PRODUCTS]
+          .filter(p => !hidden.includes(p.id))
+          .map(p => {
+            const m = meta[p.id] || {};
+            return { ...p, ...m, salesBoxes: p.salesBoxes || 100, isGlossy: (m.finish ?? p.finish) === '유광', priceLabel: (m.price ?? p.price) ? `${(m.price ?? p.price).toLocaleString()}원` : '' };
+          });
+        const topIds = products.slice().sort((a, b) => b.salesBoxes - a.salesBoxes).slice(0, 5).map(p => p.id);
+        const colorMap = {
+          '화이트': 'rgba(200,200,190,0.88)',
+          '아이보리': 'rgba(190,170,130,0.88)',
+          '크림': 'rgba(190,170,140,0.88)',
+          '베이지': 'rgba(180,160,120,0.88)',
+          '그레이': 'rgba(140,140,130,0.88)',
+          '라이트 그레이': 'rgba(160,160,150,0.88)',
+          '다크 그레이': 'rgba(110,110,100,0.88)',
+          '블랙': 'rgba(80,80,75,0.88)',
+          '브라운': 'rgba(150,100,60,0.88)',
+          '그린': 'rgba(100,140,100,0.88)',
+          '라이트': 'rgba(190,180,170,0.88)',
+          '샌드': 'rgba(185,165,130,0.88)',
+          '다크 그레이': 'rgba(90,90,85,0.88)',
+          '네이비': 'rgba(70,90,120,0.88)',
+          '라이트 그레이': 'rgba(170,170,160,0.88)'
+        };
+        products = products.map(p => {
+          const rank = topIds.indexOf(p.id);
+          const badgeColor = colorMap[p.color] || 'rgba(140,140,130,0.88)';
+          return rank === -1 ? p : { ...p, rankBadge: rank + 1, rankClass: `rank-${rank + 1}`, badgeColor };
+        });
+        const heroSlides = products.filter(p => p.installedImg && !p.installedImg.includes('edge-reus-wh') && !p.installedImg.includes('bt-66j03') && !p.installedImg.includes('bt-reg22')).sort(() => Math.random() - 0.5);
+        this.setState({ products, heroSlides });
+        this.initHero(heroSlides);
+      }
+    };
+    document.head.appendChild(script);
+  }
+
+  componentWillUnmount() {
+
+  }
+
+  setColor(color) {
+    this.setState({ activeColor: color });
+  }
+
+  setFinish(finish) {
+    this.setState({ activeFinish: finish });
+  }
+
+  setSize(size) {
+    this.setState({ activeSize: size });
+  }
+
+  setMaterial(material) {
+    this.setState({ activeMaterial: material });
+  }
+
+  onSortChange(e) {
+    this.setState({ sortBy: e.target.value });
+  }
+
+  initHero(slides) {
+    setTimeout(() => {
+      const hero = document.getElementById('hero');
+      if (!hero || slides.length < 2) return;
+
+      const perSlide = 4;
+      const cycle = slides.length * perSlide;
+      const fadeSeconds = 1.2;
+      const fadePct = (fadeSeconds / cycle) * 100;
+
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes heroFade {
+          0% { opacity: 0; }
+          ${fadePct.toFixed(3)}% { opacity: 1; }
+          ${(100 - fadePct).toFixed(3)}% { opacity: 1; }
+          100% { opacity: 0; }
+        }
+      `;
+      document.head.appendChild(style);
+
+      slides.forEach((p, i) => {
+        const img = document.createElement('img');
+        img.className = 'hero-slide';
+        img.src = p.installedImg;
+        img.alt = '';
+        img.style.animationDuration = `${cycle}s`;
+        img.style.animationDelay = `${-i * perSlide}s`;
+        hero.insertBefore(img, hero.firstChild);
+      });
+    }, 100);
+  }
+
+  renderVals() {
+    const { products, activeColor, activeFinish, activeSize, activeMaterial, sortBy } = this.state;
+    let mainOff = {};
+    try { mainOff = JSON.parse(localStorage.getItem('ssol_admin_filters') || '{}'); } catch (e) {}
+    const offOf = g => mainOff[g] || [];
+    const colors = ['전체', ...Array.from(new Set(products.map(p => p.color))).filter(c => !offOf('color').includes(c))];
+    const filters = colors.map(c => ({
+      label: c,
+      activeClass: c === activeColor ? 'active' : '',
+      onClick: () => this.setColor(c),
+    }));
+
+    const finishes = ['전체', ...Array.from(new Set(products.map(p => p.finish))).filter(f => !offOf('finish').includes(f))];
+    const finishFilters = finishes.map(f => ({
+      label: f,
+      activeClass: f === activeFinish ? 'active' : '',
+      onClick: () => this.setFinish(f),
+    }));
+
+    const normalizedSizeStr = s => s.replace(/\s*X\s*/i, '×').replace(/\s+/g, '');
+    const sizeOptions = [...new Set(products.filter(p => !offOf('size').includes(p.size)).map(p => normalizedSizeStr(p.size)))].sort((a, b) => {
+      const areaOf = s => s.split('×').reduce((m, n) => m * parseFloat(n), 1);
+      return areaOf(a) - areaOf(b);
+    });
+    const sizeFilters = ['전체', ...sizeOptions].map(s => ({
+      label: s,
+      activeClass: s === activeSize ? 'active' : '',
+      onClick: () => this.setSize(s),
+    }));
+
+    const materialOptions = ['포세린', '자기질', '도기질'].filter(m => !offOf('material').includes(m));
+    const materialFilters = ['전체', ...materialOptions].map(m => ({
+      label: m,
+      activeClass: m === activeMaterial ? 'active' : '',
+      onClick: () => this.setMaterial(m),
+    }));
+
+    const normalizedSize = p => p.size.replace(/\s*X\s*/i, '×').replace(/\s+/g, '');
+    let filteredProducts = products.filter(p =>
+      (activeColor === '전체' || p.color === activeColor) &&
+      (activeFinish === '전체' || p.finish === activeFinish) &&
+      (activeSize === '전체' || normalizedSize(p) === activeSize) &&
+      (activeMaterial === '전체' || p.material === activeMaterial)
+    );
+
+    filteredProducts = filteredProducts.slice();
+    
+    if (sortBy !== 'popular') {
+      // BEST 1-5를 먼저 배치하고 나머지는 이름순 정렬
+      const best = filteredProducts.filter(p => p.rankBadge && p.rankBadge <= 5).sort((a, b) => a.rankBadge - b.rankBadge);
+      const rest = filteredProducts.filter(p => !p.rankBadge || p.rankBadge > 5).sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+      filteredProducts = [...best, ...rest];
+    } else {
+      filteredProducts.sort((a, b) => b.salesBoxes - a.salesBoxes);
+    }
+
+    return {
+      products,
+      loggedIn: !!this.state.session,
+      loggedOut: !this.state.session,
+      isAdmin: !!this.state.session && this.state.session.role === 'admin',
+      userName: this.state.session ? this.state.session.name : '',
+      onLogout: () => { try { localStorage.removeItem('ssol_session'); } catch (e) {} },
+      categories: [
+        { label: '타일', activeClass: 'active', soon: false, onClick: () => {} },
+        { label: '수전', activeClass: '', soon: true, onClick: () => {} },
+        { label: '거울', activeClass: '', soon: true, onClick: () => {} },
+        { label: '선반', activeClass: '', soon: true, onClick: () => {} },
+        { label: '벽지', activeClass: '', soon: true, onClick: () => {} },
+      ],
+      filters,
+      finishFilters,
+      sizeFilters,
+      materialFilters,
+      filteredProducts,
+      hasNoResults: filteredProducts.length === 0,
+      sizeTitle: activeSize === '전체' ? '전체 제품' : activeSize,
+      productCount: `${filteredProducts.length}종`,
+      onSortChange: (e) => this.onSortChange(e),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>로그인 — SSOL TILE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+:root { --deep-green:#1a3a30; --terra:#b5651d; --cream:#f2ede4; --text:#1a1a1a; --muted:#6b6b6b; --border:#e0dcd0; }
+body { margin:0; background:var(--cream); color:var(--text); font-family:'Public Sans',sans-serif; line-height:1.6; }
+a { color: var(--terra); text-decoration: none; }
+a:hover { color: #cc8542; }
+input { font-family: inherit; }
+  </style>
+</helmet>
+
+<header style="background:var(--deep-green);padding:18px 32px;display:flex;align-items:center;justify-content:space-between">
+  <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff"><span style="color:#cc8542">SSOL</span> TILE</a>
+  <a href="Home.dc.html" style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600">← 쇼핑몰</a>
+</header>
+
+<main style="max-width:420px;margin:0 auto;padding:72px 24px">
+  <h1 style="font-family:'Archivo',sans-serif;font-weight:900;font-size:30px;letter-spacing:-0.02em;margin:0 0 8px">로그인</h1>
+  <p style="font-size:14px;color:var(--muted);margin:0 0 28px">B2B 파트너 계정으로 로그인하세요.</p>
+
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:26px 24px;display:flex;flex-direction:column;gap:16px">
+    <label style="display:flex;flex-direction:column;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted)">아이디 (이메일)
+      <input value="{{ email }}" onInput="{{ onEmail }}" placeholder="admin@ssoltile.com" style="padding:11px 12px;border:1px solid var(--border);border-radius:7px;font-size:14px;color:var(--text)">
+    </label>
+    <label style="display:flex;flex-direction:column;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted)">비밀번호
+      <input type="password" value="{{ pw }}" onInput="{{ onPw }}" onKeyDown="{{ onKey }}" placeholder="••••••••" style="padding:11px 12px;border:1px solid var(--border);border-radius:7px;font-size:14px;color:var(--text)">
+    </label>
+    <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+      <div style="background:rgba(181,101,29,0.1);border-radius:7px;padding:10px 12px;font-size:12.5px;color:var(--terra);font-weight:600">{{ error }}</div>
+    </sc-if>
+    <button onClick="{{ onSubmit }}" style="padding:13px;background:var(--terra);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit">로그인</button>
+    <div style="text-align:center;font-size:13px;color:var(--muted)">계정이 없으신가요? <a href="Signup.dc.html" style="font-weight:700">회원가입</a></div>
+  </div>
+
+  <div style="margin-top:20px;background:rgba(26,58,48,0.05);border-radius:10px;padding:14px 16px;font-size:12.5px;color:var(--muted);line-height:1.7">
+    <strong style="color:var(--text)">테스트 관리자 계정</strong><br>
+    아이디 admin@ssoltile.com · 비밀번호 admin1234
+  </div>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const USERS_KEY = 'ssol_users';
+const SESSION_KEY = 'ssol_session';
+const ADMIN = { email: 'admin@ssoltile.com', pw: 'admin1234', name: '관리자', role: 'admin' };
+
+class Component extends DCLogic {
+  state = { email: '', pw: '', error: '' };
+
+  componentDidMount() {
+    let users = [];
+    try { users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch (e) {}
+    if (!users.some(u => u.email === ADMIN.email)) {
+      users = [ADMIN, ...users];
+      try { localStorage.setItem(USERS_KEY, JSON.stringify(users)); } catch (e) {}
+    }
+  }
+
+  submit() {
+    const { email, pw } = this.state;
+    let users = [];
+    try { users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch (e) {}
+    const u = users.find(x => x.email === email.trim().toLowerCase());
+    if (!u || u.pw !== pw) { this.setState({ error: '아이디 또는 비밀번호가 올바르지 않습니다.' }); return; }
+    if (u.role !== 'admin' && u.approved === false) { this.setState({ error: '승인 대기중인 계정입니다.' }); return; }
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify({ email: u.email, name: u.name, role: u.role })); } catch (e) {}
+    window.location.href = u.role === 'admin' ? 'Admin.dc.html' : 'Home.dc.html';
+  }
+
+  renderVals() {
+    return {
+      email: this.state.email, pw: this.state.pw,
+      error: this.state.error, hasError: !!this.state.error,
+      onEmail: e => this.setState({ email: e.target.value, error: '' }),
+      onPw: e => this.setState({ pw: e.target.value, error: '' }),
+      onKey: e => { if (e.key === 'Enter') this.submit(); },
+      onSubmit: () => this.submit(),
+    };
+  }
+}
+</script>
+</body>
+</html>
