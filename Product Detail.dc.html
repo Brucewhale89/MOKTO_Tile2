@@ -244,25 +244,35 @@ footer { background: #1e120c; border-top: 1px solid rgba(255,255,255,0.1); paddi
           <div class="calc-result-row"><span>로스 포함 면적</span><span>{{ calcTotalAreaLabel }}㎡</span></div>
           <div class="calc-result-row total"><span>필요 수량</span><span>{{ calcBoxesLabel }}박스</span></div>
         </div>
+        <div style="font-size: 11.5px; color: var(--muted); line-height: 1.7; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border);">
+          <strong style="color: var(--text); font-size: 12px;">로스분(%)이 필요한 이유</strong><br>
+          · 통상적인 로스분: 절단·파손·시공 오차를 감안해 시공업계에서는 보통 5~10%를 여유분으로 추가합니다.<br>
+          · 롯트(생산 배치) 번호에 따른 이유: 롯트가 다르면 미세한 색상·톤 차이가 있어, 나중에 추가 주문 시 같은 롯트를 구하지 못할 수 있습니다. 여유분을 함께 주문하면 이 위험을 줄일 수 있습니다.<br>
+          · 재단 시의 이유: 300×600 재단 등 절단 가공 시 파손·오차가 추가로 발생하므로, 재단 옵션을 사용할 경우 로스분을 더 넉넉히 잡는 것을 권장합니다.
+        </div>
       </div>
 
       <div class="order-box">
         <div class="order-title">주문 정보</div>
-        <div style="margin-bottom: 10px; display: flex; gap: 20px;">
-          <div style="flex: 1;">
-            <div style="font-size: 13px; margin-bottom: 8px;">
-              <strong>{{ productNameOnly }}</strong>
-              <div style="color: var(--muted); font-weight: 500; font-size: 12px; margin-top: 4px;">{{ product.size }} · {{ product.finish }} · {{ product.color }}</div>
-            </div>
+        <div class="order-summary" style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <strong style="flex: 1;">{{ productNameOnly }} {{ product.size }}</strong>
+            <input type="number" class="qty-input" style="width: 70px;" value="{{ qty }}" onChange="{{ onQtyChange }}" min="5" step="1">
+            <span>박스</span>
+            <span style="min-width: 90px; text-align: right;">{{ normalLineTotalLabel }}</span>
           </div>
-          <div style="min-width: 160px;">
-            <div class="qty-hint" style="margin-bottom: 4px;">최소 주문: 5박스</div>
-            <div class="qty-box" style="margin-bottom: 0; margin-top: 2px;">
-              <label for="qty">주문 수량 (박스)</label>
-              <input type="number" id="qty" class="qty-input" value="5" min="5" step="1">
+          <sc-if value="{{ cuttable }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <strong style="flex: 1;">{{ productNameOnly }} 300×600 재단</strong>
+              <input type="number" class="qty-input" style="width: 70px;" value="{{ cutQty }}" onChange="{{ onCutQtyChange }}" min="0" step="1">
+              <span>박스</span>
+              <span style="min-width: 90px; text-align: right;">{{ cutLineTotalLabel }}</span>
             </div>
-          </div>
+          </sc-if>
         </div>
+        <div class="qty-hint" style="margin-bottom: 12px;">주문 안내 : 최소 5박스, 재단시 +20% 가격이 추가됩니다</div>
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 0 0 12px;">
+        <div class="calc-result-row total" style="margin-bottom: 10px;"><span>최종 금액</span><span>{{ finalAmountLabel }}</span></div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
           <button class="cart-btn" onClick="{{ onAddCart }}">🛒 장바구니</button>
           <button class="cart-btn order-now" onclick="alert('바로 주문 페이지로 이동합니다.')">⚡ 바로 주문</button>
@@ -294,7 +304,7 @@ footer { background: #1e120c; border-top: 1px solid rgba(255,255,255,0.1); paddi
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { products: [], product: null, activeImg: null, calcArea: '', calcLoss: '10', cart: [], session: null };
+  state = { products: [], product: null, activeImg: null, calcArea: '', calcLoss: '10', cart: [], session: null, qty: 5, cutQty: 0 };
 
   componentDidMount() {
     // 관리자 표시명 마이그레이션
@@ -358,6 +368,19 @@ class Component extends DCLogic {
     
     // 원산지 "미기재" → "중국산"으로 변경
     const origin = (product.origin === '미기재' || !product.origin) ? '중국산' : product.origin;
+
+    const normSize = String(product.size || '').replace(/\s*[xX]\s*/g, 'x').replace(/\s+/g, '');
+    const cuttable = normSize === '600x600';
+    const unitPrice = product.price || 0;
+    const cutUnitPrice = Math.round(unitPrice * 1.2);
+    const qty = this.state.qty;
+    const cutQty = cuttable ? this.state.cutQty : 0;
+    const hasCutLine = cutQty > 0;
+    const normalLineTotal = unitPrice * qty;
+    const cutLineTotal = cutUnitPrice * cutQty;
+    const finalAmount = normalLineTotal + cutLineTotal;
+    const onQtyChange = e => this.setState({ qty: Math.max(5, parseInt(e.target.value, 10) || 5) });
+    const onCutQtyChange = e => this.setState({ cutQty: Math.max(0, parseInt(e.target.value, 10) || 0) });
     
     const gallery = product.gallery || [product.img];
     const displayImg = this.state.activeImg || product.img;
@@ -388,6 +411,11 @@ class Component extends DCLogic {
       onAddCart,
       product: { ...product, origin },
       productNameOnly,
+      cuttable, qty, cutQty, hasCutLine,
+      normalLineTotalLabel: normalLineTotal.toLocaleString() + '원',
+      cutLineTotalLabel: cutLineTotal.toLocaleString() + '원',
+      finalAmountLabel: finalAmount.toLocaleString() + '원',
+      onQtyChange, onCutQtyChange,
       productModel,
       imgRatio,
       displayImg,

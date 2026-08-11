@@ -18,6 +18,17 @@
 body { margin:0; background:var(--bg); color:var(--text); font-family:'Public Sans',sans-serif; line-height:1.6; }
 a { color: var(--terra-light); text-decoration: none; }
 a:hover { color: var(--tan); }
+.hamburger-btn { display: none; background: none; border: none; color: #fff; cursor: pointer; padding: 6px; }
+.mobile-drawer-backdrop { display: none; }
+.mobile-drawer { display: none; }
+@media (max-width: 768px) {
+  header nav { display: none; }
+  .hamburger-btn { display: flex; }
+  .mobile-drawer-backdrop.open { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; }
+  .mobile-drawer { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: 78%; max-width: 320px; background: #1e120c; z-index: 2001; padding: 24px 20px; flex-direction: column; gap: 6px; box-shadow: -8px 0 24px rgba(0,0,0,0.4); transform: translateX(100%); transition: transform 0.25s ease; }
+  .mobile-drawer.open { transform: translateX(0); }
+  .mobile-drawer a, .mobile-drawer button { color: #fff; text-decoration: none; font-size: 15px; font-weight: 700; padding: 14px 6px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; background: none; border-left: none; border-right: none; border-top: none; width: 100%; }
+}
   </style>
 </helmet>
 
@@ -34,7 +45,23 @@ a:hover { color: var(--tan); }
     <a href="#" style="color:rgba(255,255,255,0.78);font-size:13px;font-weight:600">마이페이지</a>
     <a href="#" style="color:rgba(255,255,255,0.78);font-size:13px;font-weight:600">문의</a>
   </nav>
+  <button class="hamburger-btn" onClick="{{ toggleMobileMenu }}" aria-label="메뉴">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+  </button>
 </header>
+
+<div class="mobile-drawer-backdrop {{ mobileMenuClass }}" onClick="{{ toggleMobileMenu }}"></div>
+<div class="mobile-drawer {{ mobileMenuClass }}">
+  <a href="Home.dc.html">상품 목록</a>
+  <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+    <a href="Login.dc.html">로그인</a>
+  </sc-if>
+  <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+    <a href="Cart.dc.html" onClick="{{ onLogout }}">로그아웃</a>
+  </sc-if>
+  <a href="#">마이페이지</a>
+  <a href="#">문의</a>
+</div>
 
 <main style="max-width:1100px;margin:0 auto;padding:36px 32px 80px">
   <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:26px">
@@ -105,7 +132,8 @@ a:hover { color: var(--tan); }
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { cart: [], products: [], session: null, loaded: false };
+  state = { cart: [], products: [], session: null, loaded: false, mobileMenuOpen: false };
+  toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
 
   componentDidMount() {
     // 관리자 표시명 마이그레이션
@@ -176,6 +204,7 @@ class Component extends DCLogic {
     }, 0);
 
     return {
+      mobileMenuClass: this.state.mobileMenuOpen ? 'open' : '', toggleMobileMenu: this.toggleMobileMenu,
       loggedIn: !!s, loggedOut: !s,
       onLogout: () => { try { localStorage.removeItem('ssol_session'); } catch (e) {} },
       rows,

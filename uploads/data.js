@@ -318,12 +318,22 @@ const _GAL = {
   271: "4dd80cda2c08a,f94b41d6ef1e9,cba36efec34d8,2b924aa80bf6c,2959728cf2a0e,1ad03e0ef0132,785a9789bf665,de59a8319742a,9ac8f99e48304,88fa3f89413e5,252ec890e1f0b,45c7f9ed72b80",
 };
 
-// 공개 모델명(더미): ST-{규격코드3}{원모델명끝3자리}-{색상2자}[중복시 닉네임2자 또는 00~]
+// 공개 모델명(더미): ST-{시리즈명}-{색상2자}[중복시 닉네임2자 또는 00~]
+// 시리즈명은 사이즈×재질×광도 조합별로 고정 배정되는 열대/지역감 단어 (예: 모마, 토스카나).
 // 괄호 안 문구는 실제 모델명이 아니라 타일 닉네임이므로 모델코드 산출에서는 제외한다.
-const _SIZE_CODE = {
-  "600X600": "660", "300X300": "330", "600X1200": "612", "300X600": "360",
-  "800X800": "880", "900X900": "990", "1200X1200": "121",
-  "400X800": "480", "450X900": "459", "200X200": "220", "200X230": "223", "75X150": "715",
+const _SERIES_WORDS = [
+  "모마", "토스카나", "세비야", "프로방스", "볼로냐", "팔레르모", "나폴리", "발렌시아",
+  "안달루시아", "베로나", "마르세유", "타호마", "리오마", "마요르카", "코르시카", "사르데냐",
+  "그라나다", "리스본", "포르토", "발디로사", "카프리", "아말피", "몬테로소", "친퀘테레",
+];
+const _seriesHash = (str) => {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+  return h;
+};
+const _seriesName = (size, material, finish) => {
+  const key = `${size}|${material || ""}|${finish || ""}`;
+  return _SERIES_WORDS[_seriesHash(key) % _SERIES_WORDS.length];
 };
 const _COLOR_CODE = {
   "화이트": "WH", "블랙": "BK", "그레이": "GR", "라이트 그레이": "LG", "다크 그레이": "DG",
@@ -333,11 +343,6 @@ const _COLOR_CODE = {
 const _colorCode = (color) => {
   const base = color.replace(/\s*\([^)]*\)/, "").trim();
   return _COLOR_CODE[base] || base.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase() || "XX";
-};
-const _modelTail = (name) => {
-  const modelPart = name.replace(/\s*\([^)]*\)/, "").trim();
-  const alnum = modelPart.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-  return (alnum.slice(-3) || "").padStart(3, "0");
 };
 const _nickname2 = (name) => {
   const m = name.match(/\(([^)]+)\)/);
@@ -506,7 +511,7 @@ const PRODUCTS = _ROWS.map(([idx, name, price, img, size, spec, color, origin, p
   const gal = _GAL[idx] ? _GAL[idx].split(",").map((h) => _CDN + h + ".jpg?w=750") : null;
   return {
     id: _slug(name), idx, code: name.split(" (")[0], name,
-    publicName: `ST-${_SIZE_CODE[size] || size.replace("X", "")}${_modelTail(name)}-${_colorCode(color)}`,
+    publicName: `ST-${_seriesName(size, material, finish)}-${_colorCode(color)}`,
     price,
     img: gal ? gal[0] : url, gallery: gal || [url],
     siteInstalledImg: _INSTALLED_LOCAL[idx] || (gal && gal.length > 3 ? gal[gal.length - 1] : null),

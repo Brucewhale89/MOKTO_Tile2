@@ -18,9 +18,17 @@
 body { margin:0; background:var(--bg); color:var(--text); font-family:'Public Sans',sans-serif; line-height:1.6; }
 a { color: var(--terra-light); text-decoration: none; }
 a:hover { color: var(--tan); }
-input, textarea { padding:11px 12px; border:1px solid var(--border); border-radius:7px; font-size:14px; background:rgba(0,0,0,0.22); color:var(--text); font-family:inherit; box-sizing:border-box; width:100%; }
-input:focus, textarea:focus { outline:2px solid var(--terra); outline-offset:1px; }
-textarea { resize:vertical; min-height:110px; line-height:1.6; }
+.hamburger-btn { display: none; background: none; border: none; color: #fff; cursor: pointer; padding: 6px; }
+.mobile-drawer-backdrop { display: none; }
+.mobile-drawer { display: none; }
+@media (max-width: 768px) {
+  header nav { display: none; }
+  .hamburger-btn { display: flex; }
+  .mobile-drawer-backdrop.open { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; }
+  .mobile-drawer { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: 78%; max-width: 320px; background: #1e120c; z-index: 2001; padding: 24px 20px; flex-direction: column; gap: 6px; box-shadow: -8px 0 24px rgba(0,0,0,0.4); transform: translateX(100%); transition: transform 0.25s ease; }
+  .mobile-drawer.open { transform: translateX(0); }
+  .mobile-drawer a, .mobile-drawer button { color: #fff; text-decoration: none; font-size: 15px; font-weight: 700; padding: 14px 6px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; background: none; border-left: none; border-right: none; border-top: none; width: 100%; }
+}
   </style>
 </helmet>
 
@@ -51,7 +59,28 @@ textarea { resize:vertical; min-height:110px; line-height:1.6; }
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
     </a>
   </div>
+  <button class="hamburger-btn" onClick="{{ toggleMobileMenu }}" aria-label="맔뉴" style="position:absolute;right:20px">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+  </button>
 </header>
+
+<div class="mobile-drawer-backdrop {{ mobileMenuClass }}" onClick="{{ toggleMobileMenu }}"></div>
+<div class="mobile-drawer {{ mobileMenuClass }}">
+  <a href="Home.dc.html">전체 제품</a>
+  <a href="#">회사 소개</a>
+  <a href="Board.dc.html">게시판</a>
+  <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+    <a href="Admin.dc.html">관리자 페이지</a>
+  </sc-if>
+  <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+    <a href="Login.dc.html">로그인</a>
+  </sc-if>
+  <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+    <a href="Board.dc.html" onClick="{{ onLogout }}">로그아웃</a>
+  </sc-if>
+  <a href="MyPage.dc.html">마이페이지</a>
+  <a href="Cart.dc.html">장바구니</a>
+</div>
 
 <main style="max-width:900px;margin:0 auto;padding:40px 32px 80px">
   <h1 style="font-family:'Archivo',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.02em;margin:0 0 6px">문의 게시판</h1>
@@ -154,7 +183,8 @@ const POSTS_KEY = 'mokto_board_v2';
 const CATEGORIES = ['견적 문의', '재고 문의', '주문 취소', '배송일 변경', '반품 · 교환', '세금계산서', '시공 상담', 'A/S 요청', '기타'];
 
 class Component extends DCLogic {
-  state = { session: null, posts: [], title: '', body: '', msg: '', openId: null, drafts: {}, category: '견적 문의', notifyKakao: false, notifyTelegram: false };
+  state = { session: null, posts: [], title: '', body: '', msg: '', openId: null, drafts: {}, category: '견적 문의', notifyKakao: false, notifyTelegram: false, mobileMenuOpen: false };
+  toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
 
   componentDidMount() {
     try {
@@ -230,6 +260,7 @@ class Component extends DCLogic {
     });
 
     return {
+      mobileMenuClass: this.state.mobileMenuOpen ? 'open' : '', toggleMobileMenu: this.toggleMobileMenu,
       loggedIn: !!s, loggedOut: !s, isAdmin,
       canWrite: !!s, needLogin: !s,
       greeting: s ? (isAdmin ? `안녕하세요 ${s.name} 님 (관리자)` : `안녕하세요 ${s.company || s.name} 님`) : '',
