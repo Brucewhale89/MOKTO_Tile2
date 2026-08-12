@@ -322,9 +322,9 @@ const _GAL = {
 // 시리즈명은 사이즈×재질×광도 조합별로 고정 배정되는 열대/지역감 단어 (예: 모마, 토스카나).
 // 괄호 안 문구는 실제 모델명이 아니라 타일 닉네임이므로 모델코드 산출에서는 제외한다.
 const _SERIES_WORDS = [
-  "모마", "토스카나", "세비야", "프로방스", "볼로냐", "팔레르모", "나폴리", "발렌시아",
-  "안달루시아", "베로나", "마르세유", "타호마", "리오마", "마요르카", "코르시카", "사르데냐",
-  "그라나다", "리스본", "포르토", "발디로사", "카프리", "아말피", "몬테로소", "친퀘테레",
+  "모마", "토스카나", "세레나데", "프로방스", "볼레로", "팔레르모", "나폴리", "녹턴",
+  "안달루시아", "베로나", "마르세유", "칸초네", "리오마", "마요르카", "왈츠", "사르데냐",
+  "그라나다", "리스본", "소나타", "발디로사", "카프리", "아말피", "몬테로소", "랩소디",
 ];
 const _seriesHash = (str) => {
   let h = 0;
@@ -423,6 +423,100 @@ const _INSTALLED_LOCAL = {
   159: "uploads/installed/bt-pietra-grey.jpg",
 };
 
+// 좌우 분할 히어로용 로컬 시공사진 2장 (idx → [좌, 우])
+const _INSTALLED_LOCAL2 = {
+  11: ["uploads/installed2/bt-baltimore-66bk-a.jpg", "uploads/installed2/bt-baltimore-66bk-a.jpg"],
+  12: ["uploads/installed2/bt-baltimore-66g-a.jpg", "uploads/installed2/bt-baltimore-66g-b.jpg"],
+  13: ["uploads/installed2/bt-baltimore-66lg-a.jpg", "uploads/installed2/bt-baltimore-66lg-b.jpg"],
+  14: ["uploads/installed2/bt-baltimore-66iv-a.jpg", "uploads/installed2/bt-baltimore-66iv-b.jpg"],
+  17: ["uploads/installed2/bt-f65072-a.jpg", "uploads/installed2/bt-f65072-b.jpg"],
+  162: ["uploads/installed2/bt-kerasin-glam-crema-a.jpg", "uploads/installed2/bt-kerasin-glam-crema-b.jpg"],
+  171: ["uploads/installed2/bt-c6176-crete-g-a.jpg", "uploads/installed2/bt-c6176-crete-g-b.jpg"],
+  173: ["uploads/installed2/bt-c6171-crete-lg-a.jpg", "uploads/installed2/bt-c6171-crete-lg-b.jpg"],
+  232: ["uploads/installed2/bt-in6001-a.jpg", "uploads/installed2/bt-in6001-b.jpg"],
+  268: ["uploads/installed2/alpha-604-a.jpg", "uploads/installed2/alpha-604-b.jpg"],
+  270: ["uploads/installed2/alpha-602-a.jpg", "uploads/installed2/alpha-602-b.jpg"],
+  271: ["uploads/installed2/alpha-601-a.jpg", "uploads/installed2/alpha-601-b.jpg"],
+  342: ["uploads/installed2/alpha-605-a.jpg", "uploads/installed2/alpha-605-b.jpg"],
+};
+
+// 신규 실촬영 이미지 (idx → 로컬 경로 배열). CDN _GAL보다 우선 적용.
+const _GAL_LOCAL = {
+  2: ["uploads/local/2/g1.jpg", "uploads/local/2/g2.jpg"],
+  271: ["uploads/local/271/g1.jpg", "uploads/local/271/g2.jpg"],
+  270: ["uploads/local/270/g1.jpg", "uploads/local/270/g2.jpg"],
+  268: ["uploads/local/268/g1.jpg", "uploads/local/268/g2.jpg"],
+  342: ["uploads/local/342/g1.jpg", "uploads/local/342/g2.jpg"],
+  245: ["uploads/local/245/g1.jpg", "uploads/local/245/g2.jpg"],
+  244: ["uploads/local/244/g1.jpg", "uploads/local/244/g2.jpg"],
+  243: ["uploads/local/243/g1.jpg", "uploads/local/243/g2.jpg"],
+  242: ["uploads/local/242/g1.jpg", "uploads/local/242/g2.jpg"],
+  11: ["uploads/local/11/g1.jpg", "uploads/local/11/g2.jpg"],
+  12: ["uploads/local/12/g1.jpg", "uploads/local/12/g2.jpg"],
+  13: ["uploads/local/13/g1.jpg", "uploads/local/13/g2.jpg"],
+  14: ["uploads/local/14/g1.jpg", "uploads/local/14/g2.jpg"],
+  173: ["uploads/local/173/g1.jpg", "uploads/local/173/g2.jpg"],
+  171: ["uploads/local/171/g1.jpg", "uploads/local/171/g2.jpg"],
+  209: ["uploads/local/209/g1.jpg", "uploads/local/209/g2.jpg"],
+  17: ["uploads/local/17/g1.jpg", "uploads/local/17/g2.jpg"],
+  164: ["uploads/local/164/g1.jpg", "uploads/local/164/g2.jpg"],
+  356: ["uploads/local/356/g1.jpg", "uploads/local/356/g2.jpg"],
+  358: ["uploads/local/358/g1.jpg", "uploads/local/358/g2.jpg"],
+  354: ["uploads/local/354/g1.jpg", "uploads/local/354/g2.jpg"],
+  355: ["uploads/local/355/g1.jpg", "uploads/local/355/g2.jpg"],
+  357: ["uploads/local/357/g1.jpg", "uploads/local/357/g2.jpg"],
+  163: ["uploads/local/163/g1.jpg", "uploads/local/163/g2.jpg"],
+  232: ["uploads/local/232/g1.jpg", "uploads/local/232/g2.jpg"],
+  162: ["uploads/local/162/g1.jpg", "uploads/local/162/g2.jpg"],
+  246: ["uploads/local/246/g1.jpg"], 247: ["uploads/local/247/g1.jpg"], 248: ["uploads/local/248/g1.jpg"], 249: ["uploads/local/249/g1.jpg"],
+  334: ["uploads/local/334/g1.jpg"], 335: ["uploads/local/335/g1.jpg"], 126: ["uploads/local/126/g1.jpg"], 124: ["uploads/local/124/g1.jpg"],
+  369: ["uploads/local/369/g1.jpg"], 370: ["uploads/local/370/g1.jpg"], 371: ["uploads/local/371/g1.jpg"], 372: ["uploads/local/372/g1.jpg"], 373: ["uploads/local/373/g1.jpg"],
+  135: ["uploads/local/135/g1.jpg"], 238: ["uploads/local/238/g1.jpg"], 239: ["uploads/local/239/g1.jpg"], 240: ["uploads/local/240/g1.jpg"], 241: ["uploads/local/241/g1.jpg"],
+  129: ["uploads/local/129/g1.jpg"], 130: ["uploads/local/130/g1.jpg"], 115: ["uploads/local/115/g1.jpg"], 144: ["uploads/local/144/g1.jpg"], 145: ["uploads/local/145/g1.jpg"],
+  374: ["uploads/local/374/g1.jpg"], 375: ["uploads/local/375/g1.jpg"], 376: ["uploads/local/376/g1.jpg"], 377: ["uploads/local/377/g1.jpg"], 378: ["uploads/local/378/g1.jpg"],
+  108: ["uploads/local/108/g1.jpg"], 107: ["uploads/local/107/g1.jpg"],
+  250: ["uploads/local/250/g1.jpg"], 251: ["uploads/local/251/g1.jpg"], 252: ["uploads/local/252/g1.jpg"], 253: ["uploads/local/253/g1.jpg"],
+  25: ["uploads/local/25/g1.jpg"], 40: ["uploads/local/40/g1.jpg"], 41: ["uploads/local/41/g1.jpg"], 208: ["uploads/local/208/g1.jpg"],
+  349: ["uploads/local/349/g1.jpg"], 350: ["uploads/local/350/g1.jpg"], 351: ["uploads/local/351/g1.jpg"], 352: ["uploads/local/352/g1.jpg"], 353: ["uploads/local/353/g1.jpg"],
+  233: ["uploads/local/233/g1.jpg"], 177: ["uploads/local/177/g1.jpg"], 178: ["uploads/local/178/g1.jpg"], 174: ["uploads/local/174/g1.jpg"],
+  211: ["uploads/local/211/g1.jpg"], 175: ["uploads/local/175/g1.jpg"], 176: ["uploads/local/176/g1.jpg"], 212: ["uploads/local/212/g1.jpg"], 210: ["uploads/local/210/g1.jpg"],
+  256: ["uploads/local/256/g1.jpg"], 255: ["uploads/local/255/g1.jpg"], 257: ["uploads/local/257/g1.jpg"], 254: ["uploads/local/254/g1.jpg"],
+  32: ["uploads/local/32/g1.jpg"], 34: ["uploads/local/34/g1.jpg"], 27: ["uploads/local/27/g1.jpg"], 26: ["uploads/local/26/g1.jpg"],
+  206: ["uploads/local/206/g1.jpg"], 205: ["uploads/local/205/g1.jpg"], 202: ["uploads/local/202/g1.jpg"],
+  295: ["uploads/local/295/g1.jpg"], 305: ["uploads/local/305/g1.jpg"], 302: ["uploads/local/302/g1.jpg"], 301: ["uploads/local/301/g1.jpg"],
+  300: ["uploads/local/300/g1.jpg"], 299: ["uploads/local/299/g1.jpg"], 298: ["uploads/local/298/g1.jpg"], 304: ["uploads/local/304/g1.jpg"],
+  303: ["uploads/local/303/g1.jpg"], 296: ["uploads/local/296/g1.jpg"], 297: ["uploads/local/297/g1.jpg"], 291: ["uploads/local/291/g1.jpg"],
+  290: ["uploads/local/290/g1.jpg"], 294: ["uploads/local/294/g1.jpg"], 345: ["uploads/local/345/g1.jpg"], 344: ["uploads/local/344/g1.jpg"],
+  183: ["uploads/local/183/g1.jpg"],
+};
+const _CONSTR_LOCAL = {
+  2: "uploads/local/2/c1.jpg", 271: "uploads/local/271/c1.jpg", 270: "uploads/local/270/c1.jpg",
+  268: "uploads/local/268/c1.jpg", 342: "uploads/local/342/c1.jpg", 245: "uploads/local/245/c1.jpg",
+  244: "uploads/local/244/c1.jpg", 243: "uploads/local/243/c1.jpg", 242: "uploads/local/242/c1.jpg",
+  11: "uploads/local/11/c1.jpg", 12: "uploads/local/12/c1.jpg", 13: "uploads/local/13/c1.jpg",
+  14: "uploads/local/14/c1.jpg", 173: "uploads/local/173/c1.jpg", 171: "uploads/local/171/c1.jpg",
+  209: "uploads/local/209/c1.jpg", 17: "uploads/local/17/c1.jpg", 164: "uploads/local/164/c1.jpg",
+  356: "uploads/local/356/c1.jpg", 358: "uploads/local/358/c1.jpg", 354: "uploads/local/354/c1.jpg",
+  357: "uploads/local/357/c1.jpg", 163: "uploads/local/163/c1.jpg", 232: "uploads/local/232/c1.jpg",
+  162: "uploads/local/162/c1.jpg",
+  246: "uploads/local/246/c1.jpg", 247: "uploads/local/247/c1.jpg", 248: "uploads/local/248/c1.jpg", 249: "uploads/local/249/c1.jpg",
+  334: "uploads/local/334/c1.jpg", 335: "uploads/local/335/c1.jpg", 126: "uploads/local/126/c1.jpg", 124: "uploads/local/124/c1.jpg",
+  369: "uploads/local/369/c1.jpg", 370: "uploads/local/370/c1.jpg", 371: "uploads/local/371/c1.jpg", 372: "uploads/local/372/c1.jpg", 373: "uploads/local/373/c1.jpg",
+  135: "uploads/local/135/c1.jpg", 238: "uploads/local/238/c1.jpg", 239: "uploads/local/239/c1.jpg", 240: "uploads/local/240/c1.jpg", 241: "uploads/local/241/c1.jpg",
+  115: "uploads/local/115/c1.jpg", 144: "uploads/local/144/c1.jpg", 145: "uploads/local/145/c1.jpg",
+  375: "uploads/local/375/c1.jpg", 376: "uploads/local/376/c1.jpg", 377: "uploads/local/377/c1.jpg", 378: "uploads/local/378/c1.jpg",
+  110: "uploads/local/110/c1.jpg", 108: "uploads/local/108/c1.jpg", 107: "uploads/local/107/c1.jpg",
+  250: "uploads/local/250/c1.jpg", 251: "uploads/local/251/c1.jpg", 252: "uploads/local/252/c1.jpg", 253: "uploads/local/253/c1.jpg",
+  22: "uploads/local/22/c1.jpg", 23: "uploads/local/23/c1.jpg", 24: "uploads/local/24/c1.jpg", 25: "uploads/local/25/c1.jpg",
+  40: "uploads/local/40/c1.jpg", 41: "uploads/local/41/c1.jpg", 208: "uploads/local/208/c1.jpg",
+  349: "uploads/local/349/c1.jpg", 350: "uploads/local/350/c1.jpg", 351: "uploads/local/351/c1.jpg", 352: "uploads/local/352/c1.jpg", 353: "uploads/local/353/c1.jpg",
+  233: "uploads/local/233/c1.jpg", 177: "uploads/local/177/c1.jpg", 178: "uploads/local/178/c1.jpg", 174: "uploads/local/174/c1.jpg",
+  211: "uploads/local/211/c1.jpg", 175: "uploads/local/175/c1.jpg", 176: "uploads/local/176/c1.jpg", 212: "uploads/local/212/c1.jpg",
+  255: "uploads/local/255/c1.jpg", 257: "uploads/local/257/c1.jpg", 254: "uploads/local/254/c1.jpg",
+  32: "uploads/local/32/c1.jpg", 34: "uploads/local/34/c1.jpg", 27: "uploads/local/27/c1.jpg", 26: "uploads/local/26/c1.jpg",
+  183: "uploads/local/183/c1.jpg",
+};
+
 const _slug = (n) => n.toLowerCase().replace(/[()]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 // 판매수: 제품명 기반 결정론적 해시 (30~520박스). 실제 판매 데이터 연동 전까지의 기준값.
@@ -519,6 +613,7 @@ const PRODUCTS = _ROWS.map(([idx, name, price, img, size, spec, color, origin, p
     color, origin: origin === "미기재" ? "중국산" : origin,
     pcsPerBox, coverageM2PerBox, sales: _sales(name), salesBoxes: _sales(name),
     installedImg: _INSTALLED_LOCAL[idx] || (gal && gal.length > 3 ? gal[gal.length - 1] : null),
+    installedImg2: _INSTALLED_LOCAL2[idx] || null,
     areaLabel: `1BOX = ${pcsPerBox}pcs = ${coverageM2PerBox}㎡`,
     _nick: _nickname2(name),
   };

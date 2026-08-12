@@ -10,7 +10,7 @@
 <helmet>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>주문 관리 — SSOL TILE</title>
+  <title>주문 관리 — MOKTO 타일</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -23,17 +23,18 @@ input, select, button { font-family: inherit; }
   </style>
 </helmet>
 
-<header style="background:var(--deep-green);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200">
+<header style="background:#1a3a30;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200">
   <div style="display:flex;align-items:baseline;gap:14px">
-    <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff"><span style="color:#cc8542">SSOL</span> TILE</a>
-    <span style="color:rgba(255,255,255,0.5);font-size:12px;font-weight:700;letter-spacing:0.12em">ADMIN</span>
+    <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff;text-decoration:none"><span style="color:#cc8542">MOK</span>TO<em style="font-family:'Public Sans',sans-serif;font-style:normal;font-weight:600;font-size:11px;letter-spacing:0.14em;color:rgba(255,255,255,0.55);margin-left:9px">ADMIN</em></a>
   </div>
-  <nav style="display:flex;gap:20px;align-items:center">
-    <a href="Admin.dc.html" style="color:rgba(255,255,255,0.75);font-size:13px;font-weight:600">제품 관리</a>
-    <a href="Orders.dc.html" style="color:#cc8542;font-size:13px;font-weight:700">주문 관리</a>
-    <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600">{{ sessionLabel }}</span>
-    <a href="Login.dc.html" onClick="{{ onLogout }}" style="color:rgba(255,255,255,0.55);font-size:13px;font-weight:600">로그아웃</a>
+  <nav style="display:flex;gap:28px;align-items:center;justify-content:center">
+    <a href="Admin.dc.html" style="color:rgba(255,255,255,0.75);font-size:13px;font-weight:600;text-decoration:none">제품 관리</a>
+    <a href="Orders.dc.html" style="color:#cc8542;font-size:13px;font-weight:700;text-decoration:none">주문 관리</a>
   </nav>
+  <div style="display:flex;align-items:center;gap:16px">
+    <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600">{{ sessionLabel }}</span>
+    <a href="Login.dc.html" onClick="{{ onLogout }}" style="color:rgba(255,255,255,0.55);font-size:13px;font-weight:600;text-decoration:none">로그아웃</a>
+  </div>
 </header>
 
 <sc-if value="{{ notAdmin }}" hint-placeholder-val="{{ false }}">
@@ -44,7 +45,7 @@ input, select, button { font-family: inherit; }
   </div>
 </sc-if>
 
-<main style="max-width:1320px;margin:0 auto;padding:32px;display:{{ mainDisplay }}">
+<main style="max-width:1320px;margin:0 auto;padding:32px;display:{{ mainDisplay }};overflow-x:auto">
 
   <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px">
     <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px">
@@ -161,12 +162,13 @@ input, select, button { font-family: inherit; }
       </sc-for>
     </div>
 
-    <div style="display:grid;grid-template-columns:124px 132px 150px 220px 78px 104px 96px 96px;gap:10px;padding:11px 24px;background:rgba(26,58,48,0.04);font-size:11.5px;font-weight:700;color:var(--muted);align-items:center;min-width:1060px">
-      <span>주문번호</span><span>주문일시</span><span>거래처</span><span>제품</span><span>수량</span><span>금액</span><span>상태</span><span>알림</span>
+<sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+    <div style="display:grid;grid-template-columns:120px 125px 145px 200px 75px 100px 100px 1fr;gap:10px;padding:11px 24px;background:rgba(26,58,48,0.04);font-size:11.5px;font-weight:700;color:var(--muted);align-items:center;min-width:1200px">
+      <span>주문번호</span><span>주문일시</span><span>거래처</span><span>제품</span><span>수량</span><span>금액</span><span>상태</span><span>진행</span>
     </div>
 
     <sc-for list="{{ orders }}" as="o" hint-placeholder-count="10">
-      <div style="display:grid;grid-template-columns:124px 132px 150px 220px 78px 104px 96px 96px;gap:10px;padding:11px 24px;align-items:center;border-bottom:1px solid var(--border);min-width:1060px">
+      <div style="display:grid;grid-template-columns:120px 125px 145px 200px 75px 100px 100px 1fr;gap:10px;padding:8px 24px;align-items:center;border-bottom:1px solid var(--border);min-width:1200px;min-height:48px">
         <span style="font-size:12.5px;font-weight:700">{{ o.no }}</span>
         <span style="font-size:12.5px;color:var(--muted)">{{ o.date }}</span>
         <div style="min-width:0">
@@ -179,14 +181,58 @@ input, select, button { font-family: inherit; }
         </div>
         <span style="font-size:12.5px">{{ o.boxes }}</span>
         <span style="font-size:12.5px;font-weight:700">{{ o.amount }}</span>
-        <select value="{{ o.status }}" onChange="{{ o.onStatus }}" style="padding:5px 7px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:#fff">
-          <sc-for list="{{ o.statusOptions }}" as="s" hint-placeholder-count="4">
-            <option value="{{ s.value }}" selected="{{ s.selected }}">{{ s.label }}</option>
-          </sc-for>
-        </select>
-        <button onClick="{{ o.onNotify }}" style="border:1px solid {{ o.notifyBorder }};background:{{ o.notifyBg }};color:{{ o.notifyFg }};border-radius:6px;padding:5px 0;font-size:11.5px;font-weight:700;cursor:pointer">{{ o.notifyLabel }}</button>
+        <div style="position:relative">
+          <div onClick="{{ o.onStatusToggle }}" style="display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 10px;border-radius:6px;background:{{ o.statusBg }};font-size:11.5px;font-weight:600;color:{{ o.statusFg }};text-align:center;white-space:nowrap;min-height:32px;cursor:pointer">{{ o.statusLabel }} <span style="font-size:9px">▾</span></div>
+          <sc-if value="{{ o.statusDropdownOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:36px;left:0;z-index:60;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.15);overflow:hidden;min-width:100px">
+              <sc-for list="{{ o.statusOptions }}" as="opt" hint-placeholder-count="5">
+                <div onClick="{{ opt.onPick }}" style="padding:8px 12px;font-size:12px;font-weight:600;cursor:pointer;color:#2b1a12;background:{{ opt.bg }}">{{ opt.label }}</div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;min-width:0;width:300px;justify-self:end;margin-right:12px">
+          <button onClick="{{ o.onConfirm }}" style="border:1px solid {{ o.confirmBorder }};background:{{ o.confirmBg }};color:{{ o.confirmFg }};border-radius:6px;padding:5px 6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;text-align:center;min-height:32px;display:flex;align-items:center;justify-content:center">{{ o.confirmLabel }}</button>
+          <button onClick="{{ o.onQuote }}" style="border:1px solid {{ o.quoteBorder }};background:{{ o.quoteBg }};color:{{ o.quoteFg }};border-radius:6px;padding:5px 6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;text-align:center;min-height:32px;display:flex;align-items:center;justify-content:center;opacity:{{ o.quoteOpacity }}">{{ o.quoteLabel }}</button>
+          <button onClick="{{ o.onShip }}" style="border:1px solid {{ o.shipBorder }};background:{{ o.shipBg }};color:{{ o.shipFg }};border-radius:6px;padding:5px 6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;text-align:center;min-height:32px;display:flex;align-items:center;justify-content:center;opacity:{{ o.shipOpacity }}">{{ o.shipLabel }}</button>
+          <div style="position:relative">
+            <button onClick="{{ o.onCancel }}" style="border:1px solid {{ o.cancelBorder }};background:{{ o.cancelBg }};color:{{ o.cancelFg }};border-radius:6px;padding:5px 6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;text-align:center;min-height:32px;display:flex;align-items:center;justify-content:center;width:100%">{{ o.cancelLabel }}</button>
+            <sc-if value="{{ o.cancelPopoverOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;bottom:38px;left:50%;transform:translateX(-50%);background:#2b1a12;color:#fff;padding:10px 12px;border-radius:8px;font-size:12px;white-space:nowrap;z-index:70;box-shadow:0 6px 16px rgba(0,0,0,0.3)">
+                <div style="margin-bottom:8px">정말 취소하시겠습니까?</div>
+                <div style="display:flex;gap:6px;justify-content:center">
+                  <button onClick="{{ o.onCancelYes }}" style="background:#c9610d;color:#fff;border:none;border-radius:5px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer">예</button>
+                  <button onClick="{{ o.onCancelNo }}" style="background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:5px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer">아니오</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+          <button onClick="{{ o.onComplete }}" style="border:1px solid {{ o.completeBorder }};background:{{ o.completeBg }};color:{{ o.completeFg }};border-radius:6px;padding:5px 6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;text-align:center;min-height:32px;display:flex;align-items:center;justify-content:center;opacity:{{ o.completeOpacity }}" disabled="{{ o.completeDisabled }}">{{ o.completeLabel }}</button>
+        </div>
       </div>
     </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <sc-for list="{{ orders }}" as="o" hint-placeholder-count="10">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:6px">
+          <div style="min-width:0">
+            <div style="font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.product }}</div>
+            <div style="font-size:11.5px;color:var(--muted)">{{ o.spec }} · {{ o.boxes }}박스 · {{ o.amount }}</div>
+          </div>
+          <div style="position:relative">
+            <div onClick="{{ o.onStatusToggle }}" style="display:flex;align-items:center;justify-content:center;gap:4px;padding:9px 12px;border-radius:8px;background:{{ o.statusBg }};font-size:13px;font-weight:700;color:{{ o.statusFg }};text-align:center;white-space:nowrap">{{ o.statusLabel }} <span style="font-size:10px">▾</span></div>
+            <sc-if value="{{ o.statusDropdownOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:42px;left:0;right:0;z-index:60;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.15);overflow:hidden">
+                <sc-for list="{{ o.statusOptions }}" as="opt" hint-placeholder-count="5">
+                  <div onClick="{{ opt.onPick }}" style="padding:11px 14px;font-size:13px;font-weight:600;cursor:pointer;color:#2b1a12;background:{{ opt.bg }}">{{ opt.label }}</div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+    </sc-if>
 
     <sc-if value="{{ noOrders }}" hint-placeholder-val="{{ false }}">
       <div style="padding:48px 24px;text-align:center;color:var(--muted);font-size:14px">해당 기간에 주문이 없습니다.</div>
@@ -201,6 +247,7 @@ const SESSION_KEY = 'ssol_session';
 const ORDERS_KEY = 'ssol_orders';
 const NOTIFY_KEY = 'ssol_notify_config';
 const LOG_KEY = 'ssol_notify_log';
+const MESSENGERS_KEY = 'ssol_admin_messengers';
 
 const STATUSES = ['신규', '확인', '출고', '완료', '취소'];
 const COMPANIES = [
@@ -215,12 +262,15 @@ const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())
 class Component extends DCLogic {
   state = {
     session: null, orders: [], query: '', status: '전체',
+    isMobile: typeof window !== 'undefined' && window.innerWidth <= 768,
     from: '', to: '', activeRange: '30일',
     config: { kakao: true, telegram: false, channel: '@ssoltile', template: 'ORDER_NEW_01', token: '', chat: '', events: ['신규 주문', '출고 처리'] },
-    logs: [],
+    logs: [], sentQuotes: {}, cancelPopover: {}, statusDropdown: {},
   };
 
   componentDidMount() {
+    this._onResize = () => this.setState({ isMobile: window.innerWidth <= 768 });
+    window.addEventListener('resize', this._onResize, { passive: true });
     const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || d); } catch (e) { return JSON.parse(d); } };
     const session = read(SESSION_KEY, 'null');
     const config = read(NOTIFY_KEY, 'null') || this.state.config;
@@ -254,7 +304,7 @@ class Component extends DCLogic {
       d.setDate(d.getDate() - Math.floor(rnd() * 45));
       d.setHours(9 + Math.floor(rnd() * 9), Math.floor(rnd() * 60), 0, 0);
       const boxes = 5 + Math.floor(rnd() * 60);
-      const status = STATUSES[Math.min(4, Math.floor(rnd() * 4.4))];
+      const status = '신규';
       out.push({
         no: 'SO-' + ymd(d).replace(/-/g, '').slice(2) + '-' + pad(i + 1),
         at: d.toISOString(), company, phone,
@@ -290,9 +340,173 @@ class Component extends DCLogic {
   notify(order) {
     const { kakao, telegram } = this.state.config;
     if (!kakao && !telegram) { this.addLog('오류', '발송 채널이 모두 꺼져 있습니다.'); return; }
+    
+    const messengers = (() => { try { return JSON.parse(localStorage.getItem(MESSENGERS_KEY) || '{}'); } catch (e) { return {}; } })();
+    const tgEnabled = messengers.telegram && messengers.telegram.enabled && messengers.telegram.token && messengers.telegram.chatId;
+    
+    if (telegram && tgEnabled) {
+      const tgMessage = `📦 *새 주문 알림*\n\n주문번호: ${order.no}\n거래처: ${order.company}\n제품: ${order.product}\n수량: ${order.boxes}박스\n금액: ${Number(order.amount).toLocaleString('ko-KR')}원`;
+      this.sendTelegram(messengers.telegram.token, messengers.telegram.chatId, tgMessage);
+      setTimeout(() => this.sendQuotePDF(order, messengers.telegram.token, messengers.telegram.chatId), 500);
+    }
+    
     const channel = kakao && telegram ? '카카오+텔레그램' : kakao ? '카카오' : '텔레그램';
     this.addLog(channel, `${order.no} · ${order.company} · ${order.product} ${order.boxes}박스 발송`);
     this.updateOrder(order.no, { notified: true });
+  }
+
+  sendTelegram(token, chatId, message, replyMarkup) {
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    const data = { chat_id: chatId, text: message, parse_mode: 'Markdown' };
+    if (replyMarkup) data.reply_markup = replyMarkup;
+    fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+      .then(r => r.json())
+      .then(j => {
+        if (j.ok) this.addLog('텔레그램', '✓ 텔레그램 메시지 전송 성공');
+        else this.addLog('텔레그램', `⚠ 오류: ${j.description || '알 수 없는 오류'}`);
+      })
+      .catch(e => this.addLog('텔레그램', `⚠ 네트워크 오류: ${e.message}`));
+  }
+
+  generateQuotePDF(order) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1200;
+    canvas.height = 700;
+    const ctx = canvas.getContext('2d');
+    
+    // 배경
+    ctx.fillStyle = '#f2ede4';
+    ctx.fillRect(0, 0, 1200, 700);
+    
+    // 헤더 영역
+    ctx.fillStyle = '#2b1a12';
+    ctx.fillRect(0, 0, 1200, 100);
+    
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 48px Arial';
+    ctx.fillText('MOKTO 타일', 50, 65);
+    
+    ctx.font = '14px Arial';
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillText('MOK TO TILE CO.', 50, 85);
+    
+    // 제목
+    ctx.fillStyle = '#c9610d';
+    ctx.font = 'bold 36px Arial';
+    ctx.fillText('견 적 서', 950, 65);
+    
+    // 구분선
+    ctx.strokeStyle = '#e0dcd0';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(50, 120);
+    ctx.lineTo(1150, 120);
+    ctx.stroke();
+    
+    // 발행일 / 유효기간
+    const date = new Date();
+    const dateStr = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+    const expDate = new Date(date);
+    expDate.setDate(expDate.getDate() + 7);
+    const expStr = `${expDate.getFullYear()}-${String(expDate.getMonth()+1).padStart(2,'0')}-${String(expDate.getDate()).padStart(2,'0')}`;
+    
+    ctx.font = '13px Arial';
+    ctx.fillStyle = '#666';
+    ctx.fillText(`발행일: ${dateStr}`, 50, 160);
+    ctx.fillText(`유효기간: ${expStr}까지`, 400, 160);
+    
+    // 거래처 정보
+    ctx.fillStyle = '#1a3a30';
+    ctx.font = 'bold 13px Arial';
+    ctx.fillText('거래처', 50, 200);
+    
+    ctx.fillStyle = '#333';
+    ctx.font = '13px Arial';
+    ctx.fillText(`회사명: ${order.company}`, 50, 230);
+    ctx.fillText(`연락처: ${order.phone}`, 50, 255);
+    
+    // 제품 정보 테이블 헤더
+    ctx.fillStyle = '#1a3a30';
+    ctx.fillRect(50, 290, 1100, 35);
+    
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 13px Arial';
+    ctx.fillText('항목', 70, 315);
+    ctx.fillText('규격', 250, 315);
+    ctx.fillText('수량', 500, 315);
+    ctx.fillText('단가', 650, 315);
+    ctx.fillText('합계', 850, 315);
+    
+    // 제품 정보 테이블 바디
+    ctx.fillStyle = '#f9f9f9';
+    ctx.fillRect(50, 325, 1100, 80);
+    
+    ctx.fillStyle = '#333';
+    ctx.font = '13px Arial';
+    ctx.fillText(order.product, 70, 360);
+    ctx.fillText(order.spec, 250, 360);
+    ctx.fillText(`${order.boxes}박스`, 500, 360);
+    ctx.fillText(`${(order.price || 0).toLocaleString('ko-KR')}원`, 650, 360);
+    ctx.fillText(`${Number(order.amount).toLocaleString('ko-KR')}원`, 850, 360);
+    
+    // 부가세 계산
+    const baseAmount = Math.round(order.amount / 1.1);
+    const vat = order.amount - baseAmount;
+    
+    // 합계 영역
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(50, 405, 1100, 95);
+    ctx.strokeStyle = '#1a3a30';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(50, 405, 1100, 95);
+    
+    ctx.fillStyle = '#666';
+    ctx.font = '12px Arial';
+    ctx.fillText(`공급가액: ${baseAmount.toLocaleString('ko-KR')}원`, 900, 430);
+    ctx.fillText(`부가세(10%): ${vat.toLocaleString('ko-KR')}원`, 900, 450);
+    
+    ctx.fillStyle = '#1a3a30';
+    ctx.font = 'bold 14px Arial';
+    ctx.fillText('합계', 900, 475);
+    
+    ctx.fillStyle = '#8b7a5e';
+    ctx.font = 'bold 18px Arial';
+    ctx.fillText(`${Number(order.amount).toLocaleString('ko-KR')}원`, 900, 495);
+    
+    // 주의사항
+    ctx.fillStyle = '#666';
+    ctx.font = '12px Arial';
+    ctx.fillText('※ 본 견적서는 정보 제공용이며, 최종 확정은 추가 협의를 통해 결정됩니다.', 50, 590);
+    ctx.fillText('※ 배송료, 설치비 등 추가 비용이 발생할 수 있습니다.', 50, 615);
+    
+    // 연락처
+    ctx.fillStyle = '#1a3a30';
+    ctx.font = 'bold 12px Arial';
+    ctx.fillText('MOKTO TILE | 문의: 010-1234-5678 | Email: info@mokto.com', 50, 670);
+    
+    return canvas.toDataURL('image/png');
+  }
+
+  sendQuotePDF(order, token, chatId) {
+    const pngData = this.generateQuotePDF(order);
+    const caption = `📄 견적서\n주문: ${order.no}\n거래처: ${order.company}\n금액: ${Number(order.amount).toLocaleString('ko-KR')}원`;
+    const url = `https://api.telegram.org/bot${token}/sendPhoto`;
+    const formData = new FormData();
+    fetch(pngData)
+      .then(res => res.blob())
+      .then(blob => {
+        formData.append('chat_id', chatId);
+        formData.append('photo', blob);
+        formData.append('caption', caption);
+        formData.append('parse_mode', 'Markdown');
+        return fetch(url, { method: 'POST', body: formData });
+      })
+      .then(r => r.json())
+      .then(j => {
+        if (j.ok) this.addLog('텔레그램', '✓ 견적서 PDF 전송 성공');
+        else this.addLog('텔레그램', `⚠ 견적서 전송 오류`);
+      })
+      .catch(e => this.addLog('텔레그램', `⚠ 견적서 오류: ${e.message}`));
   }
 
   quickRange(label) {
@@ -335,20 +549,117 @@ class Component extends DCLogic {
       label: l, onClick: () => this.quickRange(l), ...chip(l === activeRange),
     }));
 
+    const statusInfo = (status) => {
+      const map = {
+        '신규': { label: '신규 주문', bg: '#e8e3d9', fg: '#5a4d44' },
+        '확인': { label: '주문 확인됨', bg: '#dde8d9', fg: '#4a5a3f' },
+        '출고': { label: '배송 중', bg: '#d9e3e8', fg: '#3f4a5a' },
+        '완료': { label: '완료', bg: '#d9e0e8', fg: '#3f474f' },
+        '취소': { label: '취소됨', bg: '#e8d9d9', fg: '#5a3f3f' },
+      };
+      return map[status] || { label: status, bg: '#e8e3d9', fg: '#5a4d44' };
+    };
+
     const rows = filtered.map(o => {
       const d = new Date(o.at);
+      const isNew = o.status === '신규';
+      const isConfirmed = o.status === '확인';
+      const isShipped = o.status === '출고';
+      const isDone = o.status === '완료';
+      const isCancelled = o.status === '취소';
+      const terminal = isDone || isCancelled;
+      const quoted = !!this.state.sentQuotes[o.no];
+      const canConfirm = !terminal && isNew;
+      const canQuote = !terminal && (isConfirmed || isShipped);
+      const canShip = !terminal && isConfirmed;
+      const canCancel = !terminal && (isNew || isConfirmed || isShipped);
+      const canComplete = !terminal && ((isConfirmed && quoted) || isShipped);
+      const statusData = statusInfo(o.status);
       return {
         no: o.no, date: `${ymd(d).slice(2)} ${pad(d.getHours())}:${pad(d.getMinutes())}`,
         company: o.company, phone: o.phone, product: o.product, spec: o.spec,
         boxes: won(o.boxes) + '박스', amount: won(o.amount) + '원',
+        statusLabel: statusData.label, statusBg: statusData.bg, statusFg: statusData.fg,
         status: o.status,
-        statusOptions: STATUSES.map(s => ({ value: s, label: s, selected: s === o.status })),
-        onStatus: e => this.updateOrder(o.no, { status: e.target.value }),
-        notifyLabel: o.notified ? '발송됨' : '발송',
-        notifyBg: o.notified ? 'transparent' : '#b5651d',
-        notifyFg: o.notified ? '#6b6b6b' : '#fff',
-        notifyBorder: o.notified ? '#e0dcd0' : '#b5651d',
-        onNotify: () => this.notify(o),
+        statusDropdownOpen: !!this.state.statusDropdown[o.no],
+        onStatusToggle: () => this.setState({ statusDropdown: { ...this.state.statusDropdown, [o.no]: !this.state.statusDropdown[o.no] } }),
+        statusOptions: STATUSES.map(s => ({
+          value: s, label: s, bg: s === o.status ? 'rgba(26,58,48,0.08)' : '#fff',
+          onPick: () => { this.updateOrder(o.no, { status: s }); this.setState({ statusDropdown: { ...this.state.statusDropdown, [o.no]: false } }); },
+        })),
+        onConfirm: () => {
+          if (!canConfirm) return;
+          this.updateOrder(o.no, { status: '확인' });
+          this.addLog('주문확인', `${o.no} · ${o.company} 주문 확인 처리`);
+          const messengers = (() => { try { return JSON.parse(localStorage.getItem(MESSENGERS_KEY) || '{}'); } catch (e) { return {}; } })();
+          const tgEnabled = messengers.telegram && messengers.telegram.enabled && messengers.telegram.token && messengers.telegram.chatId;
+          if (tgEnabled) {
+            const msg = `✅ *주문 확인 완료*\n\n주문번호: ${o.no}\n거래처: ${o.company}\n제품: ${o.product}\n\n견적서를 보내시겠습니까?`;
+            const markup = { inline_keyboard: [[{ text: '📄 견적서 보내기', callback_data: `quote_${o.no}` }]] };
+            this.sendTelegram(messengers.telegram.token, messengers.telegram.chatId, msg, markup);
+          }
+        },
+        confirmLabel: '확인',
+        confirmBg: canConfirm ? '#6b7a6a' : '#e8e3d9',
+        confirmFg: canConfirm ? '#fff' : '#b0a8a0',
+        confirmBorder: canConfirm ? '#6b7a6a' : '#d5cfc3',
+        onQuote: () => {
+          if (!canQuote) return;
+          this.addLog('견적서', `${o.no} · ${o.company} 견적서 발송`);
+          const sentQuotes = { ...this.state.sentQuotes, [o.no]: true };
+          this.setState({ sentQuotes });
+          const messengers = (() => { try { return JSON.parse(localStorage.getItem(MESSENGERS_KEY) || '{}'); } catch (e) { return {}; } })();
+          const tgEnabled = messengers.telegram && messengers.telegram.enabled && messengers.telegram.token && messengers.telegram.chatId;
+          if (tgEnabled) {
+            setTimeout(() => this.sendQuotePDF(o, messengers.telegram.token, messengers.telegram.chatId), 200);
+          }
+        },
+        quoteBg: canQuote ? (quoted ? '#7a8b6a' : '#8b7a5e') : '#e8e3d9',
+        quoteFg: canQuote ? '#fff' : '#b0a8a0',
+        quoteBorder: canQuote ? (quoted ? '#7a8b6a' : '#8b7a5e') : '#d5cfc3',
+        quoteOpacity: canQuote ? 1 : 0.5,
+        quoteLabel: quoted ? '✓ 발송됨' : '견적',
+        onShip: () => {
+          if (!canShip) return;
+          this.updateOrder(o.no, { status: '출고' });
+          this.addLog('배송알림', `${o.no} · ${o.company} 배송 시작 알림 · 고객+관리자 발송`);
+          const messengers = (() => { try { return JSON.parse(localStorage.getItem(MESSENGERS_KEY) || '{}'); } catch (e) { return {}; } })();
+          const tgEnabled = messengers.telegram && messengers.telegram.enabled && messengers.telegram.token && messengers.telegram.chatId;
+          if (tgEnabled) {
+            const shipMsg = `🚚 *배송 시작 알림*\n\n주문번호: ${o.no}\n거래처: ${o.company}\n연락처: ${o.phone}\n배송일시: ${ymd(new Date())}`;
+            this.sendTelegram(messengers.telegram.token, messengers.telegram.chatId, shipMsg);
+          }
+        },
+        shipLabel: '배송',
+        shipBg: canShip ? '#7a8b6a' : '#e8e3d9',
+        shipFg: canShip ? '#fff' : '#b0a8a0',
+        shipBorder: canShip ? '#7a8b6a' : '#d5cfc3',
+        shipOpacity: canShip ? 1 : 0.5,
+        cancelPopoverOpen: !!this.state.cancelPopover[o.no],
+        onCancel: () => { if (canCancel) this.setState({ cancelPopover: { ...this.state.cancelPopover, [o.no]: true } }); },
+        onCancelYes: () => {
+          this.updateOrder(o.no, { status: '취소' });
+          this.setState({ cancelPopover: { ...this.state.cancelPopover, [o.no]: false } });
+          this.addLog('취소알림', `${o.no} · ${o.company} 주문 취소 알림 · 고객+관리자 발송`);
+          const messengers = (() => { try { return JSON.parse(localStorage.getItem(MESSENGERS_KEY) || '{}'); } catch (e) { return {}; } })();
+          const tgEnabled = messengers.telegram && messengers.telegram.enabled && messengers.telegram.token && messengers.telegram.chatId;
+          if (tgEnabled) {
+            const cancelMsg = `❌ *주문 취소 안내*\n\n주문번호: ${o.no}\n거래처: ${o.company}\n연락처: ${o.phone}`;
+            this.sendTelegram(messengers.telegram.token, messengers.telegram.chatId, cancelMsg);
+          }
+        },
+        onCancelNo: () => this.setState({ cancelPopover: { ...this.state.cancelPopover, [o.no]: false } }),
+        cancelLabel: '취소',
+        cancelBg: canCancel ? '#8b6f6a' : '#e8e3d9',
+        cancelFg: canCancel ? '#fff' : '#b0a8a0',
+        cancelBorder: canCancel ? '#8b6f6a' : '#d5cfc3',
+        onComplete: () => { if (canComplete) this.updateOrder(o.no, { status: '완료' }); },
+        completeLabel: '완료',
+        completeBg: canComplete ? '#6a7b8b' : '#e8e3d9',
+        completeFg: canComplete ? '#fff' : '#b0a8a0',
+        completeBorder: canComplete ? '#6a7b8b' : '#d5cfc3',
+        completeOpacity: canComplete ? 1 : 0.5,
+        completeDisabled: !canComplete,
       };
     });
 
@@ -372,6 +683,7 @@ class Component extends DCLogic {
       kpiNotified: won(ranged.filter(o => o.notified).length),
       kpiNotSent: won(ranged.filter(o => !o.notified).length),
       orders: rows, noOrders: rows.length === 0, listCount: filtered.length + '건',
+      isMobile: this.state.isMobile, isDesktop: !this.state.isMobile,
       statusFilters, quickRanges,
       from, to, query,
       onFrom: e => this.setState({ from: e.target.value, activeRange: '' }),
@@ -387,7 +699,16 @@ class Component extends DCLogic {
       onTgToken: e => this.setConfig({ token: e.target.value }),
       onTgChat: e => this.setConfig({ chat: e.target.value }),
       events,
-      onTestSend: () => this.addLog(config.kakao && config.telegram ? '카카오+텔레그램' : config.kakao ? '카카오' : config.telegram ? '텔레그램' : '오류', '테스트 메시지 발송'),
+      onTestSend: () => {
+        const messengers = (() => { try { return JSON.parse(localStorage.getItem(MESSENGERS_KEY) || '{}'); } catch (e) { return {}; } })();
+        const tgEnabled = messengers.telegram && messengers.telegram.enabled && messengers.telegram.token && messengers.telegram.chatId;
+        if (config.telegram && tgEnabled) {
+          const testMsg = '🧪 MOKTO 타일 주문 관리 시스템 테스트 메시지\n\n텔레그램 봇 연동이 정상 작동합니다.';
+          this.sendTelegram(messengers.telegram.token, messengers.telegram.chatId, testMsg);
+        } else {
+          this.addLog('오류', '텔레그램이 활성화되지 않았거나 설정이 불완전합니다.');
+        }
+      },
       logs, noLogs: logs.length === 0,
     };
   }

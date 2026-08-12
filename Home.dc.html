@@ -31,36 +31,39 @@ html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--deep-green); color: var(--text); font-family: 'Public Sans', sans-serif; line-height: 1.6; }
 main { max-width: 1200px; margin: 0 auto; padding: 48px 32px 80px; position: relative; }
 header {
-  background: var(--deep-green); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 32px;
+  background: linear-gradient(180deg, rgba(43,26,18,0.65) 0%, rgba(43,26,18,0.3) 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.08); padding: 18px 32px;
   display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px;
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000; width: 100%; box-sizing: border-box;
 }
+.header-right { display: flex; align-items: center; justify-content: flex-end; flex-wrap: nowrap; min-width: 0; gap: 10px; line-height: 1; align-self: center; height: max-content; }
 body { padding-top: 84px; }
 .logo { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 24px; letter-spacing: -0.02em; color: #fff; text-decoration: none; line-height: 1; display: flex; align-items: center; }
 .logo span { color: var(--terra-light); }
 nav { display: flex; gap: 28px; justify-content: center; }
 .header-left { display: flex; align-items: center; min-width: 0; overflow: hidden; }
-.header-right { display: flex; align-items: center; justify-content: flex-end; }
-nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 16px; font-weight: 600; transition: color 0.2s; }
 nav a:hover { color: var(--terra-light); }
 .quote-btn {
-  font-family: 'Public Sans', sans-serif; font-size: 13.5px; font-weight: 700; cursor: pointer;
-  background: var(--terra); color: #fff; border: none; padding: 10px 20px; border-radius: 100px;
+  font-family: 'Public Sans', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; line-height: 1;
+  background: var(--terra); color: #fff; border: none; padding: 9px 18px; border-radius: 100px;
+  align-self: center; height: max-content; white-space: nowrap; flex-shrink: 0;
   transition: background 0.2s;
 }
 .quote-btn:hover { background: var(--terra-light); }
 
 .hero {
-  position: relative; background: var(--deep-green); color: #fff; min-height: 460px; overflow: hidden;
-  max-width: 1210px; margin: 0 auto;
+  position: relative; background: var(--deep-green); color: #fff; min-height: 620px; overflow: hidden;
+  width: 100%; margin: -84px 0 0;
   box-shadow: 0 30px 70px rgba(10,6,3,0.55), 0 10px 24px rgba(10,6,3,0.4);
 }
 .hero-slide {
   position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1;
-  object-fit: cover; object-position: center;
   opacity: 0;
   animation-name: heroFade; animation-iteration-count: infinite;
 }
+.hero-slide-half { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-slide-left { clip-path: polygon(0 0, 58% 0, 42% 100%, 0 100%); object-position: 30% center; }
+.hero-slide-right { clip-path: polygon(58% 0, 100% 0, 100% 100%, 42% 100%); object-position: 70% center; }
 @keyframes heroDrift {
   0% { transform: scale(1.0) translate(-1%, -1%); }
   25% { transform: scale(1.05) translate(1%, 0%); }
@@ -74,8 +77,8 @@ nav a:hover { color: var(--terra-light); }
   100% { transform: scale(1.0); }
 }
 .hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.1) 60%, rgba(181,101,29,0.3) 100%);
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  background: linear-gradient(90deg, rgba(20,10,5,0.8) 0%, rgba(20,10,5,0.55) 28%, rgba(20,10,5,0.18) 50%, rgba(20,10,5,0) 65%);
 }
 .hero-inner {
   position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; min-height: 460px;
@@ -89,10 +92,10 @@ nav a:hover { color: var(--terra-light); }
 }
 .hero-logo { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: clamp(36px, 5vw, 56px); letter-spacing: -0.02em; line-height: 1.15; max-width: 640px; }
 .hero-logo span { color: var(--terra-light); }
-.hero p { margin-top: 18px; font-size: 16px; opacity: 0.9; max-width: 480px; }
+.hero p { margin-top: 18px; font-size: 18px; opacity: 0.9; max-width: 480px; }
 .hero-meta { margin-top: 28px; display: flex; gap: 14px; flex-wrap: wrap; }
 .hero-meta div {
-  font-size: 13px; font-weight: 700; background: var(--terra); color: #fff;
+  font-size: 15px; font-weight: 700; background: var(--terra); color: #fff;
   padding: 10px 18px; border-radius: 100px; text-shadow: none;
   border: 1px solid rgba(255,255,255,0.2);
 }
@@ -100,6 +103,8 @@ nav a:hover { color: var(--terra-light); }
 
 .toolbar { margin: 0 auto 18px; max-width: 860px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 .cat-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 28px; }
+.hero .cat-row { position: absolute; left: 32px; right: 32px; bottom: 28px; margin-bottom: 0; max-width: 1105px; margin-left: auto; margin-right: auto; z-index: 25; }
+.hero .cat-item { background: rgba(255,255,255,0.12); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 8px 18px rgba(0,0,0,0.3); }
 .leaf-decor { position: fixed; inset: 0; pointer-events: none; z-index: 900; overflow: hidden; }
 .leaf-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
 .leaf-decor img {
@@ -107,16 +112,20 @@ nav a:hover { color: var(--terra-light); }
 }
 @media (max-width: 820px) { .leaf-decor, .leaf-bg { display: none; } }
 .cat-item {
-  position: relative; padding: 11px 26px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.16);
-  background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); font-size: 14px; font-weight: 700;
+  position: relative; padding: 11px 26px; border-radius: 100px; border: none;
+  background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); font-size: 16px; font-weight: 700;
   cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;
+}
+.cat-item::after {
+  content: ""; position: absolute; inset: 0; border-radius: 100px; pointer-events: none;
+  box-shadow: inset 2px 2px 1px rgba(255,255,255,0.35), inset -3px -4px 8px rgba(10,26,20,0.4);
 }
 .cat-item:hover { background: rgba(255,255,255,0.09); color: #fff; }
 .cat-item.active { background: #fff; color: var(--deep-green); border-color: #fff; }
-.cat-soon { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 100px; }
+.cat-soon { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 100px; }
 .cat-item.active .cat-soon { color: rgba(26,58,48,0.5); background: rgba(26,58,48,0.08); }
 .sort-select {
-  font-family: 'Public Sans', sans-serif; font-size: 13px; font-weight: 600; color: #fff;
+  font-family: 'Public Sans', sans-serif; font-size: 15px; font-weight: 600; color: #fff;
   background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
   padding: 8px 14px; cursor: pointer;
 }
@@ -124,12 +133,12 @@ nav a:hover { color: var(--terra-light); }
 .toolbar h2 { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 30px; letter-spacing: -0.03em; color: #fff; display: flex; align-items: baseline; gap: 10px; }
 .toolbar .count { font-size: 24px; font-weight: 600; color: rgba(255,255,255,0.55); }
 .filters { display: flex; flex-direction: column; gap: 8px; margin: 0 auto 24px; max-width: 860px; }
-.filter-row { display: flex; align-items: flex-start; justify-content: flex-start; gap: 7px; }
-.filter-label { font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.45); letter-spacing: 0.04em; margin-right: 4px; flex-shrink: 0; min-width: 32px; padding-top: 6px; }
-.filter-chips { display: grid; grid-template-columns: repeat(auto-fill, 108px); gap: 7px; flex: 1; }
-.filter-chip { text-align: center; width: 108px; box-sizing: border-box; }
+.filter-row { display: flex; align-items: flex-start; justify-content: flex-start; gap: 8px; }
+.filter-label { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.45); letter-spacing: 0.04em; flex-shrink: 0; width: 40px; padding-top: 6px; }
+.filter-chips { display: grid; grid-template-columns: repeat(auto-fill, 124px); gap: 8px; flex: 1; }
+.filter-chip { text-align: center; width: 124px; box-sizing: border-box; }
 .filter-chip {
-  font-family: 'Public Sans', sans-serif; font-size: 14.5px; font-weight: 600; cursor: pointer;
+  font-family: 'Public Sans', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer;
   padding: 5px 10px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.18);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.65); transition: all 0.2s;
@@ -137,13 +146,13 @@ nav a:hover { color: var(--terra-light); }
 }
 .filter-chip:hover { background: rgba(255,255,255,0.14); color: #fff; }
 .filter-chip.active { background: var(--terra); border-color: var(--terra); color: #fff; }
-.empty-state { padding: 60px 0; text-align: center; color: rgba(255,255,255,0.6); font-size: 15px; }
+.empty-state { padding: 60px 0; text-align: center; color: rgba(255,255,255,0.6); font-size: 17px; }
 
-.hello { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.62); white-space: nowrap; margin-left: 16px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.hello { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.62); white-space: nowrap; margin-left: 16px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .cart-icon { position: relative; display: inline-flex; align-items: center; color: rgba(255,255,255,0.8); margin-left: 14px; margin-right: 24px; }
 .icon-link { display: inline-flex; align-items: center; color: rgba(255,255,255,0.8); margin-left: 14px; }
 .icon-link:hover { color: #fff; }
-.auth-link, .admin-link { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.72); text-decoration: none; white-space: nowrap; }
+.auth-link, .admin-link { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.72); text-decoration: none; white-space: nowrap; }
 .auth-link { margin-left: 16px; }
 .admin-link { color: var(--terra-light); }
 .auth-link:hover, .admin-link:hover { color: #fff; }
@@ -163,7 +172,7 @@ nav a:hover { color: var(--terra-light); }
   position: fixed; top: 50%; right: 24px; transform: translateY(-50%) translateX(40px); opacity: 0;
   display: flex; align-items: center; gap: 8px; padding: 12px 20px;
   background: var(--terra); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px;
-  color: #fff; font-size: 13px; font-weight: 700; cursor: pointer;
+  color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
   box-shadow: 0 10px 24px rgba(0,0,0,0.4);
   transition: opacity 0.4s ease, transform 0.4s ease, background 0.2s ease; z-index: 50; pointer-events: none;
 }
@@ -171,12 +180,11 @@ nav a:hover { color: var(--terra-light); }
 .next-size-btn:hover { background: var(--terra-light); }
 .next-size-btn svg { transition: transform 0.2s ease; }
 .size-section { position: relative; }
-.swipe-hint { display: none; text-align: center; font-size: 11.5px; color: rgba(255,255,255,0.4); margin: 6px 0 8px; }
+.swipe-hint { display: none; text-align: center; font-size: 13px; color: rgba(255,255,255,0.4); margin: 6px 0 8px; }
 .grid-scrollbar { display: none; }
 .grid-scrollbar-thumb { height: 100%; border-radius: 100px; background: rgba(255,255,255,0.55); backdrop-filter: blur(6px); transition: transform 0.1s ease; }
 .grid-wrap { position: relative; }
-.size-nav-chip {
-  position: fixed; top: 50%; transform: translateY(-50%); opacity: 0; pointer-events: none;
+.size-nav-chip { position: fixed; top: 50%; transform: translateY(-50%); opacity: 0; pointer-events: none;
   display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 20px; flex-shrink: 0;
   background: linear-gradient(155deg, var(--terra-light) 0%, var(--terra) 60%, #a8500f 100%);
   border: 1px solid rgba(255,255,255,0.3); border-radius: 18px;
@@ -185,14 +193,18 @@ nav a:hover { color: var(--terra-light); }
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease; z-index: 55;
 }
 .size-nav-chip.visible { opacity: 1; pointer-events: auto; }
-.size-nav-chip:hover { transform: translateY(calc(-50% - 2px)); box-shadow: 0 18px 34px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -3px 6px rgba(0,0,0,0.25); }
+.size-nav-chip:hover { transform: translateY(calc(-50% - 2px)) scale(1.05); box-shadow: 0 18px 34px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -3px 6px rgba(0,0,0,0.25); }
 .size-nav-chip.prev {
   background: linear-gradient(155deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 60%, rgba(0,0,0,0.15) 100%);
   border-color: rgba(255,255,255,0.25); flex-direction: row-reverse;
 }
 .chip-dims { display: flex; flex-direction: column; align-items: center; text-align: center; line-height: 1.05; }
-.chip-dims span:nth-child(2) { font-size: 11px; opacity: 0.75; margin: 1px 0; }
-.chip-arrow-overlay { display: flex; align-items: center; justify-content: center; opacity: 0.95; flex-shrink: 0; }
+.chip-dims span:nth-child(2) { font-size: 19px; font-weight: 800; opacity: 0.85; margin: 1px 0; }
+.chip-arrow-overlay { display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--terra-light); position: absolute; right: -44px; top: 50%; transform: translateY(-50%); transition: transform 0.2s ease; }
+.chip-arrow-overlay svg { display: block; }
+.size-nav-chip:hover .chip-arrow-overlay { transform: translateY(-50%) translateX(5px); }
+.size-nav-chip.prev .chip-arrow-overlay { right: auto; left: -44px; }
+.size-nav-chip.prev:hover .chip-arrow-overlay { transform: translateY(-50%) translateX(-5px); }
 .size-nav-chip:hover { background: var(--terra-light); }
 .mobile-size-chips { display: none; }
 @keyframes gridDissolveOut { 0% { opacity: 1; transform: translateX(0); } 100% { opacity: 0; transform: translateX(-40px); } }
@@ -246,22 +258,22 @@ nav a:hover { color: var(--terra-light); }
   background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.6) 100%);
 }
 .card-body { position: absolute; left: 0; right: 0; bottom: 0; padding: 16px; color: #fff; z-index: 3; }
-.card-name { font-weight: 700; font-size: 14px; letter-spacing: -0.01em; margin-bottom: 4px; }
-.card-spec { font-size: 11.5px; opacity: 0.85; margin-bottom: 10px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+.card-name { font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin-bottom: 4px; }
+.card-spec { font-size: 13.5px; opacity: 0.85; margin-bottom: 10px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 .card-footer { display: flex; align-items: center; justify-content: space-between; }
-.card-sales { font-size: 11px; opacity: 0.7; font-weight: 600; }
+.card-sales { font-size: 12.5px; opacity: 0.7; font-weight: 600; }
 .coverflow-wrap { position: relative; max-width: 1200px; margin: 0 auto 36px; padding: 0 44px; }
-.coverflow { display: flex; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory; padding: 30px calc(50% - 140px); scrollbar-width: none; -webkit-overflow-scrolling: touch; cursor: grab; user-select: none; }
+.coverflow { display: flex; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory; padding: 30px calc(50% - 150px); scrollbar-width: none; -webkit-overflow-scrolling: touch; cursor: grab; user-select: none; }
 .coverflow.dragging { cursor: grabbing; scroll-snap-type: none; }
 .coverflow::-webkit-scrollbar { display: none; }
-.coverflow-card { position: relative; flex: 0 0 280px; height: 280px; margin: 0 -60px; scroll-snap-align: center; box-shadow: 0 14px 30px rgba(0,0,0,0.35); transition: transform 0.2s ease; cursor: pointer; }
+.coverflow-card { position: relative; flex: 0 0 300px; height: 300px; margin: 0 -78px; scroll-snap-align: center; box-shadow: 0 14px 30px rgba(0,0,0,0.35); transition: transform 0.2s ease; cursor: pointer; }
 .coverflow-card.card::after { z-index: 4; }
 .coverflow-img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
 .coverflow-info { position: absolute; left: 0; right: 0; bottom: 0; padding: 16px; opacity: 0; transition: opacity 0.3s ease; color: #fff; pointer-events: none; z-index: 3; }
 .coverflow-card.settled .coverflow-info { opacity: 1; }
 .coverflow-detail-btn {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 4;
-  color: #fff; font-weight: 800; font-size: 12px; padding: 7px 16px; border: 2px solid rgba(255,255,255,0.85);
+  color: #fff; font-weight: 800; font-size: 13.5px; padding: 7px 16px; border: 2px solid rgba(255,255,255,0.85);
   border-radius: 100px; text-decoration: none; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
   background: transparent;
 }
@@ -292,18 +304,18 @@ nav a:hover { color: var(--terra-light); }
 .rank-badge > div:last-child { font-size: 20px; font-weight: 700; margin-top: -1.5px; }
 
 .card-btn {
-  font-size: 11.5px; font-weight: 700; color: #fff; background: rgba(181,101,29,0.6);
+  font-size: 13px; font-weight: 700; color: #fff; background: rgba(181,101,29,0.6);
   padding: 5px 12px; border-radius: 100px; text-decoration: none; backdrop-filter: blur(6px);
 }
 .card-link { color: inherit; text-decoration: none; display: block; }
 .badge-b2b {
   position: absolute; top: 14px; left: 14px; z-index: 2;
   background: rgba(26,58,48,0.85); backdrop-filter: blur(4px); color: var(--tan);
-  border: 1px solid rgba(255,255,255,0.2); font-size: 11px;
+  border: 1px solid rgba(255,255,255,0.2); font-size: 12.5px;
   font-weight: 800; padding: 5px 12px; border-radius: 10px; letter-spacing: 0.02em;
 }
 
-footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0.1); padding: 32px; text-align: center; color: rgba(255,255,255,0.7); font-size: 12.5px; }
+footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0.1); padding: 32px; text-align: center; color: rgba(255,255,255,0.7); font-size: 14px; }
 
 @media (max-width: 768px) {
   .grid { grid-template-columns: repeat(2, 1fr); }
@@ -329,13 +341,13 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
     box-shadow: -8px 0 24px rgba(0,0,0,0.4); transform: translateX(100%); transition: transform 0.25s ease;
   }
   .mobile-drawer.open { transform: translateX(0); }
-  .mobile-drawer a, .mobile-drawer button { color: #fff; text-decoration: none; font-size: 15px; font-weight: 700; padding: 14px 6px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; background: none; border-left: none; border-right: none; border-top: none; }
+  .mobile-drawer a, .mobile-drawer button { color: #fff; text-decoration: none; font-size: 17px; font-weight: 700; padding: 14px 6px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; background: none; border-left: none; border-right: none; border-top: none; }
   .filters { display: none; }
   .filter-toggle-btn {
     display: flex; align-items: center; gap: 6px; padding: 10px 18px;
     background: rgba(30,18,12,0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 100px;
     position: fixed; top: 94px; right: 16px; z-index: 90; margin: 0;
-    color: #fff; font-size: 13px; font-weight: 700; cursor: pointer;
+    color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
   }
   .filter-sheet-backdrop.open { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; }
   .filter-sheet {
@@ -414,9 +426,9 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
   <a href="MyPage.dc.html">마이페이지</a>
 </div>
 
-<section class="hero" id="hero" style="position: relative; background: var(--deep-green); color: #fff; min-height: 460px; overflow: hidden; max-width: 1210px; margin: 0 auto;">
-  <div class="hero-overlay" style="display: none"></div>
-  <div class="hero-inner" style="position: relative; z-index: 20; width: 1169px; height: 459px">
+<section class="hero" id="hero" style="position: relative; background: var(--deep-green); color: #fff; min-height: 620px; overflow: hidden; width: 100%; margin: -84px 0 0;">
+  <div class="hero-overlay"></div>
+  <div class="hero-inner" style="position: relative; z-index: 20; max-width: 1169px; width: 100%; height: 549px; margin: 0 auto; padding: 50px 32px 0; box-sizing: border-box">
     <div class="hero-eyebrow" style="font-size: 17px; color: #ffd9a8">나무와 흙의 결 · 시공업자를 위한 B2B 타일 공급</div>
     <div class="hero-logo"><span>MOK</span>TO</div>
     <p>견적 없이 바로 온라인으로 주문하세요<br>재고를 상시 보유해 즉시 출고가 가능합니다</p>
@@ -426,9 +438,7 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
       <div>✓ 기술 상담</div>
     </div>
   </div>
-</section>
-
-<main>  <div class="cat-row">
+  <div class="cat-row">
     <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
       <div class="cat-item {{ cat.activeClass }}" onClick="{{ cat.onClick }}">
         <span class="cat-label">{{ cat.label }}</span>
@@ -438,11 +448,16 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
       </div>
     </sc-for>
   </div>
-  <div class="coverflow-wrap">
+</section>
+
+<main>  <div class="coverflow-wrap">
+    <div style="padding:0 8px 12px;text-shadow:0 2px 8px rgba(0,0,0,0.4)"><span style="font-size:26px;font-weight:700;color:var(--terra-light);letter-spacing:-0.01em">BEST 상품</span> <span style="font-size:21px;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:-0.01em">· {{ activeSize }}</span></div>
     <div class="coverflow" id="best-coverflow">
       <sc-for list="{{ bestList }}" as="p" hint-placeholder-count="7">
         <div class="coverflow-card card">
-          <img class="coverflow-img card-img" src="{{ p.img }}" alt="{{ p.name }}" style="filter: {{ p.imgFilter }}">
+          <sc-if value="{{ p.img }}" hint-placeholder-val="{{ false }}">
+            <img class="coverflow-img card-img" src="{{ p.img }}" alt="{{ p.name }}" style="filter: {{ p.imgFilter }}">
+          </sc-if>
           <sc-if value="{{ p.isGlossy }}" hint-placeholder-val="{{ false }}">
             <div class="card-gloss"></div>
           </sc-if>
@@ -482,8 +497,8 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
   <div class="filters">
     <div class="filter-row">
       <span class="filter-label">사이즈</span>
-      <button class="filter-chip {{ sizeFiltersAll.activeClass }}" onClick="{{ sizeFiltersAll.onClick }}">{{ sizeFiltersAll.label }}</button>
       <div class="filter-chips">
+      <button class="filter-chip {{ sizeFiltersAll.activeClass }}" onClick="{{ sizeFiltersAll.onClick }}">{{ sizeFiltersAll.label }}</button>
       <sc-for list="{{ sizeFiltersRest }}" as="f" hint-placeholder-count="3">
         <button class="filter-chip {{ f.activeClass }}" onClick="{{ f.onClick }}">{{ f.label }}</button>
       </sc-for>
@@ -491,8 +506,8 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
     </div>
     <div class="filter-row">
       <span class="filter-label">재질</span>
-      <button class="filter-chip {{ materialFiltersAll.activeClass }}" onClick="{{ materialFiltersAll.onClick }}">{{ materialFiltersAll.label }}</button>
       <div class="filter-chips">
+      <button class="filter-chip {{ materialFiltersAll.activeClass }}" onClick="{{ materialFiltersAll.onClick }}">{{ materialFiltersAll.label }}</button>
       <sc-for list="{{ materialFiltersRest }}" as="f" hint-placeholder-count="3">
         <button class="filter-chip {{ f.activeClass }}" onClick="{{ f.onClick }}">{{ f.label }}</button>
       </sc-for>
@@ -500,8 +515,8 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
     </div>
     <div class="filter-row">
       <span class="filter-label">색상</span>
-      <button class="filter-chip {{ filtersAll.activeClass }}" onClick="{{ filtersAll.onClick }}">{{ filtersAll.label }}</button>
       <div class="filter-chips">
+      <button class="filter-chip {{ filtersAll.activeClass }}" onClick="{{ filtersAll.onClick }}">{{ filtersAll.label }}</button>
       <sc-for list="{{ filtersRest }}" as="f" hint-placeholder-count="4">
         <button class="filter-chip {{ f.activeClass }}" onClick="{{ f.onClick }}">{{ f.label }}</button>
       </sc-for>
@@ -509,8 +524,8 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
     </div>
     <div class="filter-row">
       <span class="filter-label">광택</span>
-      <button class="filter-chip {{ finishFiltersAll.activeClass }}" onClick="{{ finishFiltersAll.onClick }}">{{ finishFiltersAll.label }}</button>
       <div class="filter-chips">
+      <button class="filter-chip {{ finishFiltersAll.activeClass }}" onClick="{{ finishFiltersAll.onClick }}">{{ finishFiltersAll.label }}</button>
       <sc-for list="{{ finishFiltersRest }}" as="f" hint-placeholder-count="3">
         <button class="filter-chip {{ f.activeClass }}" onClick="{{ f.onClick }}">{{ f.label }}</button>
       </sc-for>
@@ -545,7 +560,9 @@ footer { background: var(--deep-green); border-top: 1px solid rgba(255,255,255,0
     <sc-for list="{{ sec.items }}" as="p" hint-placeholder-count="6">
       <a class="card-link" href="Product Detail.dc.html?id={{ p.id }}">
         <div class="card">
-          <img class="card-img" src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="object-fit: cover; filter: {{ p.imgFilter }}">
+          <sc-if value="{{ p.img }}" hint-placeholder-val="{{ false }}">
+            <img class="card-img" src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="object-fit: cover; filter: {{ p.imgFilter }}">
+          </sc-if>
           <sc-if value="{{ p.isGlossy }}" hint-placeholder-val="{{ false }}">
             <div class="card-gloss"></div>
           </sc-if>
@@ -710,7 +727,7 @@ class Component extends DCLogic {
           const badgeColor = colorMap[p.color] || 'rgba(140,140,130,0.88)';
           return rank === -1 ? p : { ...p, rankBadge: rank + 1, rankClass: `rank-${rank + 1}`, badgeColor };
         });
-        const heroSlides = products.filter(p => p.installedImg && !p.installedImg.includes('edge-reus-wh') && !p.installedImg.includes('bt-66j03') && !p.installedImg.includes('bt-reg22')).sort(() => Math.random() - 0.5);
+        const heroSlides = products.filter(p => p.installedImg2).sort(() => Math.random() - 0.5);
         this.setState({ products, heroSlides });
         this.initHero(heroSlides);
         setTimeout(() => this.initCoverflow(), 50);
@@ -766,13 +783,21 @@ class Component extends DCLogic {
       document.head.appendChild(style);
 
       slides.forEach((p, i) => {
-        const img = document.createElement('img');
-        img.className = 'hero-slide';
-        img.src = p.installedImg;
-        img.alt = '';
-        img.style.animationDuration = `${cycle}s`;
-        img.style.animationDelay = `${-i * perSlide}s`;
-        hero.insertBefore(img, hero.firstChild);
+        const wrap = document.createElement('div');
+        wrap.className = 'hero-slide';
+        wrap.style.animationDuration = `${cycle}s`;
+        wrap.style.animationDelay = `${-i * perSlide}s`;
+        const left = document.createElement('img');
+        left.className = 'hero-slide-half hero-slide-left';
+        left.src = p.installedImg2[0];
+        left.alt = '';
+        const right = document.createElement('img');
+        right.className = 'hero-slide-half hero-slide-right';
+        right.src = p.installedImg2[1];
+        right.alt = '';
+        wrap.appendChild(left);
+        wrap.appendChild(right);
+        hero.insertBefore(wrap, hero.firstChild);
       });
     }, 100);
   }
@@ -905,6 +930,7 @@ class Component extends DCLogic {
   }
 
   updateSizeChipPositions = () => {
+    if (window.innerWidth <= 768) return;
     const wrap = document.querySelector('.grid-wrap');
     if (!wrap) return;
     const nextChip = wrap.querySelector('.size-nav-chip:not(.prev)');
@@ -974,10 +1000,19 @@ class Component extends DCLogic {
     );
 
     filteredProducts = filteredProducts.slice();
-    
-    const best = filteredProducts.filter(p => p.rankBadge).sort((a, b) => a.rankBadge - b.rankBadge);
-    const bestList = best;
-    let rest = filteredProducts.filter(p => !p.rankBadge);
+
+    const colorMap = {
+      '화이트': 'rgba(200,200,190,0.88)', '아이보리': 'rgba(210,195,165,0.88)', '베이지': 'rgba(195,175,140,0.88)',
+      '그레이': 'rgba(140,140,130,0.88)', '라이트 그레이': 'rgba(170,170,160,0.88)', '다크 그레이': 'rgba(90,90,85,0.88)',
+      '블랙': 'rgba(80,80,75,0.88)', '브라운': 'rgba(150,100,60,0.88)', '그린': 'rgba(100,140,100,0.88)',
+      '라이트': 'rgba(190,180,170,0.88)', '샌드': 'rgba(185,165,130,0.88)', '네이비': 'rgba(70,90,120,0.88)',
+    };
+    const topInFiltered = filteredProducts.slice().sort((a, b) => b.salesBoxes - a.salesBoxes).slice(0, 7);
+    const topIdSet = new Set(topInFiltered.map(p => p.id));
+    const bestList = topInFiltered.map((p, i) => ({
+      ...p, rankBadge: i + 1, rankClass: `rank-${i + 1}`, badgeColor: colorMap[p.color] || 'rgba(140,140,130,0.88)',
+    }));
+    let rest = filteredProducts.filter(p => !topIdSet.has(p.id));
     if (sortBy === 'popular') rest.sort((a, b) => b.salesBoxes - a.salesBoxes);
     else rest.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
 
@@ -1009,7 +1044,7 @@ class Component extends DCLogic {
       cartCount: String(cartCount), hasCart: cartCount > 0,
       mobileMenuClass, filterSheetClass, toggleMobileMenu: this.toggleMobileMenu, toggleFilterSheet: this.toggleFilterSheet,
       scrollTopClass: this.state.showScrollTop ? 'visible' : '', scrollToTop: this.scrollToTop,
-      bestList, coverflowPrev: this.coverflowPrev, coverflowNext: this.coverflowNext,
+      bestList, coverflowPrev: this.coverflowPrev, coverflowNext: this.coverflowNext, activeSize,
       sections: visibleSections,
       products,
       loggedIn: !!this.state.session,
@@ -1023,6 +1058,7 @@ class Component extends DCLogic {
         : '',
       onLogout: () => { try { localStorage.removeItem('ssol_session'); } catch (e) {} },
       categories: [
+        { label: '전체 상품', activeClass: '', soon: false, onClick: () => {} },
         { label: '타일', activeClass: 'active', soon: false, onClick: () => {} },
         { label: '수전', activeClass: '', soon: true, onClick: () => {} },
         { label: '거울', activeClass: '', soon: true, onClick: () => {} },

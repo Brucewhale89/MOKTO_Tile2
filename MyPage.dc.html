@@ -72,7 +72,7 @@ a:hover { color: var(--tan); }
       <div style="font-size:13px;color:var(--muted)">담당자 정보와 배송지를 관리합니다</div>
     </a>
 
-    <a href="Cart.dc.html" style="display:block;background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;padding:26px 24px;color:var(--text)">
+    <a href="#cart-section" style="display:block;background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;padding:26px 24px;color:var(--text)">
       <div style="width:40px;height:40px;border-radius:10px;background:rgba(201,97,13,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--terra-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
       </div>
@@ -88,6 +88,70 @@ a:hover { color: var(--tan); }
       <div style="font-size:13px;color:var(--muted)">지난 주문과 배송 상태를 확인합니다</div>
     </a>
   </div>
+
+  <!-- 장바구니 섹션 (Cart.dc.html과 동일한 UI/UX) -->
+  <div id="cart-section" style="margin-top:60px;border-top:1px solid var(--border);padding-top:40px">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:26px">
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;margin:0">장바구니</h2>
+      <span style="font-size:14px;color:var(--muted);font-weight:600">{{ itemCountLabel }}</span>
+    </div>
+
+    <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:80px 24px;text-align:center;background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px">
+        <p style="font-size:15px;color:var(--muted);margin:0 0 18px">장바구니가 비어 있습니다.</p>
+        <a href="Home.dc.html" style="display:inline-block;padding:12px 26px;background:var(--terra);color:#fff;border-radius:8px;font-size:14px;font-weight:700">상품 보러 가기</a>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ hasCartItems }}" hint-placeholder-val="{{ true }}">
+      <div style="background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:74px 1.6fr 1fr 116px 130px 40px;gap:14px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:0.02em">
+          <span></span>
+          <span>모델명</span>
+          <span>규격 · 재질</span>
+          <span style="text-align:center">수량 (박스)</span>
+          <span style="text-align:right">금액</span>
+          <span></span>
+        </div>
+        <sc-for list="{{ cartList }}" as="r" hint-placeholder-count="2">
+          <div style="display:grid;grid-template-columns:74px 1.6fr 1fr 116px 130px 40px;gap:14px;align-items:center;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.07);opacity:{{ r.rowOpacity }}">
+            <a href="{{ r.link }}" style="display:block;width:74px;height:74px;border-radius:8px;overflow:hidden;background:rgba(0,0,0,0.25)">
+              <img src="{{ r.img }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
+            </a>
+            <div style="min-width:0">
+              <a href="{{ r.link }}" style="font-size:14.5px;font-weight:700;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</a>
+              <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.nickname }}</div>
+            </div>
+            <div style="font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.spec }}</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px">
+              <button onClick="{{ r.onDec }}" style="width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:rgba(0,0,0,0.2);color:var(--text);font-size:15px;font-weight:700;cursor:pointer;line-height:1">−</button>
+              <span style="min-width:26px;text-align:center;font-size:14px;font-weight:700">{{ r.qty }}</span>
+              <button onClick="{{ r.onInc }}" style="width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:rgba(0,0,0,0.2);color:var(--text);font-size:15px;font-weight:700;cursor:pointer;line-height:1">+</button>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:14.5px;font-weight:700">₩{{ r.total }}</div>
+              <div style="font-size:11.5px;color:var(--muted)">₩{{ r.price }} / 박스</div>
+            </div>
+            <button onClick="{{ r.onToggle }}" title="{{ r.toggleTitle }}" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:{{ r.toggleBg }};color:{{ r.toggleColor }};font-size:13px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center">{{ r.toggleGlyph }}</button>
+          </div>
+        </sc-for>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 18px;background:rgba(0,0,0,0.2)">
+          <button onClick="{{ onClearCart }}" style="padding:9px 16px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer">전체 비우기</button>
+          <div style="display:flex;align-items:baseline;gap:14px">
+            <span style="font-size:13.5px;color:var(--muted);font-weight:600">총 {{ totalBoxes }}박스 · 합계</span>
+            <span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.02em;color:var(--tan)">₩{{ totalPrice }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:22px">
+        <a href="Home.dc.html" style="padding:13px 24px;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:14px;font-weight:700">계속 쇼핑하기</a>
+        <button onClick="{{ checkout }}" style="padding:13px 32px;background:var(--terra);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">주문하기</button>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);text-align:right;margin:12px 0 0">금액은 VAT 별도이며, 최소 주문 수량은 제품당 5박스입니다.</p>
+    </sc-if>
+  </div>
 </main>
 
 <footer style="background:#1e120c;border-top:1px solid rgba(255,255,255,0.1);padding:32px;text-align:center;color:rgba(255,255,255,0.7);font-size:12.5px">
@@ -96,7 +160,7 @@ a:hover { color: var(--tan); }
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { session: null, cart: [], mobileMenuOpen: false };
+  state = { session: null, cart: [], products: [], mobileMenuOpen: false };
   toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
 
   componentDidMount() {
@@ -114,17 +178,83 @@ class Component extends DCLogic {
     try { session = JSON.parse(localStorage.getItem('ssol_session') || 'null'); } catch (e) {}
     try { cart = JSON.parse(localStorage.getItem('mokto_cart') || '[]'); } catch (e) {}
     this.setState({ session, cart });
+
+    const script = document.createElement('script');
+    script.src = 'uploads/data.js';
+    script.onload = () => {
+      if (typeof PRODUCTS !== 'undefined') {
+        let custom = [], meta = {};
+        try { custom = JSON.parse(localStorage.getItem('ssol_admin_custom') || '[]'); } catch (e) {}
+        try { meta = JSON.parse(localStorage.getItem('ssol_admin_meta') || '{}'); } catch (e) {}
+        const products = [...custom, ...PRODUCTS].map(p => ({ ...p, ...(meta[p.id] || {}) }));
+        this.setState({ products });
+      }
+    };
+    document.head.appendChild(script);
   }
+
+  saveCart(cart) {
+    try { localStorage.setItem('mokto_cart', JSON.stringify(cart)); } catch (e) {}
+    this.setState({ cart });
+  }
+
+  checkout = () => {
+    const active = this.state.cart.filter(i => !i.disabled);
+    if (!active.length) { alert('선택된 상품이 없습니다'); return; }
+    alert(`${active.length}개 품목 주문 시작`);
+  };
 
   renderVals() {
     const s = this.state.session;
-    const boxes = this.state.cart.reduce((n, i) => n + i.qty, 0);
+    const byId = {};
+    this.state.products.forEach(p => { byId[p.id] = p; });
+
+    const cartList = this.state.cart.map(item => {
+      const p = byId[item.id];
+      if (!p) return null;
+      const price = p.price || 0;
+      const paren = (p.name || '').match(/\(([^)]+)\)/);
+      return {
+        id: item.id,
+        qty: String(item.qty),
+        name: p.publicName || '—',
+        nickname: paren ? paren[1].trim() : '',
+        spec: [p.size, p.material, p.finish].filter(Boolean).join(' · '),
+        img: p.img,
+        link: 'Product Detail.dc.html?id=' + encodeURIComponent(p.id),
+        price: price.toLocaleString(),
+        total: (price * item.qty).toLocaleString(),
+        onInc: () => this.saveCart(this.state.cart.map(i => i.id === item.id ? { ...i, qty: i.qty + 1 } : i)),
+        onDec: () => this.saveCart(this.state.cart.map(i => i.id === item.id ? { ...i, qty: Math.max(1, i.qty - 1) } : i)),
+        onToggle: () => this.saveCart(this.state.cart.map(i => i.id === item.id ? { ...i, disabled: !i.disabled } : i)),
+        rowOpacity: item.disabled ? 0.4 : 1,
+        toggleTitle: item.disabled ? '다시 담기' : '제외',
+        toggleGlyph: item.disabled ? '↺' : '×',
+        toggleBg: item.disabled ? 'var(--terra)' : 'transparent',
+        toggleColor: item.disabled ? '#fff' : 'var(--muted)',
+      };
+    }).filter(Boolean);
+
+    const totalBoxes = cartList.filter(r => r.toggleGlyph === '×').reduce((n, r) => n + Number(r.qty), 0);
+    const totalPrice = this.state.cart.filter(i => !i.disabled).reduce((sum, i) => {
+      const p = byId[i.id];
+      return sum + (p ? (p.price || 0) * i.qty : 0);
+    }, 0);
+
     return {
       mobileMenuClass: this.state.mobileMenuOpen ? 'open' : '', toggleMobileMenu: this.toggleMobileMenu,
       loggedIn: !!s,
       greeting: s ? `${s.name} 님, 안녕하세요` : '로그인이 필요합니다',
-      cartLabel: this.state.cart.length ? `${this.state.cart.length}개 품목 · ${boxes}박스 담겨 있습니다` : '담긴 상품이 없습니다',
+      cartLabel: this.state.cart.length ? `${this.state.cart.length}개 품목 담겨 있습니다` : '담긴 상품이 없습니다',
       onLogout: () => { try { localStorage.removeItem('ssol_session'); } catch (e) {} },
+      hasCartItems: cartList.length > 0,
+      isEmpty: this.state.products.length > 0 && cartList.length === 0,
+      itemCountLabel: cartList.length > 0 ? cartList.length + '개 품목' : '',
+      cartList,
+      totalBoxes: String(totalBoxes),
+      totalPrice: totalPrice.toLocaleString(),
+      onClearCart: () => this.saveCart([]),
+      checkout: this.checkout,
     };
   }
 }

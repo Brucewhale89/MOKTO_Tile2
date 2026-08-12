@@ -23,18 +23,18 @@ input, select, button { font-family: inherit; }
   </style>
 </helmet>
 
-<header style="background:#1e120c;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200">
+<header style="background:#1a3a30;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200">
   <div style="display:flex;align-items:baseline;gap:14px">
-    <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff"><span style="color:var(--terra-light)">MOK</span>TO</a>
-    <span style="color:rgba(255,255,255,0.5);font-size:12px;font-weight:700;letter-spacing:0.12em">ADMIN</span>
+    <a href="Home.dc.html" style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#fff;text-decoration:none"><span style="color:#cc8542">MOK</span>TO<em style="font-family:'Public Sans',sans-serif;font-style:normal;font-weight:600;font-size:11px;letter-spacing:0.14em;color:rgba(255,255,255,0.55);margin-left:9px">ADMIN</em></a>
   </div>
-  <nav style="display:flex;gap:20px;align-items:center">
-    <span style="color:rgba(255,255,255,0.45);font-size:12px">{{ savedNote }}</span>
-    <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600">{{ sessionLabel }}</span>
-    <a href="Orders.dc.html" style="color:rgba(255,255,255,0.75);font-size:13px;font-weight:600">주문 관리</a>
-    <a href="Home.dc.html" style="color:rgba(255,255,255,0.75);font-size:13px;font-weight:600">쇼핑몰 보기 →</a>
-    <a href="Login.dc.html" onClick="{{ onLogout }}" style="color:rgba(255,255,255,0.55);font-size:13px;font-weight:600">로그아웃</a>
+  <nav style="display:flex;gap:28px;align-items:center;justify-content:center">
+    <a href="Admin.dc.html" style="color:#cc8542;font-size:13px;font-weight:700;text-decoration:none">제품 관리</a>
+    <a href="Orders.dc.html" style="color:rgba(255,255,255,0.75);font-size:13px;font-weight:600;text-decoration:none">주문 관리</a>
   </nav>
+  <div style="display:flex;align-items:center;gap:16px">
+    <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600">{{ sessionLabel }}</span>
+    <a href="Login.dc.html" onClick="{{ onLogout }}" style="color:rgba(255,255,255,0.55);font-size:13px;font-weight:600;text-decoration:none">로그아웃</a>
+  </div>
 </header>
 
 <sc-if value="{{ notAdmin }}" hint-placeholder-val="{{ false }}">
@@ -110,6 +110,71 @@ input, select, button { font-family: inherit; }
       </div>
     </section>
   </div>
+
+  <section style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:26px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px">
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;margin:0">메신저 설정</h2>
+      <span style="font-size:12px;color:var(--muted)">견적서 및 주문 알림을 전송할 메신저 채널을 설정합니다</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+      <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <span style="font-size:13.5px;font-weight:700">텔레그램 봇</span>
+          <button onClick="{{ telegram.onToggle }}" style="display:flex;align-items:center;justify-content:center;width:42px;height:24px;border-radius:12px;border:none;cursor:pointer;padding:0;position:relative;transition:background 0.18s;background:{{ telegram.trackColor }}">
+            <span style="position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;transition:left 0.18s;box-shadow:0 1px 3px rgba(0,0,0,0.25);left:{{ telegram.knobLeft }}"></span>
+          </button>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">
+          봇 토큰
+          <input type="text" value="{{ telegram.token }}" onInput="{{ telegram.onToken }}" placeholder="123456:ABCDEfghijklmnop..." style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--text);opacity:{{ telegram.opacity }}">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted)">
+          채팅 ID
+          <input type="text" value="{{ telegram.chatId }}" onInput="{{ telegram.onChatId }}" placeholder="-1001234567890" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--text);opacity:{{ telegram.opacity }}">
+        </label>
+        <button onClick="{{ telegram.onTest }}" style="margin-top:10px;padding:8px 14px;background:{{ telegram.testBg }};color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;width:100%;opacity:{{ telegram.testOpacity }}">테스트 전송</button>
+        <div style="font-size:11px;color:{{ telegram.statusColor }};margin-top:6px">{{ telegram.status }}</div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <span style="font-size:13.5px;font-weight:700">카카오톡 알림톡</span>
+          <button onClick="{{ kakao.onToggle }}" style="display:flex;align-items:center;justify-content:center;width:42px;height:24px;border-radius:12px;border:none;cursor:pointer;padding:0;position:relative;transition:background 0.18s;background:{{ kakao.trackColor }}">
+            <span style="position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;transition:left 0.18s;box-shadow:0 1px 3px rgba(0,0,0,0.25);left:{{ kakao.knobLeft }}"></span>
+          </button>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">
+          API 키
+          <input type="text" value="{{ kakao.apiKey }}" onInput="{{ kakao.onApiKey }}" placeholder="카카오 비즈니스 API 키..." style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--text);opacity:{{ kakao.opacity }}">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted)">
+          발신 프로필 키
+          <input type="text" value="{{ kakao.senderKey }}" onInput="{{ kakao.onSenderKey }}" placeholder="발신 프로필 키..." style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--text);opacity:{{ kakao.opacity }}">
+        </label>
+        <button onClick="{{ kakao.onTest }}" style="margin-top:10px;padding:8px 14px;background:{{ kakao.testBg }};color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;width:100%;opacity:{{ kakao.testOpacity }}">테스트 전송</button>
+        <div style="font-size:11px;color:{{ kakao.statusColor }};margin-top:6px">{{ kakao.status }}</div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <span style="font-size:13.5px;font-weight:700">이메일</span>
+          <button onClick="{{ email.onToggle }}" style="display:flex;align-items:center;justify-content:center;width:42px;height:24px;border-radius:12px;border:none;cursor:pointer;padding:0;position:relative;transition:background 0.18s;background:{{ email.trackColor }}">
+            <span style="position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;transition:left 0.18s;box-shadow:0 1px 3px rgba(0,0,0,0.25);left:{{ email.knobLeft }}"></span>
+          </button>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">
+          SMTP 서버
+          <input type="text" value="{{ email.smtpHost }}" onInput="{{ email.onSmtpHost }}" placeholder="smtp.gmail.com" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--text);opacity:{{ email.opacity }}">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted)">
+          이메일 주소
+          <input type="email" value="{{ email.address }}" onInput="{{ email.onAddress }}" placeholder="admin@mokto.com" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--text);opacity:{{ email.opacity }}">
+        </label>
+        <button onClick="{{ email.onTest }}" style="margin-top:10px;padding:8px 14px;background:{{ email.testBg }};color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;width:100%;opacity:{{ email.testOpacity }}">테스트 전송</button>
+        <div style="font-size:11px;color:{{ email.statusColor }};margin-top:6px">{{ email.status }}</div>
+      </div>
+    </div>
+  </section>
 
   <section style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:26px">
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px">
@@ -313,6 +378,11 @@ class Component extends DCLogic {
     colFilters: { size: null, finish: null, color: null }, openCol: null, editing: null,
     bulkStock: '', bulkPrice: '', bulkMsg: '', query: '', formMsg: '',
     form: { name: '', price: '', size: '600 X 600', finish: '무광', material: '포세린', color: '', origin: '중국', img: '' },
+    messengers: {
+      telegram: { enabled: false, token: '', chatId: '', status: '' },
+      kakao: { enabled: false, apiKey: '', senderKey: '', status: '' },
+      email: { enabled: false, smtpHost: '', address: '', status: '' },
+    },
   };
 
   componentDidMount() {
@@ -327,10 +397,11 @@ class Component extends DCLogic {
       if (ss && ss.email === AEMAIL && ss.name !== ANAME) localStorage.setItem('ssol_session', JSON.stringify({ ...ss, name: ANAME }));
     } catch (e) {}
     const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || d); } catch (e) { return JSON.parse(d); } };
+    const messengers = read('ssol_admin_messengers', JSON.stringify(this.state.messengers));
     this.setState({
       hidden: read(HIDDEN_KEY, '[]'), custom: read(CUSTOM_KEY, '[]'),
       meta: read(META_KEY, '{}'), mainOff: read(MAINFILTER_KEY, '{}'),
-      session: read(SESSION_KEY, 'null'),
+      session: read(SESSION_KEY, 'null'), messengers,
     });
     const s = document.createElement('script');
     s.src = 'uploads/data.js';
@@ -365,6 +436,34 @@ class Component extends DCLogic {
   }
 
   persist(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+
+  setMessenger(type, field, value) {
+    const messengers = { ...this.state.messengers, [type]: { ...this.state.messengers[type], [field]: value } };
+    this.setState({ messengers });
+    this.persist('ssol_admin_messengers', messengers);
+  }
+
+  toggleMessenger(type) {
+    const messengers = { ...this.state.messengers, [type]: { ...this.state.messengers[type], enabled: !this.state.messengers[type].enabled } };
+    this.setState({ messengers });
+    this.persist('ssol_admin_messengers', messengers);
+  }
+
+  testMessenger(type) {
+    const m = this.state.messengers[type];
+    if (!m.enabled) return;
+    let msg = '';
+    if (type === 'telegram' && m.token && m.chatId) msg = '✓ 텔레그램 테스트 메시지 전송 예정';
+    else if (type === 'kakao' && m.apiKey && m.senderKey) msg = '✓ 카카오톡 테스트 메시지 전송 예정';
+    else if (type === 'email' && m.smtpHost && m.address) msg = '✓ 이메일 테스트 메시지 전송 예정';
+    else msg = '필수 정보를 입력하세요.';
+    const messengers = { ...this.state.messengers, [type]: { ...m, status: msg } };
+    this.setState({ messengers });
+    setTimeout(() => {
+      const updated = { ...this.state.messengers, [type]: { ...this.state.messengers[type], status: '' } };
+      this.setState({ messengers: updated });
+    }, 3000);
+  }
 
   toggle(id) {
     const hidden = this.state.hidden.includes(id)
@@ -464,8 +563,43 @@ class Component extends DCLogic {
   }
 
   renderVals() {
-    const { base, custom, hidden, meta, mainOff, query, form, session, selected, colFilters, openCol } = this.state;
+    const { base, custom, hidden, meta, mainOff, query, form, session, selected, colFilters, openCol, messengers } = this.state;
     const isAdmin = !!session && session.role === 'admin';
+    
+    const makeMessengerObj = (type) => {
+      const m = messengers[type];
+      return {
+        enabled: m.enabled,
+        token: m.token || '',
+        chatId: m.chatId || '',
+        apiKey: m.apiKey || '',
+        senderKey: m.senderKey || '',
+        smtpHost: m.smtpHost || '',
+        address: m.address || '',
+        status: m.status,
+        statusColor: m.status.startsWith('✓') ? '#2b7a0b' : '#d32f2f',
+        opacity: m.enabled ? 1 : 0.5,
+        trackColor: m.enabled ? '#1a3a30' : '#cfcabd',
+        knobLeft: m.enabled ? '21px' : '3px',
+        testBg: m.enabled ? 'var(--terra)' : '#ccc',
+        testOpacity: m.enabled ? 1 : 0.6,
+        onToggle: () => this.toggleMessenger(type),
+        onTest: () => this.testMessenger(type),
+      };
+    };
+
+    const telegram = { ...makeMessengerObj('telegram'), 
+      onToken: e => this.setMessenger('telegram', 'token', e.target.value),
+      onChatId: e => this.setMessenger('telegram', 'chatId', e.target.value),
+    };
+    const kakao = { ...makeMessengerObj('kakao'),
+      onApiKey: e => this.setMessenger('kakao', 'apiKey', e.target.value),
+      onSenderKey: e => this.setMessenger('kakao', 'senderKey', e.target.value),
+    };
+    const email = { ...makeMessengerObj('email'),
+      onSmtpHost: e => this.setMessenger('email', 'smtpHost', e.target.value),
+      onAddress: e => this.setMessenger('email', 'address', e.target.value),
+    };
     const mergeWhitePlain = !this.props.separateWhitePlain;
     const normColor = c => (mergeWhitePlain && c === '화이트 (백색 민자)') ? '화이트' : c;
     const all = [...custom, ...base].map(p => ({ ...p, color: normColor(p.color) }));
@@ -626,6 +760,7 @@ class Component extends DCLogic {
       isAdmin, notAdmin: !isAdmin, mainDisplay: isAdmin ? 'block' : 'none',
       sessionLabel: session ? `${session.name} 님` : '로그인 필요',
       onLogout: () => { try { localStorage.removeItem(SESSION_KEY); } catch (e) {} },
+      telegram, kakao, email,
       kpiSales: won(totalSales), kpiRevenue: won(Math.round(revenue / 10000)) + '만',
       kpiTotal: String(all.length), kpiOnOff: (all.length - hidden.length) + ' / ' + hidden.length,
       kpiAvgPrice: won(avg),

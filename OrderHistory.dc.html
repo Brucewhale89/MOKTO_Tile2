@@ -57,41 +57,86 @@ a:hover { color: var(--tan); }
   <a href="MyPage.dc.html" style="font-size:13px;font-weight:600;color:var(--muted)">← 마이페이지</a>
   <h1 style="font-family:'Archivo',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.02em;margin:16px 0 26px">주문 내역</h1>
 
-  <div style="display:flex;flex-direction:column;gap:16px">
-    <sc-for list="{{ orders }}" as="o" hint-placeholder-count="3">
-      <div style="background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border)">
-          <div style="display:flex;align-items:baseline;gap:14px">
-            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px">{{ o.date }}</span>
-            <span style="font-size:12.5px;color:var(--muted);font-weight:600">주문번호 {{ o.no }}</span>
-          </div>
-          <span style="font-size:12px;font-weight:800;padding:5px 12px;border-radius:100px;background: {{ o.statusBg }}; color: {{ o.statusColor }}">{{ o.status }}</span>
-        </div>
-        <div style="padding:6px 20px">
-          <sc-for list="{{ o.items }}" as="it" hint-placeholder-count="2">
-            <div style="display:grid;grid-template-columns:62px 1fr 130px 130px;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
-              <a href="{{ it.link }}" style="display:block;width:62px;height:62px;border-radius:8px;overflow:hidden;background:rgba(0,0,0,0.25)">
-                <img src="{{ it.img }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
-              </a>
-              <div style="min-width:0">
-                <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.publicName }}</div>
-                <div style="font-size:12px;color:var(--muted)">{{ it.spec }}</div>
+  <sc-if value="{{ !showContent }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:70px 24px;text-align:center;color:var(--muted);font-size:13.5px">불러오는 중…</div>
+  </sc-if>
+
+  <sc-if value="{{ showContent }}" hint-placeholder-val="{{ false }}">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;row-gap:14px;column-gap:12px;margin-bottom:32px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;row-gap:8px">
+      <input type="date" value="{{ dateFrom }}" onChange="{{ onDateFrom }}" style="padding:8px 10px;border-radius:7px;border:1px solid var(--border);background:rgba(255,255,255,0.06);color:var(--text);font-size:12.5px">
+      <span style="color:var(--muted);font-size:12.5px">~</span>
+      <input type="date" value="{{ dateTo }}" onChange="{{ onDateTo }}" style="padding:8px 10px;border-radius:7px;border:1px solid var(--border);background:rgba(255,255,255,0.06);color:var(--text);font-size:12.5px">
+      <sc-for list="{{ quickRanges }}" as="qr" hint-placeholder-count="4">
+        <button onClick="{{ qr.onClick }}" style="padding:8px 14px;border-radius:7px;border:1px solid {{ qr.border }};background:{{ qr.bg }};color:{{ qr.color }};font-size:12.5px;font-weight:700;cursor:pointer">{{ qr.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <span style="font-size:12px;color:var(--muted);margin-right:2px">페이지당</span>
+      <sc-for list="{{ pageSizes }}" as="ps" hint-placeholder-count="3">
+        <button onClick="{{ ps.onClick }}" style="padding:7px 13px;border-radius:7px;border:1px solid {{ ps.border }};background:{{ ps.bg }};color:{{ ps.color }};font-size:12.5px;font-weight:700;cursor:pointer">{{ ps.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:70px 24px;text-align:center;background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:14px">해당 기간에 주문 내역이 없습니다.</div>
+  </sc-if>
+
+  <div style="display:flex;flex-direction:column;gap:28px">
+    <sc-for list="{{ dateGroups }}" as="g" hint-placeholder-count="2">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <sc-for list="{{ g.orders }}" as="o" hint-placeholder-count="1">
+            <div style="background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border)">
+                <div style="display:flex;align-items:baseline;gap:14px">
+                  <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px">{{ o.date }}</span>
+                  <span style="font-size:12.5px;color:var(--muted);font-weight:600">주문번호 {{ o.no }}</span>
+                </div>
+                <span style="font-size:12px;font-weight:800;padding:5px 12px;border-radius:100px;background: {{ o.statusBg }}; color: {{ o.statusColor }}">{{ o.status }}</span>
               </div>
-              <div style="font-size:13px;color:var(--muted);text-align:center">{{ it.qty }}박스</div>
-              <div style="font-size:14px;font-weight:700;text-align:right">{{ it.amount }}</div>
+              <div style="padding:6px 20px">
+                <sc-for list="{{ o.items }}" as="it" hint-placeholder-count="2">
+                  <div style="display:grid;grid-template-columns:62px 1fr 130px 130px;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
+                    <a href="{{ it.link }}" style="display:block;width:62px;height:62px;border-radius:8px;overflow:hidden;background:rgba(0,0,0,0.25)">
+                      <img src="{{ it.img }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
+                    </a>
+                    <div style="min-width:0">
+                      <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.publicName }}</div>
+                      <div style="font-size:12px;color:var(--muted)">{{ it.spec }}</div>
+                    </div>
+                    <div style="font-size:13px;color:var(--muted);text-align:center">{{ it.qty }}박스</div>
+                    <div style="font-size:14px;font-weight:700;text-align:right">{{ it.amount }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(0,0,0,0.2)">
+                <span style="font-size:12.5px;color:var(--muted);font-weight:600">{{ o.summary }}</span>
+                <div style="display:flex;align-items:baseline;gap:12px">
+                  <span style="font-size:13px;color:var(--muted);font-weight:600">합계</span>
+                  <span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:20px;color:var(--tan)">{{ o.total }}</span>
+                </div>
+              </div>
             </div>
           </sc-for>
         </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(0,0,0,0.2)">
-          <span style="font-size:12.5px;color:var(--muted);font-weight:600">{{ o.summary }}</span>
-          <div style="display:flex;align-items:baseline;gap:12px">
-            <span style="font-size:13px;color:var(--muted);font-weight:600">합계</span>
-            <span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:20px;color:var(--tan)">{{ o.total }}</span>
-          </div>
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:12px 4px 0">
+          <span style="font-size:12.5px;color:var(--muted);font-weight:600">{{ g.date }} 주문 합계</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:16px;color:var(--terra-light)">{{ g.total }}</span>
         </div>
       </div>
     </sc-for>
   </div>
+
+  <sc-if value="{{ hasPages }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;justify-content:center;gap:8px;margin-top:34px">
+      <sc-for list="{{ pageNumbers }}" as="pn" hint-placeholder-count="3">
+        <button onClick="{{ pn.onClick }}" style="width:34px;height:34px;border-radius:8px;border:1px solid {{ pn.border }};background:{{ pn.bg }};color:{{ pn.color }};font-size:13px;font-weight:700;cursor:pointer">{{ pn.label }}</button>
+      </sc-for>
+    </div>
+  </sc-if>
+  </sc-if>
 </main>
 
 <footer style="background:#1e120c;border-top:1px solid rgba(255,255,255,0.1);padding:32px;text-align:center;color:rgba(255,255,255,0.7);font-size:12.5px">
@@ -115,7 +160,7 @@ const STATUS = {
 };
 
 class Component extends DCLogic {
-  state = { products: [], mobileMenuOpen: false };
+  state = { products: [], productsLoaded: false, mobileMenuOpen: false, dateFrom: '', dateTo: '', pageSize: 10, page: 1, activeRange: '전체' };
   toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
 
   componentDidMount() {
@@ -126,18 +171,30 @@ class Component extends DCLogic {
         let custom = [], meta = {};
         try { custom = JSON.parse(localStorage.getItem('ssol_admin_custom') || '[]'); } catch (e) {}
         try { meta = JSON.parse(localStorage.getItem('ssol_admin_meta') || '{}'); } catch (e) {}
-        this.setState({ products: [...custom, ...PRODUCTS].map(p => ({ ...p, ...(meta[p.id] || {}) })) });
+        this.setState({ products: [...custom, ...PRODUCTS].map(p => ({ ...p, ...(meta[p.id] || {}) })), productsLoaded: true });
       }
     };
     document.head.appendChild(script);
   }
 
+  setDateFrom = (e) => this.setState({ dateFrom: e.target.value, page: 1, activeRange: '' });
+  setDateTo = (e) => this.setState({ dateTo: e.target.value, page: 1, activeRange: '' });
+  setQuickRange = (label, days) => {
+    const to = new Date();
+    const from = new Date(); from.setDate(from.getDate() - days);
+    const fmt = d => d.toISOString().slice(0, 10);
+    this.setState({ dateFrom: days ? fmt(from) : '', dateTo: days ? fmt(to) : '', page: 1, activeRange: label });
+  };
+  setPageSize = (n) => this.setState({ pageSize: n, page: 1 });
+  setPage = (n) => this.setState({ page: n });
+
   renderVals() {
     const won = n => n.toLocaleString('ko-KR') + '원';
     const list = this.state.products;
-    if (!list.length) return { orders: [], mobileMenuClass: this.state.mobileMenuOpen ? 'open' : '', toggleMobileMenu: this.toggleMobileMenu };
+    const base = { mobileMenuClass: this.state.mobileMenuOpen ? 'open' : '', toggleMobileMenu: this.toggleMobileMenu };
+    if (!this.state.productsLoaded || !list.length) return { dateGroups: [], isEmpty: false, hasPages: false, quickRanges: [], pageSizes: [], pageNumbers: [], showContent: false, ...base };
 
-    const orders = SAMPLE.map(o => {
+    let orders = SAMPLE.map(o => {
       const items = o.items.map(it => {
         const p = list[it.i % list.length];
         const price = p.price || 0;
@@ -159,10 +216,81 @@ class Component extends DCLogic {
         total: won(total),
         summary: `${items.length}개 품목 · 총 ${boxes}박스`,
         statusBg: st.bg, statusColor: st.color,
+        _dateKey: o.date.replace(/\./g, '-'),
+        _sum: total,
+      };
+    }).sort((a, b) => b._dateKey.localeCompare(a._dateKey));
+
+    // 날짜 필터
+    if (this.state.dateFrom) orders = orders.filter(o => o._dateKey >= this.state.dateFrom);
+    if (this.state.dateTo) orders = orders.filter(o => o._dateKey <= this.state.dateTo);
+
+    // 날짜별 그룹
+    const byDate = [];
+    orders.forEach(o => {
+      let g = byDate.find(x => x.date === o.date);
+      if (!g) { g = { date: o.date, orders: [] }; byDate.push(g); }
+      g.orders.push(o);
+    });
+
+    // 페이지네이션 — 페이지 경계에서 같은 날짜 그룹이 잘리지 않도록 처리
+    const pageSize = this.state.pageSize;
+    const pages = [];
+    let cur = [], count = 0;
+    byDate.forEach(g => {
+      if (count >= pageSize && cur.length) { pages.push(cur); cur = []; count = 0; }
+      cur.push(g);
+      count += g.orders.length;
+    });
+    if (cur.length) pages.push(cur);
+    if (!pages.length) pages.push([]);
+
+    const page = Math.min(Math.max(1, this.state.page), pages.length);
+    const dateGroups = (pages[page - 1] || []).map(g => ({
+      date: g.date,
+      orders: g.orders,
+      total: won(g.orders.reduce((n, o) => n + o._sum, 0)),
+    }));
+
+    const quickRanges = [
+      { label: '전체', days: 0 }, { label: '7일', days: 7 }, { label: '30일', days: 30 }, { label: '90일', days: 90 },
+    ].map(r => {
+      const active = this.state.activeRange === r.label;
+      return {
+        label: r.label,
+        onClick: () => this.setQuickRange(r.label, r.days),
+        bg: active ? 'var(--terra)' : 'transparent',
+        border: active ? 'var(--terra)' : 'var(--border)',
+        color: active ? '#fff' : 'var(--muted)',
       };
     });
 
-    return { orders, mobileMenuClass: this.state.mobileMenuOpen ? 'open' : '', toggleMobileMenu: this.toggleMobileMenu };
+    const pageSizes = [10, 20, 30].map(n => ({
+      label: n + '개',
+      onClick: () => this.setPageSize(n),
+      bg: this.state.pageSize === n ? 'var(--terra)' : 'transparent',
+      border: this.state.pageSize === n ? 'var(--terra)' : 'var(--border)',
+      color: this.state.pageSize === n ? '#fff' : 'var(--muted)',
+    }));
+
+    const pageNumbers = pages.map((_, i) => ({
+      label: String(i + 1),
+      onClick: () => this.setPage(i + 1),
+      bg: page === i + 1 ? 'var(--terra)' : 'transparent',
+      border: page === i + 1 ? 'var(--terra)' : 'var(--border)',
+      color: page === i + 1 ? '#fff' : 'var(--muted)',
+    }));
+
+    return {
+      showContent: true,
+      dateGroups,
+      isEmpty: orders.length === 0,
+      hasPages: pages.length > 1,
+      dateFrom: this.state.dateFrom, dateTo: this.state.dateTo,
+      onDateFrom: this.setDateFrom, onDateTo: this.setDateTo,
+      quickRanges, pageSizes, pageNumbers,
+      ...base,
+    };
   }
 }
 </script>
